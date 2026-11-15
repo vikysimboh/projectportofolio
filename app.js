@@ -133,6 +133,10 @@ function renderDashboard() {
       ${statCard("Rata-rata transaksi", money(periodCount ? periodRevenue / periodCount : 0), "Per transaksi", "dalam periode ini", "orange", chartLine([7, 5, 11, 8, 12, 10, 16]))}
       ${statCard("Nilai persediaan", money(inventoryValue), `${state.products.length} produk`, "tersedia di tokomu", "green", chartLine([5, 11, 8, 13, 10, 15, 17]))}
     </section>
+    <section class="panel analytics-panel" id="analyticsSection">
+      <div class="panel-heading"><div><h2>Analisis & Insight</h2><p>Agregasi penjualan 12 bulan terakhir - data contoh (seed), bukan penjualan nyata.</p></div></div>
+      <div class="analytics-loading">Memuat analisis...</div>
+    </section>
     <section class="dashboard-grid">
       <div class="panel">
         <div class="panel-heading"><div><h2>Ringkasan penjualan</h2><p>Performa penjualan dalam ${selectedPeriod} hari terakhir</p></div><div class="chart-legend"><span class="legend-dot"></span>Penjualan</div></div>
@@ -151,8 +155,263 @@ function renderDashboard() {
     </section>
     ${lowStock.length ? `<section class="panel table-panel" style="margin-top:17px"><div class="panel-heading table-head"><div class="table-title-wrap"><h2>Perlu restock</h2><span class="count-pill">${lowStock.length} produk</span></div><button class="text-link" data-action="navigate" data-page="produk">Kelola produk →</button></div><div class="table-scroll"><table><thead><tr><th>PRODUK</th><th>KATEGORI</th><th>STOK TERSISA</th><th>HARGA</th></tr></thead><tbody>${lowStock.map((item) => `<tr><td><strong>${escapeHTML(item.emoji)} &nbsp;${escapeHTML(item.name)}</strong></td><td>${escapeHTML(item.category)}</td><td><span class="status pending">${item.stock} tersisa</span></td><td><strong>${money(item.price)}</strong></td></tr>`).join("")}</tbody></table></div></section>` : ""}`;
   drawSalesChart(dashboardDailyData(), Number(selectedPeriod));
+    loadAnalytics();
 }
 
+let analyticsCache = null;
+let analyticsCacheAt = 0;
+let chartJsPromise = null;
+let analyticsCharts = [];
+
+function ensureChartJs() {
+  if (window.Chart) return Promise.resolve(true);
+  if (chartJsPromise) return chartJsPromise;
+  chartJsPromise = new Promise(function (resolve) {
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js";
+    script.onload = function () { resolve(!!window.Chart); };
+    script.onerror = function () { resolve(false); };
+    document.head.appendChild(script);
+  });
+  return chartJsPromise;
+}
+
+function analyticsPct(value) {
+  if (value === null || value === undefined) return "—";
+  const sign = value > 0 ? "+" : "";
+  return sign + value.toFixed(2).replace(".", ",") + "%";
+}
+
+function analyticsNum(value) {
+  return Number(value || 0).toLocaleString("id-ID");
+}
+
+function analyticsArrow(value) {
+  if (value === null || value === undefined) return "—";
+  const arrow = value >= 0 ? "▲ " : "▼ ";
+  return arrow + Math.abs(value).toFixed(2).replace(".", ",") + "%";
+}
+
+async function loadAnalytics() {
+  const section = document.getElementById("analyticsSection");
+  if (!section || !isAdmin()) return;
+  const now = Date.now();
+  if (analyticsCache && now - analyticsCacheAt < 5 * 60 * 1000) {
+    renderAnalytics(section, analyticsCache);
+    return;
+  }
+  try {
+    const data = await apiRequest("/api/analytics");
+    analyticsCache = data;
+    analyticsCacheAt = now;
+    renderAnalytics(section, data);
+  } catch (error) {
+    section.innerHTML = '<div class="panel-heading"><div><h2>Analisis & Insight</h2><p>Agregasi penjualan 12 bulan terakhir - data contoh (seed), bukan penjualan nyata.</p></div></div>' +
+      '<div class="analytics-error">Gagal memuat analisis. Silakan muat ulang halaman.</div>';
+  }
+}
+
+function renderAnalytics(section, data) {
+  const t = data.totals || {};
+  const w = data.windows || {};
+  const d30 = w.d30 || {};
+  const g = data.growth || {};
+  const stock = data.stock || {};
+  const unsold = data.unsold || {};
+  const topByQty = data.topByQty || [];
+  const slowest30 = data.slowest30 || [];
+  const range = data.range || {};
+  const firstTx = String(range.firstTx || "").slice(0, 10);
+  const lastTx = String(range.lastTx || "").slice(0, 10);
+  const avgItems = t.avgItemsDone ? Number(t.avgItemsDone).toFixed(2).replace(".", ",") : "0,00";
+  const avgItems30 = d30.avgItems ? Number(d30.avgItems).toFixed(2).replace(".", ",") : "0,00";
+  const kpi = '<div class="stats-grid">' +
+    statCard("Pertumbuhan penjualan 30 hari", analyticsPct(g.revenue30), analyticsArrow(g.revenue30), "vs 30 hari sebelumnya", "purple", "") +
+    statCard("Rata-rata belanja / transaksi", money(t.avgBasketDone || 0), analyticsArrow(g.revenue7), "30 hari terakhir: " + money(d30.avgBasket || 0), "blue", "") +
+    statCard("Rata-rata item / transaksi", avgItems + " item", "—", "30 hari terakhir: " + avgItems30 + " item", "green", "") +
+    statCard("Produk stok menipis", analyticsNum(stock.low5) + " produk", "—", analyticsNum(stock.outOfStock) + " produk stok habis", "orange", "") +
+    '</div>';
+  const charts = '<div class="analytics-charts">' +
+    '<div class="panel analytics-chart-panel analytics-chart-wide"><div class="panel-heading"><div><h3>Tren penjualan bulanan</h3><p>Pendapatan per bulan (status Selesai)</p></div></div><div class="analytics-chart-wrap"><canvas id="analyticsMonthlyChart"></canvas></div></div>' +
+    '<div class="panel analytics-chart-panel"><div class="panel-heading"><div><h3>Pendapatan per kategori</h3><p>Pangsa tiap kategori dari total pendapatan</p></div></div><div class="analytics-chart-wrap"><canvas id="analyticsCategoryChart"></canvas></div></div>' +
+    '<div class="panel analytics-chart-panel"><div class="panel-heading"><div><h3>Jam tersibuk</h3><p>Jumlah transaksi per jam (00–23)</p></div></div><div class="analytics-chart-wrap"><canvas id="analyticsHourlyChart"></canvas></div></div>' +
+    '</div>';
+  const topRows = analyticsTopRows(topByQty);
+  const slowRows = analyticsSlowRows(slowest30);
+  const tables = '<div class="analytics-tables">' +
+    '<section class="panel table-panel"><div class="panel-heading table-head"><div class="table-title-wrap"><h2>10 produk terlaris</h2><span class="count-pill">berdasarkan jumlah terjual</span></div></div><div class="table-wrap"><table class="analytics-table"><thead><tr><th>Produk</th><th>SKU</th><th>Kategori</th><th>Terjual</th><th>Pendapatan</th></tr></thead><tbody>' + topRows + '</tbody></table></div></section>' +
+    '<section class="panel table-panel"><div class="panel-heading table-head"><div class="table-title-wrap"><h2>Produk paling lambat terjual (30 hari)</h2><span class="count-pill">' + analyticsNum(unsold.d30) + ' produk tidak terjual</span></div></div><p class="analytics-note">Semua produk masih terjual dalam 30 hari terakhir; di bawah ini 10 produk dengan penjualan 30 hari paling sedikit.</p><div class="table-wrap"><table class="analytics-table"><thead><tr><th>Produk</th><th>SKU</th><th>Stok</th><th>Terjual 30 hari</th><th>Terakhir terjual</th></tr></thead><tbody>' + slowRows + '</tbody></table></div></section>' +
+    '</div>';
+  const insights = analyticsInsights(data);
+  const insightHtml = '<section class="panel analytics-insight"><div class="panel-heading"><div><h2>Insight Bisnis</h2><p>Temuan otomatis dari angka-angka di atas</p></div></div><ul class="analytics-insight-list">' + insights + '</ul><p class="analytics-foot">Periode data: ' + firstTx + ' s.d. ' + lastTx + ' (data contoh / seed 12 bulan, bukan penjualan toko sungguhan). Pendapatan hanya menghitung transaksi berstatus Selesai.</p></section>';
+  section.innerHTML = '<div class="panel-heading"><div><h2>Analisis & Insight</h2><p>Agregasi penjualan 12 bulan terakhir - data contoh (seed), bukan penjualan nyata.</p></div></div>' + kpi + charts + tables + insightHtml;
+  drawAnalyticsCharts(data);
+}
+
+function analyticsTopRows(list) {
+  if (!list || !list.length) return '<tr><td colspan="5">Belum ada data.</td></tr>';
+  let rows = "";
+  for (let i = 0; i < list.length; i++) {
+    const item = list[i];
+    rows += '<tr><td>' + item.name + '</td><td>' + item.sku + '</td><td>' + item.category + '</td><td>' + analyticsNum(item.sold) + '</td><td>' + money(item.revenue) + '</td></tr>';
+  }
+  return rows;
+}
+
+function analyticsSlowRows(list) {
+  if (!list || !list.length) return '<tr><td colspan="5">Belum ada data.</td></tr>';
+  let rows = "";
+  for (let i = 0; i < list.length; i++) {
+    const item = list[i];
+    const last = item.lastSold ? String(item.lastSold).slice(0, 10) : "—";
+    rows += '<tr><td>' + item.name + '</td><td>' + item.sku + '</td><td>' + analyticsNum(item.stock) + '</td><td>' + analyticsNum(item.sold30) + '</td><td>' + last + '</td></tr>';
+  }
+  return rows;
+}
+
+function analyticsInsights(data) {
+  const items = [];
+  const g = data.growth || {};
+  const stock = data.stock || {};
+  const unsold = data.unsold || {};
+  const peak = data.peak || {};
+  const categories = data.categories || [];
+  const topByQty = data.topByQty || [];
+  const monthly = data.monthly || [];
+  const weekday = data.weekday || [];
+  if (g.revenue30 !== null && g.revenue30 !== undefined) {
+    if (g.revenue30 < 0) {
+      items.push("Penjualan 30 hari terakhir turun " + analyticsPct(g.revenue30) + " dibanding 30 hari sebelumnya. Periksa stok produk terlaris dan pertimbangkan promosi untuk mengembalikan penjualan.");
+    } else {
+      items.push("Penjualan 30 hari terakhir naik " + analyticsPct(g.revenue30) + " dibanding 30 hari sebelumnya.");
+    }
+  }
+  let bestCat = null;
+  for (let i = 0; i < categories.length; i++) {
+    if (!bestCat || categories[i].revenue > bestCat.revenue) bestCat = categories[i];
+  }
+  if (bestCat) {
+    items.push("Kategori terkuat adalah " + bestCat.category + " dengan pangsa " + Number(bestCat.share).toFixed(2).replace(".", ",") + "% dari total pendapatan (" + money(bestCat.revenue) + ").");
+  }
+  if (topByQty.length) {
+    const top = topByQty[0];
+    items.push("Produk terlaris adalah " + top.name + " (" + top.sku + "): " + analyticsNum(top.sold) + " unit terjual dengan pendapatan " + money(top.revenue) + ".");
+  }
+  if (peak.hourByTransactions !== null && peak.hourByTransactions !== undefined) {
+    items.push("Jam tersibuk adalah pukul " + String(peak.hourByTransactions).padStart(2, "0") + ".00 berdasarkan jumlah transaksi. Siapkan stok dan kasir lebih banyak di jam tersebut.");
+  }
+  if (weekday.length) {
+    let bestDay = weekday[0];
+    for (let i = 1; i < weekday.length; i++) {
+      if (weekday[i].transactions > bestDay.transactions) bestDay = weekday[i];
+    }
+    items.push("Hari tersibuk adalah " + bestDay.name + " dengan " + analyticsNum(bestDay.transactions) + " transaksi.");
+  }
+  items.push("Ada " + analyticsNum(stock.low5) + " produk dengan stok menipis (1–5 unit) dan " + analyticsNum(stock.outOfStock) + " produk stok habis. Segera restock produk stok menipis agar tidak kehilangan penjualan.");
+  if (unsold.d30 === 0) {
+    items.push("Tidak ada produk yang tidak terjual dalam 30 hari terakhir — semua 1.000 produk masih laku. Fokuskan promosi pada 10 produk paling lambat terjual di atas.");
+  }
+  if (monthly.length > 2) {
+    const full = monthly.slice(1, -1);
+    if (full.length) {
+      let bestM = full[0];
+      let worstM = full[0];
+      for (let i = 1; i < full.length; i++) {
+        if (full[i].revenue > bestM.revenue) bestM = full[i];
+        if (full[i].revenue < worstM.revenue) worstM = full[i];
+      }
+      items.push("Bulan penuh terbaik adalah " + bestM.month + " (" + money(bestM.revenue) + "), sedangkan bulan penuh terlemah adalah " + worstM.month + " (" + money(worstM.revenue) + ").");
+    }
+  }
+  let html = "";
+  for (let i = 0; i < items.length; i++) {
+    html += "<li>" + items[i] + "</li>";
+  }
+  return html;
+}
+
+function drawAnalyticsCharts(data) {
+  const monthly = data.monthly || [];
+  const categories = data.categories || [];
+  const hourly = data.hourly || [];
+  ensureChartJs().then(function (ok) {
+    if (!ok || !window.Chart) {
+      const wraps = document.querySelectorAll(".analytics-chart-wrap");
+      for (let i = 0; i < wraps.length; i++) {
+        wraps[i].innerHTML = '<div class="analytics-error">Grafik tidak dapat dimuat (pustaka Chart.js tidak tersedia).</div>';
+      }
+      return;
+    }
+    for (let i = 0; i < analyticsCharts.length; i++) {
+      try { analyticsCharts[i].destroy(); } catch (e) {}
+    }
+    analyticsCharts = [];
+    const gridColor = "rgba(148, 163, 184, 0.18)";
+    const tickColor = "#9aa0b0";
+    const monthlyEl = document.getElementById("analyticsMonthlyChart");
+    if (monthlyEl) {
+      analyticsCharts.push(new Chart(monthlyEl, {
+        type: "line",
+        data: {
+          labels: monthly.map(function (row) { return row.month; }),
+          datasets: [{ label: "Pendapatan (Rp)", data: monthly.map(function (row) { return row.revenue; }), borderColor: "#a89df7", backgroundColor: "rgba(168, 157, 247, 0.15)", fill: true, tension: 0.3, pointRadius: 3 }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: function (ctx) { return " " + money(ctx.parsed.y); } } }
+          },
+          scales: {
+            x: { ticks: { color: tickColor }, grid: { color: gridColor } },
+            y: { ticks: { color: tickColor, callback: function (v) { return "Rp" + (v / 1000000000).toFixed(1).replace(".", ",") + " M"; } }, grid: { color: gridColor } }
+          }
+        }
+      }));
+    }
+    const catEl = document.getElementById("analyticsCategoryChart");
+    if (catEl) {
+      analyticsCharts.push(new Chart(catEl, {
+        type: "doughnut",
+        data: {
+          labels: categories.map(function (row) { return row.category; }),
+          datasets: [{ data: categories.map(function (row) { return row.revenue; }), backgroundColor: ["#a89df7", "#7dd3fc", "#fbbf24"], borderWidth: 0 }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom", labels: { color: tickColor } },
+            tooltip: { callbacks: { label: function (ctx) { return " " + ctx.label + ": " + money(ctx.parsed); } } }
+          }
+        }
+      }));
+    }
+    const hourEl = document.getElementById("analyticsHourlyChart");
+    if (hourEl) {
+      analyticsCharts.push(new Chart(hourEl, {
+        type: "bar",
+        data: {
+          labels: hourly.map(function (row) { return String(row.hour).padStart(2, "0"); }),
+          datasets: [{ label: "Transaksi", data: hourly.map(function (row) { return row.transactions; }), backgroundColor: "#a89df7", borderRadius: 4 }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: function (ctx) { return " " + analyticsNum(ctx.parsed.y) + " transaksi"; } } }
+          },
+          scales: {
+            x: { ticks: { color: tickColor }, grid: { color: gridColor } },
+            y: { ticks: { color: tickColor }, grid: { color: gridColor } }
+          }
+        }
+      }));
+    }
+  });
+}
 function chartLine(points) {
   return `<svg class="sparkline" viewBox="0 0 58 22" aria-hidden="true"><polyline points="${points.map((point, index) => `${index * 9},${20 - point}`).join(" ")}"/></svg>`;
 }

@@ -1,0 +1,1001 @@
+nama_produk,sku,kategori,harga,stok
+Kopi Susu Gula Aren,PRD-001,Minuman,18000,32
+Croissant Butter,PRD-002,Makanan,22000,18
+Matcha Latte,PRD-003,Minuman,24000,21
+Roti Cokelat,PRD-004,Makanan,15000,27
+Es Teh Lemon,PRD-005,Minuman,12000,3
+Cookies Cokelat,PRD-006,Snack,10000,14
+Sandwich Ayam,PRD-007,Makanan,28000,11
+Air Mineral,PRD-008,Minuman,7000,40
+Donat Gula,PRD-009,Snack,9000,2
+Kopi Susu Original,PRD-010,Minuman,11500,61
+Kopi Susu Gula Aren,PRD-011,Minuman,13500,17
+Kopi Susu Cokelat,PRD-012,Minuman,28000,60
+Kopi Susu Pandan,PRD-013,Minuman,12000,0
+Kopi Susu Karamel,PRD-014,Minuman,10500,0
+Kopi Susu Keju,PRD-015,Minuman,20500,67
+Kopi Susu Spesial,PRD-016,Minuman,24500,18
+Kopi Susu Premium,PRD-017,Minuman,14000,43
+Kopi Susu Madu,PRD-018,Minuman,25000,27
+Kopi Susu Kacang,PRD-019,Minuman,20500,15
+Kopi Susu Stroberi,PRD-020,Minuman,30000,16
+Kopi Susu Vanila,PRD-021,Minuman,29500,7
+Kopi Susu Matcha,PRD-022,Minuman,15500,77
+Kopi Susu Taro,PRD-023,Minuman,31500,1
+Kopi Susu Susu,PRD-024,Minuman,15000,0
+Kopi Susu Pedas,PRD-025,Minuman,11000,42
+Kopi Susu Bakar,PRD-026,Minuman,13500,26
+Kopi Hitam Original,PRD-027,Minuman,32500,32
+Kopi Hitam Gula Aren,PRD-028,Minuman,33500,58
+Kopi Hitam Cokelat,PRD-029,Minuman,10500,37
+Kopi Hitam Pandan,PRD-030,Minuman,22000,52
+Kopi Hitam Karamel,PRD-031,Minuman,20500,36
+Kopi Hitam Keju,PRD-032,Minuman,30000,35
+Kopi Hitam Spesial,PRD-033,Minuman,26500,0
+Kopi Hitam Premium,PRD-034,Minuman,23500,0
+Kopi Hitam Madu,PRD-035,Minuman,23000,64
+Kopi Hitam Kacang,PRD-036,Minuman,34000,0
+Kopi Hitam Stroberi,PRD-037,Minuman,23500,20
+Kopi Hitam Vanila,PRD-038,Minuman,24000,13
+Kopi Hitam Matcha,PRD-039,Minuman,16000,44
+Kopi Hitam Taro,PRD-040,Minuman,31500,0
+Kopi Hitam Susu,PRD-041,Minuman,31500,71
+Kopi Hitam Pedas,PRD-042,Minuman,26500,57
+Kopi Hitam Bakar,PRD-043,Minuman,24000,63
+Es Kopi Original,PRD-044,Minuman,9000,21
+Es Kopi Gula Aren,PRD-045,Minuman,25000,73
+Es Kopi Cokelat,PRD-046,Minuman,24000,61
+Es Kopi Pandan,PRD-047,Minuman,15500,56
+Es Kopi Karamel,PRD-048,Minuman,13000,48
+Es Kopi Keju,PRD-049,Minuman,25500,47
+Es Kopi Spesial,PRD-050,Minuman,12000,79
+Es Kopi Premium,PRD-051,Minuman,21000,0
+Es Kopi Madu,PRD-052,Minuman,21500,0
+Es Kopi Kacang,PRD-053,Minuman,11000,4
+Es Kopi Stroberi,PRD-054,Minuman,19500,64
+Es Kopi Vanila,PRD-055,Minuman,34500,46
+Es Kopi Matcha,PRD-056,Minuman,28000,0
+Es Kopi Taro,PRD-057,Minuman,23500,65
+Es Kopi Susu,PRD-058,Minuman,33000,50
+Es Kopi Pedas,PRD-059,Minuman,25000,0
+Es Kopi Bakar,PRD-060,Minuman,15500,11
+Cappuccino Original,PRD-061,Minuman,20000,0
+Cappuccino Gula Aren,PRD-062,Minuman,10500,0
+Cappuccino Cokelat,PRD-063,Minuman,35000,20
+Cappuccino Pandan,PRD-064,Minuman,33500,25
+Cappuccino Karamel,PRD-065,Minuman,30000,50
+Cappuccino Keju,PRD-066,Minuman,29500,35
+Cappuccino Spesial,PRD-067,Minuman,33000,60
+Cappuccino Premium,PRD-068,Minuman,28000,1
+Cappuccino Madu,PRD-069,Minuman,18500,50
+Cappuccino Kacang,PRD-070,Minuman,15000,25
+Cappuccino Stroberi,PRD-071,Minuman,21500,0
+Cappuccino Vanila,PRD-072,Minuman,18500,6
+Cappuccino Matcha,PRD-073,Minuman,34500,0
+Cappuccino Taro,PRD-074,Minuman,10500,0
+Cappuccino Susu,PRD-075,Minuman,34500,69
+Cappuccino Pedas,PRD-076,Minuman,20000,11
+Cappuccino Bakar,PRD-077,Minuman,8500,55
+Matcha Latte Original,PRD-078,Minuman,32000,0
+Matcha Latte Gula Aren,PRD-079,Minuman,33500,12
+Matcha Latte Cokelat,PRD-080,Minuman,33000,72
+Matcha Latte Pandan,PRD-081,Minuman,13000,75
+Matcha Latte Karamel,PRD-082,Minuman,15000,73
+Matcha Latte Keju,PRD-083,Minuman,10500,53
+Matcha Latte Spesial,PRD-084,Minuman,17500,36
+Matcha Latte Premium,PRD-085,Minuman,17000,17
+Matcha Latte Madu,PRD-086,Minuman,10500,15
+Matcha Latte Kacang,PRD-087,Minuman,25500,17
+Matcha Latte Stroberi,PRD-088,Minuman,34000,49
+Matcha Latte Vanila,PRD-089,Minuman,23000,22
+Matcha Latte Matcha,PRD-090,Minuman,34500,43
+Matcha Latte Taro,PRD-091,Minuman,17000,0
+Matcha Latte Susu,PRD-092,Minuman,33500,11
+Matcha Latte Pedas,PRD-093,Minuman,24500,76
+Matcha Latte Bakar,PRD-094,Minuman,23000,15
+Cokelat Panas Original,PRD-095,Minuman,30500,0
+Cokelat Panas Gula Aren,PRD-096,Minuman,25000,37
+Cokelat Panas Cokelat,PRD-097,Minuman,13000,63
+Cokelat Panas Pandan,PRD-098,Minuman,12500,80
+Cokelat Panas Karamel,PRD-099,Minuman,25000,42
+Cokelat Panas Keju,PRD-100,Minuman,17000,40
+Cupcake Karamel,PRD-1000,Snack,22000,39
+Cokelat Panas Spesial,PRD-101,Minuman,25000,39
+Cokelat Panas Premium,PRD-102,Minuman,25000,29
+Cokelat Panas Madu,PRD-103,Minuman,24000,75
+Cokelat Panas Kacang,PRD-104,Minuman,29500,79
+Cokelat Panas Stroberi,PRD-105,Minuman,27500,7
+Cokelat Panas Vanila,PRD-106,Minuman,21500,5
+Cokelat Panas Matcha,PRD-107,Minuman,32500,54
+Cokelat Panas Taro,PRD-108,Minuman,23500,0
+Cokelat Panas Susu,PRD-109,Minuman,10500,76
+Cokelat Panas Pedas,PRD-110,Minuman,18500,22
+Cokelat Panas Bakar,PRD-111,Minuman,35000,32
+Es Teh Original,PRD-112,Minuman,12000,4
+Es Teh Gula Aren,PRD-113,Minuman,12000,22
+Es Teh Cokelat,PRD-114,Minuman,9500,30
+Es Teh Pandan,PRD-115,Minuman,19500,37
+Es Teh Karamel,PRD-116,Minuman,20000,5
+Es Teh Keju,PRD-117,Minuman,30500,0
+Es Teh Spesial,PRD-118,Minuman,13000,10
+Es Teh Premium,PRD-119,Minuman,31500,47
+Es Teh Madu,PRD-120,Minuman,32000,6
+Es Teh Kacang,PRD-121,Minuman,12000,67
+Es Teh Stroberi,PRD-122,Minuman,12500,33
+Es Teh Vanila,PRD-123,Minuman,28500,22
+Es Teh Matcha,PRD-124,Minuman,30000,22
+Es Teh Taro,PRD-125,Minuman,13500,47
+Es Teh Susu,PRD-126,Minuman,15500,4
+Es Teh Pedas,PRD-127,Minuman,29000,70
+Es Teh Bakar,PRD-128,Minuman,26500,13
+Teh Melati Original,PRD-129,Minuman,30500,1
+Teh Melati Gula Aren,PRD-130,Minuman,12000,4
+Teh Melati Cokelat,PRD-131,Minuman,11000,18
+Teh Melati Pandan,PRD-132,Minuman,23500,15
+Teh Melati Karamel,PRD-133,Minuman,9000,11
+Teh Melati Keju,PRD-134,Minuman,18500,32
+Teh Melati Spesial,PRD-135,Minuman,12500,59
+Teh Melati Premium,PRD-136,Minuman,13000,23
+Teh Melati Madu,PRD-137,Minuman,35000,57
+Teh Melati Kacang,PRD-138,Minuman,30000,8
+Teh Melati Stroberi,PRD-139,Minuman,12000,41
+Teh Melati Vanila,PRD-140,Minuman,23000,76
+Teh Melati Matcha,PRD-141,Minuman,30000,32
+Teh Melati Taro,PRD-142,Minuman,19500,18
+Teh Melati Susu,PRD-143,Minuman,33000,3
+Teh Melati Pedas,PRD-144,Minuman,8500,29
+Teh Melati Bakar,PRD-145,Minuman,14500,65
+Lemon Tea Original,PRD-146,Minuman,18500,15
+Lemon Tea Gula Aren,PRD-147,Minuman,10500,5
+Lemon Tea Cokelat,PRD-148,Minuman,32500,46
+Lemon Tea Pandan,PRD-149,Minuman,21000,62
+Lemon Tea Karamel,PRD-150,Minuman,16500,54
+Lemon Tea Keju,PRD-151,Minuman,32000,35
+Lemon Tea Spesial,PRD-152,Minuman,17000,5
+Lemon Tea Premium,PRD-153,Minuman,31500,24
+Lemon Tea Madu,PRD-154,Minuman,19500,65
+Lemon Tea Kacang,PRD-155,Minuman,16000,23
+Lemon Tea Stroberi,PRD-156,Minuman,24000,74
+Lemon Tea Vanila,PRD-157,Minuman,11000,55
+Lemon Tea Matcha,PRD-158,Minuman,22500,71
+Lemon Tea Taro,PRD-159,Minuman,34500,46
+Lemon Tea Susu,PRD-160,Minuman,12000,69
+Lemon Tea Pedas,PRD-161,Minuman,29000,31
+Lemon Tea Bakar,PRD-162,Minuman,29500,25
+Jus Alpukat Original,PRD-163,Minuman,15000,77
+Jus Alpukat Gula Aren,PRD-164,Minuman,16500,37
+Jus Alpukat Cokelat,PRD-165,Minuman,23000,38
+Jus Alpukat Pandan,PRD-166,Minuman,8500,47
+Jus Alpukat Karamel,PRD-167,Minuman,27500,14
+Jus Alpukat Keju,PRD-168,Minuman,22500,14
+Jus Alpukat Spesial,PRD-169,Minuman,15000,17
+Jus Alpukat Premium,PRD-170,Minuman,29500,0
+Jus Alpukat Madu,PRD-171,Minuman,34500,44
+Jus Alpukat Kacang,PRD-172,Minuman,29000,48
+Jus Alpukat Stroberi,PRD-173,Minuman,25500,39
+Jus Alpukat Vanila,PRD-174,Minuman,17500,16
+Jus Alpukat Matcha,PRD-175,Minuman,22500,24
+Jus Alpukat Taro,PRD-176,Minuman,19500,55
+Jus Alpukat Susu,PRD-177,Minuman,21000,60
+Jus Alpukat Pedas,PRD-178,Minuman,10500,3
+Jus Alpukat Bakar,PRD-179,Minuman,10500,68
+Jus Mangga Original,PRD-180,Minuman,32500,74
+Jus Mangga Gula Aren,PRD-181,Minuman,9000,46
+Jus Mangga Cokelat,PRD-182,Minuman,30000,46
+Jus Mangga Pandan,PRD-183,Minuman,23000,76
+Jus Mangga Karamel,PRD-184,Minuman,16500,0
+Jus Mangga Keju,PRD-185,Minuman,25500,50
+Jus Mangga Spesial,PRD-186,Minuman,24500,49
+Jus Mangga Premium,PRD-187,Minuman,9000,63
+Jus Mangga Madu,PRD-188,Minuman,22000,43
+Jus Mangga Kacang,PRD-189,Minuman,27500,76
+Jus Mangga Stroberi,PRD-190,Minuman,9500,22
+Jus Mangga Vanila,PRD-191,Minuman,18000,49
+Jus Mangga Matcha,PRD-192,Minuman,8000,58
+Jus Mangga Taro,PRD-193,Minuman,26000,3
+Jus Mangga Susu,PRD-194,Minuman,19500,1
+Jus Mangga Pedas,PRD-195,Minuman,27500,72
+Jus Mangga Bakar,PRD-196,Minuman,23000,15
+Es Jeruk Original,PRD-197,Minuman,31500,28
+Es Jeruk Gula Aren,PRD-198,Minuman,22500,33
+Es Jeruk Cokelat,PRD-199,Minuman,8500,5
+Es Jeruk Pandan,PRD-200,Minuman,10500,4
+Es Jeruk Karamel,PRD-201,Minuman,17000,74
+Es Jeruk Keju,PRD-202,Minuman,18500,12
+Es Jeruk Spesial,PRD-203,Minuman,26000,4
+Es Jeruk Premium,PRD-204,Minuman,20500,24
+Es Jeruk Madu,PRD-205,Minuman,33000,1
+Es Jeruk Kacang,PRD-206,Minuman,25000,48
+Es Jeruk Stroberi,PRD-207,Minuman,31500,67
+Es Jeruk Vanila,PRD-208,Minuman,16000,60
+Es Jeruk Matcha,PRD-209,Minuman,23500,0
+Es Jeruk Taro,PRD-210,Minuman,17500,56
+Es Jeruk Susu,PRD-211,Minuman,32500,16
+Es Jeruk Pedas,PRD-212,Minuman,17000,37
+Es Jeruk Bakar,PRD-213,Minuman,28500,33
+Susu Cokelat Original,PRD-214,Minuman,33000,24
+Susu Cokelat Gula Aren,PRD-215,Minuman,30000,60
+Susu Cokelat Cokelat,PRD-216,Minuman,21000,0
+Susu Cokelat Pandan,PRD-217,Minuman,17500,30
+Susu Cokelat Karamel,PRD-218,Minuman,16500,72
+Susu Cokelat Keju,PRD-219,Minuman,29000,0
+Susu Cokelat Spesial,PRD-220,Minuman,15000,43
+Susu Cokelat Premium,PRD-221,Minuman,18000,3
+Susu Cokelat Madu,PRD-222,Minuman,32500,62
+Susu Cokelat Kacang,PRD-223,Minuman,23000,0
+Susu Cokelat Stroberi,PRD-224,Minuman,10000,66
+Susu Cokelat Vanila,PRD-225,Minuman,17000,33
+Susu Cokelat Matcha,PRD-226,Minuman,32500,34
+Susu Cokelat Taro,PRD-227,Minuman,10000,43
+Susu Cokelat Susu,PRD-228,Minuman,32500,52
+Susu Cokelat Pedas,PRD-229,Minuman,31000,77
+Susu Cokelat Bakar,PRD-230,Minuman,30000,32
+Red Velvet Original,PRD-231,Minuman,18000,70
+Red Velvet Gula Aren,PRD-232,Minuman,22500,26
+Red Velvet Cokelat,PRD-233,Minuman,16000,15
+Red Velvet Pandan,PRD-234,Minuman,19000,71
+Red Velvet Karamel,PRD-235,Minuman,10000,40
+Red Velvet Keju,PRD-236,Minuman,10500,67
+Red Velvet Spesial,PRD-237,Minuman,17000,36
+Red Velvet Premium,PRD-238,Minuman,15000,0
+Red Velvet Madu,PRD-239,Minuman,18500,37
+Red Velvet Kacang,PRD-240,Minuman,14500,8
+Red Velvet Stroberi,PRD-241,Minuman,19500,59
+Red Velvet Vanila,PRD-242,Minuman,12500,8
+Red Velvet Matcha,PRD-243,Minuman,16500,64
+Red Velvet Taro,PRD-244,Minuman,22500,24
+Red Velvet Susu,PRD-245,Minuman,31000,63
+Red Velvet Pedas,PRD-246,Minuman,19500,35
+Red Velvet Bakar,PRD-247,Minuman,19000,0
+Taro Latte Original,PRD-248,Minuman,11000,3
+Taro Latte Gula Aren,PRD-249,Minuman,22000,60
+Taro Latte Cokelat,PRD-250,Minuman,29000,31
+Taro Latte Pandan,PRD-251,Minuman,10000,66
+Taro Latte Karamel,PRD-252,Minuman,30500,0
+Taro Latte Keju,PRD-253,Minuman,17500,54
+Taro Latte Spesial,PRD-254,Minuman,11000,46
+Taro Latte Premium,PRD-255,Minuman,18000,26
+Taro Latte Madu,PRD-256,Minuman,29500,52
+Taro Latte Kacang,PRD-257,Minuman,10500,53
+Taro Latte Stroberi,PRD-258,Minuman,16500,70
+Taro Latte Vanila,PRD-259,Minuman,10500,32
+Taro Latte Matcha,PRD-260,Minuman,22000,32
+Taro Latte Taro,PRD-261,Minuman,34000,1
+Taro Latte Susu,PRD-262,Minuman,17500,9
+Taro Latte Pedas,PRD-263,Minuman,28500,62
+Taro Latte Bakar,PRD-264,Minuman,32500,11
+Es Buah Original,PRD-265,Minuman,13500,48
+Es Buah Gula Aren,PRD-266,Minuman,33500,37
+Es Buah Cokelat,PRD-267,Minuman,18500,29
+Es Buah Pandan,PRD-268,Minuman,25500,4
+Es Buah Karamel,PRD-269,Minuman,30500,0
+Es Buah Keju,PRD-270,Minuman,27500,69
+Es Buah Spesial,PRD-271,Minuman,13500,60
+Es Buah Premium,PRD-272,Minuman,27500,47
+Es Buah Madu,PRD-273,Minuman,31000,41
+Es Buah Kacang,PRD-274,Minuman,12000,14
+Es Buah Stroberi,PRD-275,Minuman,13000,72
+Es Buah Vanila,PRD-276,Minuman,25500,55
+Es Buah Matcha,PRD-277,Minuman,23500,47
+Es Buah Taro,PRD-278,Minuman,17000,39
+Es Buah Susu,PRD-279,Minuman,18000,57
+Es Buah Pedas,PRD-280,Minuman,35000,11
+Es Buah Bakar,PRD-281,Minuman,17000,64
+Soda Gembira Original,PRD-282,Minuman,29000,26
+Soda Gembira Gula Aren,PRD-283,Minuman,19000,48
+Soda Gembira Cokelat,PRD-284,Minuman,25500,14
+Soda Gembira Pandan,PRD-285,Minuman,21000,58
+Soda Gembira Karamel,PRD-286,Minuman,25500,46
+Soda Gembira Keju,PRD-287,Minuman,25500,52
+Soda Gembira Spesial,PRD-288,Minuman,17000,19
+Soda Gembira Premium,PRD-289,Minuman,9500,6
+Soda Gembira Madu,PRD-290,Minuman,20000,1
+Soda Gembira Kacang,PRD-291,Minuman,24500,64
+Soda Gembira Stroberi,PRD-292,Minuman,24500,58
+Soda Gembira Vanila,PRD-293,Minuman,18000,56
+Soda Gembira Matcha,PRD-294,Minuman,33000,2
+Soda Gembira Taro,PRD-295,Minuman,17000,48
+Soda Gembira Susu,PRD-296,Minuman,21000,15
+Soda Gembira Pedas,PRD-297,Minuman,30500,63
+Soda Gembira Bakar,PRD-298,Minuman,18500,0
+Air Kelapa Original,PRD-299,Minuman,11500,75
+Air Kelapa Gula Aren,PRD-300,Minuman,21500,70
+Air Kelapa Cokelat,PRD-301,Minuman,25000,2
+Air Kelapa Pandan,PRD-302,Minuman,18500,59
+Air Kelapa Karamel,PRD-303,Minuman,25500,70
+Air Kelapa Keju,PRD-304,Minuman,29000,49
+Air Kelapa Spesial,PRD-305,Minuman,8500,10
+Air Kelapa Premium,PRD-306,Minuman,27500,54
+Air Kelapa Madu,PRD-307,Minuman,27500,70
+Air Kelapa Kacang,PRD-308,Minuman,34500,45
+Air Kelapa Stroberi,PRD-309,Minuman,34000,21
+Air Kelapa Vanila,PRD-310,Minuman,23000,13
+Air Kelapa Matcha,PRD-311,Minuman,29000,74
+Air Kelapa Taro,PRD-312,Minuman,18000,65
+Air Kelapa Susu,PRD-313,Minuman,30500,48
+Air Kelapa Pedas,PRD-314,Minuman,22000,68
+Air Kelapa Bakar,PRD-315,Minuman,30500,0
+Wedang Jahe Original,PRD-316,Minuman,8500,61
+Wedang Jahe Gula Aren,PRD-317,Minuman,27500,9
+Wedang Jahe Cokelat,PRD-318,Minuman,34500,2
+Wedang Jahe Pandan,PRD-319,Minuman,9500,64
+Wedang Jahe Karamel,PRD-320,Minuman,17500,69
+Wedang Jahe Keju,PRD-321,Minuman,18500,58
+Wedang Jahe Spesial,PRD-322,Minuman,16000,33
+Wedang Jahe Premium,PRD-323,Minuman,23000,62
+Wedang Jahe Madu,PRD-324,Minuman,23500,0
+Wedang Jahe Kacang,PRD-325,Minuman,29000,65
+Wedang Jahe Stroberi,PRD-326,Minuman,25500,2
+Wedang Jahe Vanila,PRD-327,Minuman,20000,11
+Wedang Jahe Matcha,PRD-328,Minuman,11000,5
+Wedang Jahe Taro,PRD-329,Minuman,28000,36
+Wedang Jahe Susu,PRD-330,Minuman,31000,22
+Wedang Jahe Pedas,PRD-331,Minuman,25500,66
+Wedang Jahe Bakar,PRD-332,Minuman,30500,79
+Es Cendol Original,PRD-333,Minuman,25500,12
+Es Cendol Gula Aren,PRD-334,Minuman,22500,70
+Es Cendol Cokelat,PRD-335,Minuman,10500,68
+Es Cendol Pandan,PRD-336,Minuman,23500,69
+Es Cendol Karamel,PRD-337,Minuman,34000,7
+Es Cendol Keju,PRD-338,Minuman,24500,27
+Es Cendol Spesial,PRD-339,Minuman,22000,22
+Es Cendol Premium,PRD-340,Minuman,26500,30
+Es Cendol Madu,PRD-341,Minuman,9000,2
+Es Cendol Kacang,PRD-342,Minuman,18500,73
+Es Cendol Stroberi,PRD-343,Minuman,24500,53
+Es Cendol Vanila,PRD-344,Minuman,12500,15
+Es Cendol Matcha,PRD-345,Minuman,27500,40
+Es Cendol Taro,PRD-346,Minuman,11000,32
+Es Cendol Susu,PRD-347,Minuman,13500,66
+Es Cendol Pedas,PRD-348,Minuman,30500,45
+Es Cendol Bakar,PRD-349,Minuman,23500,13
+Croissant Original,PRD-350,Makanan,14000,69
+Croissant Gula Aren,PRD-351,Makanan,29000,49
+Croissant Cokelat,PRD-352,Makanan,43500,11
+Croissant Pandan,PRD-353,Makanan,20000,66
+Croissant Karamel,PRD-354,Makanan,13000,23
+Croissant Keju,PRD-355,Makanan,38500,29
+Croissant Spesial,PRD-356,Makanan,17500,30
+Croissant Premium,PRD-357,Makanan,21000,71
+Croissant Madu,PRD-358,Makanan,17000,45
+Croissant Kacang,PRD-359,Makanan,37000,21
+Croissant Stroberi,PRD-360,Makanan,21000,57
+Croissant Vanila,PRD-361,Makanan,15500,1
+Croissant Matcha,PRD-362,Makanan,12000,48
+Croissant Taro,PRD-363,Makanan,35500,40
+Croissant Susu,PRD-364,Makanan,30500,58
+Croissant Pedas,PRD-365,Makanan,32000,50
+Croissant Bakar,PRD-366,Makanan,16500,12
+Roti Cokelat Original,PRD-367,Makanan,39000,69
+Roti Cokelat Gula Aren,PRD-368,Makanan,13500,13
+Roti Cokelat Cokelat,PRD-369,Makanan,40500,49
+Roti Cokelat Pandan,PRD-370,Makanan,41500,75
+Roti Cokelat Karamel,PRD-371,Makanan,13500,0
+Roti Cokelat Keju,PRD-372,Makanan,39000,27
+Roti Cokelat Spesial,PRD-373,Makanan,42000,77
+Roti Cokelat Premium,PRD-374,Makanan,27500,59
+Roti Cokelat Madu,PRD-375,Makanan,35500,7
+Roti Cokelat Kacang,PRD-376,Makanan,29500,11
+Roti Cokelat Stroberi,PRD-377,Makanan,21000,40
+Roti Cokelat Vanila,PRD-378,Makanan,28000,0
+Roti Cokelat Matcha,PRD-379,Makanan,35000,60
+Roti Cokelat Taro,PRD-380,Makanan,20000,69
+Roti Cokelat Susu,PRD-381,Makanan,35000,8
+Roti Cokelat Pedas,PRD-382,Makanan,12500,71
+Roti Cokelat Bakar,PRD-383,Makanan,14500,0
+Sandwich Ayam Original,PRD-384,Makanan,33500,30
+Sandwich Ayam Gula Aren,PRD-385,Makanan,38000,31
+Sandwich Ayam Cokelat,PRD-386,Makanan,20500,0
+Sandwich Ayam Pandan,PRD-387,Makanan,38500,36
+Sandwich Ayam Karamel,PRD-388,Makanan,13500,0
+Sandwich Ayam Keju,PRD-389,Makanan,40500,46
+Sandwich Ayam Spesial,PRD-390,Makanan,13000,0
+Sandwich Ayam Premium,PRD-391,Makanan,12000,77
+Sandwich Ayam Madu,PRD-392,Makanan,38500,1
+Sandwich Ayam Kacang,PRD-393,Makanan,13500,59
+Sandwich Ayam Stroberi,PRD-394,Makanan,19500,80
+Sandwich Ayam Vanila,PRD-395,Makanan,27500,72
+Sandwich Ayam Matcha,PRD-396,Makanan,20500,72
+Sandwich Ayam Taro,PRD-397,Makanan,22500,74
+Sandwich Ayam Susu,PRD-398,Makanan,35000,25
+Sandwich Ayam Pedas,PRD-399,Makanan,35000,0
+Sandwich Ayam Bakar,PRD-400,Makanan,21500,47
+Nasi Goreng Original,PRD-401,Makanan,33000,71
+Nasi Goreng Gula Aren,PRD-402,Makanan,19000,27
+Nasi Goreng Cokelat,PRD-403,Makanan,25000,75
+Nasi Goreng Pandan,PRD-404,Makanan,30000,26
+Nasi Goreng Karamel,PRD-405,Makanan,23000,0
+Nasi Goreng Keju,PRD-406,Makanan,41500,54
+Nasi Goreng Spesial,PRD-407,Makanan,19000,18
+Nasi Goreng Premium,PRD-408,Makanan,30000,55
+Nasi Goreng Madu,PRD-409,Makanan,34000,18
+Nasi Goreng Kacang,PRD-410,Makanan,27000,10
+Nasi Goreng Stroberi,PRD-411,Makanan,23000,68
+Nasi Goreng Vanila,PRD-412,Makanan,37000,40
+Nasi Goreng Matcha,PRD-413,Makanan,20500,21
+Nasi Goreng Taro,PRD-414,Makanan,34500,29
+Nasi Goreng Susu,PRD-415,Makanan,30000,2
+Nasi Goreng Pedas,PRD-416,Makanan,18000,13
+Nasi Goreng Bakar,PRD-417,Makanan,25500,52
+Mie Goreng Original,PRD-418,Makanan,36500,5
+Mie Goreng Gula Aren,PRD-419,Makanan,21000,26
+Mie Goreng Cokelat,PRD-420,Makanan,40000,37
+Mie Goreng Pandan,PRD-421,Makanan,15000,74
+Mie Goreng Karamel,PRD-422,Makanan,25000,19
+Mie Goreng Keju,PRD-423,Makanan,22000,66
+Mie Goreng Spesial,PRD-424,Makanan,16000,34
+Mie Goreng Premium,PRD-425,Makanan,43500,47
+Mie Goreng Madu,PRD-426,Makanan,37500,72
+Mie Goreng Kacang,PRD-427,Makanan,13500,50
+Mie Goreng Stroberi,PRD-428,Makanan,14500,65
+Mie Goreng Vanila,PRD-429,Makanan,41000,61
+Mie Goreng Matcha,PRD-430,Makanan,24500,7
+Mie Goreng Taro,PRD-431,Makanan,19500,77
+Mie Goreng Susu,PRD-432,Makanan,44000,0
+Mie Goreng Pedas,PRD-433,Makanan,15000,65
+Mie Goreng Bakar,PRD-434,Makanan,44000,4
+Ayam Geprek Original,PRD-435,Makanan,23000,79
+Ayam Geprek Gula Aren,PRD-436,Makanan,28000,0
+Ayam Geprek Cokelat,PRD-437,Makanan,29500,45
+Ayam Geprek Pandan,PRD-438,Makanan,26500,35
+Ayam Geprek Karamel,PRD-439,Makanan,38500,58
+Ayam Geprek Keju,PRD-440,Makanan,21000,8
+Ayam Geprek Spesial,PRD-441,Makanan,34000,21
+Ayam Geprek Premium,PRD-442,Makanan,24500,34
+Ayam Geprek Madu,PRD-443,Makanan,25000,58
+Ayam Geprek Kacang,PRD-444,Makanan,40500,0
+Ayam Geprek Stroberi,PRD-445,Makanan,22500,1
+Ayam Geprek Vanila,PRD-446,Makanan,40500,46
+Ayam Geprek Matcha,PRD-447,Makanan,14500,59
+Ayam Geprek Taro,PRD-448,Makanan,19000,33
+Ayam Geprek Susu,PRD-449,Makanan,30500,15
+Ayam Geprek Pedas,PRD-450,Makanan,38000,19
+Ayam Geprek Bakar,PRD-451,Makanan,38000,72
+Soto Ayam Original,PRD-452,Makanan,41000,34
+Soto Ayam Gula Aren,PRD-453,Makanan,24000,42
+Soto Ayam Cokelat,PRD-454,Makanan,16000,45
+Soto Ayam Pandan,PRD-455,Makanan,13500,52
+Soto Ayam Karamel,PRD-456,Makanan,26500,56
+Soto Ayam Keju,PRD-457,Makanan,22000,12
+Soto Ayam Spesial,PRD-458,Makanan,23000,74
+Soto Ayam Premium,PRD-459,Makanan,35500,54
+Soto Ayam Madu,PRD-460,Makanan,14000,52
+Soto Ayam Kacang,PRD-461,Makanan,29500,73
+Soto Ayam Stroberi,PRD-462,Makanan,23000,52
+Soto Ayam Vanila,PRD-463,Makanan,40000,34
+Soto Ayam Matcha,PRD-464,Makanan,29500,70
+Soto Ayam Taro,PRD-465,Makanan,18500,46
+Soto Ayam Susu,PRD-466,Makanan,31500,21
+Soto Ayam Pedas,PRD-467,Makanan,33500,53
+Soto Ayam Bakar,PRD-468,Makanan,38500,22
+Bakso Original,PRD-469,Makanan,27500,28
+Bakso Gula Aren,PRD-470,Makanan,30000,21
+Bakso Cokelat,PRD-471,Makanan,41500,4
+Bakso Pandan,PRD-472,Makanan,23000,24
+Bakso Karamel,PRD-473,Makanan,25000,69
+Bakso Keju,PRD-474,Makanan,28500,28
+Bakso Spesial,PRD-475,Makanan,36000,76
+Bakso Premium,PRD-476,Makanan,13500,26
+Bakso Madu,PRD-477,Makanan,24000,0
+Bakso Kacang,PRD-478,Makanan,20500,79
+Bakso Stroberi,PRD-479,Makanan,34500,50
+Bakso Vanila,PRD-480,Makanan,23500,59
+Bakso Matcha,PRD-481,Makanan,24000,0
+Bakso Taro,PRD-482,Makanan,17000,58
+Bakso Susu,PRD-483,Makanan,41000,41
+Bakso Pedas,PRD-484,Makanan,37500,45
+Bakso Bakar,PRD-485,Makanan,28500,30
+Nasi Ayam Original,PRD-486,Makanan,16000,32
+Nasi Ayam Gula Aren,PRD-487,Makanan,13000,57
+Nasi Ayam Cokelat,PRD-488,Makanan,39000,29
+Nasi Ayam Pandan,PRD-489,Makanan,35000,69
+Nasi Ayam Karamel,PRD-490,Makanan,40000,48
+Nasi Ayam Keju,PRD-491,Makanan,41500,18
+Nasi Ayam Spesial,PRD-492,Makanan,32500,39
+Nasi Ayam Premium,PRD-493,Makanan,24500,8
+Nasi Ayam Madu,PRD-494,Makanan,15500,44
+Nasi Ayam Kacang,PRD-495,Makanan,38500,9
+Nasi Ayam Stroberi,PRD-496,Makanan,42500,2
+Nasi Ayam Vanila,PRD-497,Makanan,22000,50
+Nasi Ayam Matcha,PRD-498,Makanan,44000,65
+Nasi Ayam Taro,PRD-499,Makanan,40500,7
+Nasi Ayam Susu,PRD-500,Makanan,42500,56
+Nasi Ayam Pedas,PRD-501,Makanan,30500,1
+Nasi Ayam Bakar,PRD-502,Makanan,17000,62
+Spaghetti Original,PRD-503,Makanan,31500,19
+Spaghetti Gula Aren,PRD-504,Makanan,13000,10
+Spaghetti Cokelat,PRD-505,Makanan,44000,61
+Spaghetti Pandan,PRD-506,Makanan,32500,35
+Spaghetti Karamel,PRD-507,Makanan,24500,47
+Spaghetti Keju,PRD-508,Makanan,41000,23
+Spaghetti Spesial,PRD-509,Makanan,17500,47
+Spaghetti Premium,PRD-510,Makanan,36000,32
+Spaghetti Madu,PRD-511,Makanan,33000,12
+Spaghetti Kacang,PRD-512,Makanan,42000,22
+Spaghetti Stroberi,PRD-513,Makanan,24500,39
+Spaghetti Vanila,PRD-514,Makanan,35000,3
+Spaghetti Matcha,PRD-515,Makanan,31000,19
+Spaghetti Taro,PRD-516,Makanan,38500,62
+Spaghetti Susu,PRD-517,Makanan,23000,21
+Spaghetti Pedas,PRD-518,Makanan,21000,76
+Spaghetti Bakar,PRD-519,Makanan,36500,3
+Roti Bakar Original,PRD-520,Makanan,29500,71
+Roti Bakar Gula Aren,PRD-521,Makanan,24000,69
+Roti Bakar Cokelat,PRD-522,Makanan,24500,71
+Roti Bakar Pandan,PRD-523,Makanan,15500,35
+Roti Bakar Karamel,PRD-524,Makanan,36000,63
+Roti Bakar Keju,PRD-525,Makanan,21000,16
+Roti Bakar Spesial,PRD-526,Makanan,42500,47
+Roti Bakar Premium,PRD-527,Makanan,39000,38
+Roti Bakar Madu,PRD-528,Makanan,37500,8
+Roti Bakar Kacang,PRD-529,Makanan,43000,60
+Roti Bakar Stroberi,PRD-530,Makanan,39000,36
+Roti Bakar Vanila,PRD-531,Makanan,32500,60
+Roti Bakar Matcha,PRD-532,Makanan,15000,14
+Roti Bakar Taro,PRD-533,Makanan,28000,47
+Roti Bakar Susu,PRD-534,Makanan,25500,76
+Roti Bakar Pedas,PRD-535,Makanan,29000,29
+Roti Bakar Bakar,PRD-536,Makanan,44000,75
+Burger Original,PRD-537,Makanan,16500,22
+Burger Gula Aren,PRD-538,Makanan,36000,59
+Burger Cokelat,PRD-539,Makanan,40000,24
+Burger Pandan,PRD-540,Makanan,37500,60
+Burger Karamel,PRD-541,Makanan,37000,0
+Burger Keju,PRD-542,Makanan,39000,39
+Burger Spesial,PRD-543,Makanan,19500,36
+Burger Premium,PRD-544,Makanan,29500,23
+Burger Madu,PRD-545,Makanan,22500,40
+Burger Kacang,PRD-546,Makanan,27000,32
+Burger Stroberi,PRD-547,Makanan,30000,74
+Burger Vanila,PRD-548,Makanan,28500,30
+Burger Matcha,PRD-549,Makanan,23500,67
+Burger Taro,PRD-550,Makanan,32500,25
+Burger Susu,PRD-551,Makanan,29000,53
+Burger Pedas,PRD-552,Makanan,17000,76
+Burger Bakar,PRD-553,Makanan,25500,39
+Kentang Goreng Original,PRD-554,Makanan,22500,0
+Kentang Goreng Gula Aren,PRD-555,Makanan,33000,16
+Kentang Goreng Cokelat,PRD-556,Makanan,27500,4
+Kentang Goreng Pandan,PRD-557,Makanan,42000,31
+Kentang Goreng Karamel,PRD-558,Makanan,27500,0
+Kentang Goreng Keju,PRD-559,Makanan,30000,66
+Kentang Goreng Spesial,PRD-560,Makanan,24500,37
+Kentang Goreng Premium,PRD-561,Makanan,20500,0
+Kentang Goreng Madu,PRD-562,Makanan,40500,23
+Kentang Goreng Kacang,PRD-563,Makanan,41000,37
+Kentang Goreng Stroberi,PRD-564,Makanan,23500,7
+Kentang Goreng Vanila,PRD-565,Makanan,31000,72
+Kentang Goreng Matcha,PRD-566,Makanan,38000,55
+Kentang Goreng Taro,PRD-567,Makanan,12500,8
+Kentang Goreng Susu,PRD-568,Makanan,44000,10
+Kentang Goreng Pedas,PRD-569,Makanan,33000,25
+Kentang Goreng Bakar,PRD-570,Makanan,35000,29
+Pisang Goreng Original,PRD-571,Makanan,15000,55
+Pisang Goreng Gula Aren,PRD-572,Makanan,25000,8
+Pisang Goreng Cokelat,PRD-573,Makanan,41000,69
+Pisang Goreng Pandan,PRD-574,Makanan,31000,32
+Pisang Goreng Karamel,PRD-575,Makanan,33500,45
+Pisang Goreng Keju,PRD-576,Makanan,36500,43
+Pisang Goreng Spesial,PRD-577,Makanan,22500,11
+Pisang Goreng Premium,PRD-578,Makanan,24000,2
+Pisang Goreng Madu,PRD-579,Makanan,28500,10
+Pisang Goreng Kacang,PRD-580,Makanan,31500,11
+Pisang Goreng Stroberi,PRD-581,Makanan,17000,3
+Pisang Goreng Vanila,PRD-582,Makanan,34500,5
+Pisang Goreng Matcha,PRD-583,Makanan,40000,70
+Pisang Goreng Taro,PRD-584,Makanan,14000,53
+Pisang Goreng Susu,PRD-585,Makanan,37000,61
+Pisang Goreng Pedas,PRD-586,Makanan,17500,38
+Pisang Goreng Bakar,PRD-587,Makanan,16000,12
+Lumpia Original,PRD-588,Makanan,27000,36
+Lumpia Gula Aren,PRD-589,Makanan,22000,56
+Lumpia Cokelat,PRD-590,Makanan,37500,0
+Lumpia Pandan,PRD-591,Makanan,44000,41
+Lumpia Karamel,PRD-592,Makanan,22500,66
+Lumpia Keju,PRD-593,Makanan,34000,29
+Lumpia Spesial,PRD-594,Makanan,16000,41
+Lumpia Premium,PRD-595,Makanan,34000,70
+Lumpia Madu,PRD-596,Makanan,23000,46
+Lumpia Kacang,PRD-597,Makanan,30000,20
+Lumpia Stroberi,PRD-598,Makanan,20500,5
+Lumpia Vanila,PRD-599,Makanan,22000,15
+Lumpia Matcha,PRD-600,Makanan,44500,2
+Lumpia Taro,PRD-601,Makanan,13000,37
+Lumpia Susu,PRD-602,Makanan,40000,12
+Lumpia Pedas,PRD-603,Makanan,45000,55
+Lumpia Bakar,PRD-604,Makanan,20000,11
+Siomay Original,PRD-605,Makanan,12500,10
+Siomay Gula Aren,PRD-606,Makanan,27000,0
+Siomay Cokelat,PRD-607,Makanan,21000,2
+Siomay Pandan,PRD-608,Makanan,18500,55
+Siomay Karamel,PRD-609,Makanan,21000,41
+Siomay Keju,PRD-610,Makanan,21000,0
+Siomay Spesial,PRD-611,Makanan,23500,3
+Siomay Premium,PRD-612,Makanan,13000,69
+Siomay Madu,PRD-613,Makanan,14000,73
+Siomay Kacang,PRD-614,Makanan,33000,68
+Siomay Stroberi,PRD-615,Makanan,15000,0
+Siomay Vanila,PRD-616,Makanan,38500,0
+Siomay Matcha,PRD-617,Makanan,31500,38
+Siomay Taro,PRD-618,Makanan,20500,50
+Siomay Susu,PRD-619,Makanan,29500,55
+Siomay Pedas,PRD-620,Makanan,18500,48
+Siomay Bakar,PRD-621,Makanan,23500,17
+Dimsum Original,PRD-622,Makanan,38500,42
+Dimsum Gula Aren,PRD-623,Makanan,17000,5
+Dimsum Cokelat,PRD-624,Makanan,16000,58
+Dimsum Pandan,PRD-625,Makanan,42500,0
+Dimsum Karamel,PRD-626,Makanan,21000,66
+Dimsum Keju,PRD-627,Makanan,15000,36
+Dimsum Spesial,PRD-628,Makanan,20000,0
+Dimsum Premium,PRD-629,Makanan,31000,37
+Dimsum Madu,PRD-630,Makanan,18000,31
+Dimsum Kacang,PRD-631,Makanan,23500,5
+Dimsum Stroberi,PRD-632,Makanan,26500,1
+Dimsum Vanila,PRD-633,Makanan,31000,66
+Dimsum Matcha,PRD-634,Makanan,33500,0
+Dimsum Taro,PRD-635,Makanan,19500,10
+Dimsum Susu,PRD-636,Makanan,38000,43
+Dimsum Pedas,PRD-637,Makanan,44000,74
+Dimsum Bakar,PRD-638,Makanan,40000,37
+Nasi Uduk Original,PRD-639,Makanan,17500,30
+Nasi Uduk Gula Aren,PRD-640,Makanan,14000,66
+Nasi Uduk Cokelat,PRD-641,Makanan,25000,74
+Nasi Uduk Pandan,PRD-642,Makanan,27000,30
+Nasi Uduk Karamel,PRD-643,Makanan,28500,6
+Nasi Uduk Keju,PRD-644,Makanan,37500,39
+Nasi Uduk Spesial,PRD-645,Makanan,25000,4
+Nasi Uduk Premium,PRD-646,Makanan,26500,0
+Nasi Uduk Madu,PRD-647,Makanan,34000,24
+Nasi Uduk Kacang,PRD-648,Makanan,12500,72
+Nasi Uduk Stroberi,PRD-649,Makanan,40000,37
+Nasi Uduk Vanila,PRD-650,Makanan,17000,54
+Nasi Uduk Matcha,PRD-651,Makanan,30500,69
+Nasi Uduk Taro,PRD-652,Makanan,39500,11
+Nasi Uduk Susu,PRD-653,Makanan,27000,20
+Nasi Uduk Pedas,PRD-654,Makanan,26000,46
+Nasi Uduk Bakar,PRD-655,Makanan,12500,72
+Gado-Gado Original,PRD-656,Makanan,18500,12
+Gado-Gado Gula Aren,PRD-657,Makanan,44500,57
+Gado-Gado Cokelat,PRD-658,Makanan,21000,0
+Gado-Gado Pandan,PRD-659,Makanan,34000,6
+Gado-Gado Karamel,PRD-660,Makanan,21500,20
+Gado-Gado Keju,PRD-661,Makanan,31000,61
+Gado-Gado Spesial,PRD-662,Makanan,13000,38
+Gado-Gado Premium,PRD-663,Makanan,40500,0
+Gado-Gado Madu,PRD-664,Makanan,28500,59
+Gado-Gado Kacang,PRD-665,Makanan,18500,25
+Gado-Gado Stroberi,PRD-666,Makanan,42000,0
+Gado-Gado Vanila,PRD-667,Makanan,34500,62
+Gado-Gado Matcha,PRD-668,Makanan,22000,0
+Gado-Gado Taro,PRD-669,Makanan,13500,2
+Gado-Gado Susu,PRD-670,Makanan,16000,0
+Gado-Gado Pedas,PRD-671,Makanan,28000,42
+Gado-Gado Bakar,PRD-672,Makanan,13000,44
+Sate Ayam Original,PRD-673,Makanan,13000,75
+Sate Ayam Gula Aren,PRD-674,Makanan,15000,48
+Sate Ayam Cokelat,PRD-675,Makanan,38500,0
+Sate Ayam Pandan,PRD-676,Makanan,43000,42
+Sate Ayam Karamel,PRD-677,Makanan,21500,16
+Sate Ayam Keju,PRD-678,Makanan,34000,62
+Sate Ayam Spesial,PRD-679,Makanan,22500,2
+Sate Ayam Premium,PRD-680,Makanan,33000,34
+Sate Ayam Madu,PRD-681,Makanan,36000,0
+Sate Ayam Kacang,PRD-682,Makanan,13000,43
+Sate Ayam Stroberi,PRD-683,Makanan,21000,0
+Sate Ayam Vanila,PRD-684,Makanan,22500,47
+Sate Ayam Matcha,PRD-685,Makanan,36000,41
+Sate Ayam Taro,PRD-686,Makanan,41500,80
+Sate Ayam Susu,PRD-687,Makanan,41500,27
+Sate Ayam Pedas,PRD-688,Makanan,41000,0
+Sate Ayam Bakar,PRD-689,Makanan,20500,46
+Cookies Cokelat Original,PRD-690,Snack,24000,41
+Cookies Cokelat Gula Aren,PRD-691,Snack,12000,53
+Cookies Cokelat Cokelat,PRD-692,Snack,11500,71
+Cookies Cokelat Pandan,PRD-693,Snack,20000,48
+Cookies Cokelat Karamel,PRD-694,Snack,21500,0
+Cookies Cokelat Keju,PRD-695,Snack,7500,74
+Cookies Cokelat Spesial,PRD-696,Snack,25000,39
+Cookies Cokelat Premium,PRD-697,Snack,15000,25
+Cookies Cokelat Madu,PRD-698,Snack,16500,3
+Cookies Cokelat Kacang,PRD-699,Snack,16500,41
+Cookies Cokelat Stroberi,PRD-700,Snack,20000,31
+Cookies Cokelat Vanila,PRD-701,Snack,21500,0
+Cookies Cokelat Matcha,PRD-702,Snack,6000,65
+Cookies Cokelat Taro,PRD-703,Snack,5500,15
+Cookies Cokelat Susu,PRD-704,Snack,13500,75
+Cookies Cokelat Pedas,PRD-705,Snack,22500,0
+Cookies Cokelat Bakar,PRD-706,Snack,13500,49
+Donat Gula Original,PRD-707,Snack,25000,5
+Donat Gula Gula Aren,PRD-708,Snack,11500,39
+Donat Gula Cokelat,PRD-709,Snack,22500,0
+Donat Gula Pandan,PRD-710,Snack,8500,39
+Donat Gula Karamel,PRD-711,Snack,24000,22
+Donat Gula Keju,PRD-712,Snack,10000,61
+Donat Gula Spesial,PRD-713,Snack,17000,62
+Donat Gula Premium,PRD-714,Snack,9000,41
+Donat Gula Madu,PRD-715,Snack,22000,42
+Donat Gula Kacang,PRD-716,Snack,8500,70
+Donat Gula Stroberi,PRD-717,Snack,16000,9
+Donat Gula Vanila,PRD-718,Snack,15000,43
+Donat Gula Matcha,PRD-719,Snack,13000,41
+Donat Gula Taro,PRD-720,Snack,10500,3
+Donat Gula Susu,PRD-721,Snack,13500,30
+Donat Gula Pedas,PRD-722,Snack,15000,76
+Donat Gula Bakar,PRD-723,Snack,8500,28
+Brownies Original,PRD-724,Snack,15000,39
+Brownies Gula Aren,PRD-725,Snack,16000,67
+Brownies Cokelat,PRD-726,Snack,21000,28
+Brownies Pandan,PRD-727,Snack,7500,73
+Brownies Karamel,PRD-728,Snack,17500,67
+Brownies Keju,PRD-729,Snack,6000,75
+Brownies Spesial,PRD-730,Snack,11500,38
+Brownies Premium,PRD-731,Snack,13000,44
+Brownies Madu,PRD-732,Snack,17000,74
+Brownies Kacang,PRD-733,Snack,19000,14
+Brownies Stroberi,PRD-734,Snack,12000,0
+Brownies Vanila,PRD-735,Snack,7000,39
+Brownies Matcha,PRD-736,Snack,17000,19
+Brownies Taro,PRD-737,Snack,19000,3
+Brownies Susu,PRD-738,Snack,7000,22
+Brownies Pedas,PRD-739,Snack,16000,1
+Brownies Bakar,PRD-740,Snack,13500,61
+Kue Lapis Original,PRD-741,Snack,19500,77
+Kue Lapis Gula Aren,PRD-742,Snack,16000,3
+Kue Lapis Cokelat,PRD-743,Snack,10000,6
+Kue Lapis Pandan,PRD-744,Snack,11500,51
+Kue Lapis Karamel,PRD-745,Snack,7500,41
+Kue Lapis Keju,PRD-746,Snack,22500,27
+Kue Lapis Spesial,PRD-747,Snack,20000,8
+Kue Lapis Premium,PRD-748,Snack,23000,57
+Kue Lapis Madu,PRD-749,Snack,9000,69
+Kue Lapis Kacang,PRD-750,Snack,23500,80
+Kue Lapis Stroberi,PRD-751,Snack,11500,4
+Kue Lapis Vanila,PRD-752,Snack,5000,76
+Kue Lapis Matcha,PRD-753,Snack,5500,64
+Kue Lapis Taro,PRD-754,Snack,24500,0
+Kue Lapis Susu,PRD-755,Snack,18500,0
+Kue Lapis Pedas,PRD-756,Snack,7500,23
+Kue Lapis Bakar,PRD-757,Snack,14500,34
+Risoles Original,PRD-758,Snack,7500,29
+Risoles Gula Aren,PRD-759,Snack,17500,28
+Risoles Cokelat,PRD-760,Snack,13000,25
+Risoles Pandan,PRD-761,Snack,11500,65
+Risoles Karamel,PRD-762,Snack,19000,10
+Risoles Keju,PRD-763,Snack,20000,51
+Risoles Spesial,PRD-764,Snack,22500,28
+Risoles Premium,PRD-765,Snack,9000,79
+Risoles Madu,PRD-766,Snack,13000,21
+Risoles Kacang,PRD-767,Snack,10000,54
+Risoles Stroberi,PRD-768,Snack,9500,52
+Risoles Vanila,PRD-769,Snack,21000,64
+Risoles Matcha,PRD-770,Snack,21000,80
+Risoles Taro,PRD-771,Snack,21500,46
+Risoles Susu,PRD-772,Snack,19500,36
+Risoles Pedas,PRD-773,Snack,11000,54
+Risoles Bakar,PRD-774,Snack,21500,57
+Lemper Original,PRD-775,Snack,17000,20
+Lemper Gula Aren,PRD-776,Snack,25000,61
+Lemper Cokelat,PRD-777,Snack,9000,38
+Lemper Pandan,PRD-778,Snack,5000,37
+Lemper Karamel,PRD-779,Snack,6000,30
+Lemper Keju,PRD-780,Snack,17000,14
+Lemper Spesial,PRD-781,Snack,7000,66
+Lemper Premium,PRD-782,Snack,20500,6
+Lemper Madu,PRD-783,Snack,24500,72
+Lemper Kacang,PRD-784,Snack,22500,76
+Lemper Stroberi,PRD-785,Snack,9500,32
+Lemper Vanila,PRD-786,Snack,15000,67
+Lemper Matcha,PRD-787,Snack,8500,0
+Lemper Taro,PRD-788,Snack,21500,62
+Lemper Susu,PRD-789,Snack,17500,17
+Lemper Pedas,PRD-790,Snack,12000,15
+Lemper Bakar,PRD-791,Snack,10000,0
+Klepon Original,PRD-792,Snack,12000,48
+Klepon Gula Aren,PRD-793,Snack,24000,63
+Klepon Cokelat,PRD-794,Snack,23000,58
+Klepon Pandan,PRD-795,Snack,5000,0
+Klepon Karamel,PRD-796,Snack,9000,7
+Klepon Keju,PRD-797,Snack,9500,75
+Klepon Spesial,PRD-798,Snack,11500,42
+Klepon Premium,PRD-799,Snack,14000,52
+Klepon Madu,PRD-800,Snack,21000,38
+Klepon Kacang,PRD-801,Snack,7500,46
+Klepon Stroberi,PRD-802,Snack,8000,5
+Klepon Vanila,PRD-803,Snack,9000,70
+Klepon Matcha,PRD-804,Snack,16500,48
+Klepon Taro,PRD-805,Snack,13000,11
+Klepon Susu,PRD-806,Snack,6000,30
+Klepon Pedas,PRD-807,Snack,8500,0
+Klepon Bakar,PRD-808,Snack,5500,30
+Puding Original,PRD-809,Snack,17000,75
+Puding Gula Aren,PRD-810,Snack,11000,26
+Puding Cokelat,PRD-811,Snack,7000,64
+Puding Pandan,PRD-812,Snack,17500,77
+Puding Karamel,PRD-813,Snack,13500,12
+Puding Keju,PRD-814,Snack,17500,8
+Puding Spesial,PRD-815,Snack,7000,25
+Puding Premium,PRD-816,Snack,14000,12
+Puding Madu,PRD-817,Snack,6500,49
+Puding Kacang,PRD-818,Snack,6500,36
+Puding Stroberi,PRD-819,Snack,8500,18
+Puding Vanila,PRD-820,Snack,13000,70
+Puding Matcha,PRD-821,Snack,19500,79
+Puding Taro,PRD-822,Snack,15000,69
+Puding Susu,PRD-823,Snack,7000,68
+Puding Pedas,PRD-824,Snack,22500,0
+Puding Bakar,PRD-825,Snack,23000,68
+Es Krim Original,PRD-826,Snack,14500,14
+Es Krim Gula Aren,PRD-827,Snack,11500,14
+Es Krim Cokelat,PRD-828,Snack,14500,52
+Es Krim Pandan,PRD-829,Snack,12000,29
+Es Krim Karamel,PRD-830,Snack,12500,6
+Es Krim Keju,PRD-831,Snack,13000,14
+Es Krim Spesial,PRD-832,Snack,19000,25
+Es Krim Premium,PRD-833,Snack,18000,72
+Es Krim Madu,PRD-834,Snack,12500,10
+Es Krim Kacang,PRD-835,Snack,21500,16
+Es Krim Stroberi,PRD-836,Snack,8000,24
+Es Krim Vanila,PRD-837,Snack,9500,42
+Es Krim Matcha,PRD-838,Snack,12500,63
+Es Krim Taro,PRD-839,Snack,15500,18
+Es Krim Susu,PRD-840,Snack,12500,0
+Es Krim Pedas,PRD-841,Snack,11500,73
+Es Krim Bakar,PRD-842,Snack,5500,69
+Churros Original,PRD-843,Snack,5000,15
+Churros Gula Aren,PRD-844,Snack,22000,73
+Churros Cokelat,PRD-845,Snack,22000,67
+Churros Pandan,PRD-846,Snack,10500,39
+Churros Karamel,PRD-847,Snack,7000,61
+Churros Keju,PRD-848,Snack,20000,31
+Churros Spesial,PRD-849,Snack,22500,0
+Churros Premium,PRD-850,Snack,14500,7
+Churros Madu,PRD-851,Snack,7000,51
+Churros Kacang,PRD-852,Snack,12500,54
+Churros Stroberi,PRD-853,Snack,20500,43
+Churros Vanila,PRD-854,Snack,24000,0
+Churros Matcha,PRD-855,Snack,16000,19
+Churros Taro,PRD-856,Snack,8000,32
+Churros Susu,PRD-857,Snack,7500,77
+Churros Pedas,PRD-858,Snack,10500,0
+Churros Bakar,PRD-859,Snack,20500,35
+Makaroni Original,PRD-860,Snack,23000,71
+Makaroni Gula Aren,PRD-861,Snack,14000,80
+Makaroni Cokelat,PRD-862,Snack,11500,33
+Makaroni Pandan,PRD-863,Snack,24500,6
+Makaroni Karamel,PRD-864,Snack,20000,34
+Makaroni Keju,PRD-865,Snack,11500,64
+Makaroni Spesial,PRD-866,Snack,21500,8
+Makaroni Premium,PRD-867,Snack,18000,22
+Makaroni Madu,PRD-868,Snack,13000,15
+Makaroni Kacang,PRD-869,Snack,15000,73
+Makaroni Stroberi,PRD-870,Snack,7500,9
+Makaroni Vanila,PRD-871,Snack,21000,69
+Makaroni Matcha,PRD-872,Snack,10000,52
+Makaroni Taro,PRD-873,Snack,14000,14
+Makaroni Susu,PRD-874,Snack,22500,74
+Makaroni Pedas,PRD-875,Snack,12000,2
+Makaroni Bakar,PRD-876,Snack,24000,68
+Keripik Singkong Original,PRD-877,Snack,12500,62
+Keripik Singkong Gula Aren,PRD-878,Snack,21500,39
+Keripik Singkong Cokelat,PRD-879,Snack,22000,33
+Keripik Singkong Pandan,PRD-880,Snack,14000,0
+Keripik Singkong Karamel,PRD-881,Snack,14500,0
+Keripik Singkong Keju,PRD-882,Snack,22500,5
+Keripik Singkong Spesial,PRD-883,Snack,8500,10
+Keripik Singkong Premium,PRD-884,Snack,22500,19
+Keripik Singkong Madu,PRD-885,Snack,15000,62
+Keripik Singkong Kacang,PRD-886,Snack,22000,0
+Keripik Singkong Stroberi,PRD-887,Snack,8500,10
+Keripik Singkong Vanila,PRD-888,Snack,20500,50
+Keripik Singkong Matcha,PRD-889,Snack,6500,49
+Keripik Singkong Taro,PRD-890,Snack,19500,63
+Keripik Singkong Susu,PRD-891,Snack,11500,22
+Keripik Singkong Pedas,PRD-892,Snack,14500,24
+Keripik Singkong Bakar,PRD-893,Snack,25000,73
+Kacang Original,PRD-894,Snack,7500,0
+Kacang Gula Aren,PRD-895,Snack,6500,56
+Kacang Cokelat,PRD-896,Snack,18000,21
+Kacang Pandan,PRD-897,Snack,21500,76
+Kacang Karamel,PRD-898,Snack,22500,8
+Kacang Keju,PRD-899,Snack,23500,14
+Kacang Spesial,PRD-900,Snack,21500,46
+Kacang Premium,PRD-901,Snack,6500,59
+Kacang Madu,PRD-902,Snack,8000,20
+Kacang Kacang,PRD-903,Snack,21500,20
+Kacang Stroberi,PRD-904,Snack,13000,73
+Kacang Vanila,PRD-905,Snack,19500,24
+Kacang Matcha,PRD-906,Snack,11500,25
+Kacang Taro,PRD-907,Snack,16500,1
+Kacang Susu,PRD-908,Snack,12500,1
+Kacang Pedas,PRD-909,Snack,9500,0
+Kacang Bakar,PRD-910,Snack,24000,50
+Cokelat Batang Original,PRD-911,Snack,17000,30
+Cokelat Batang Gula Aren,PRD-912,Snack,24500,20
+Cokelat Batang Cokelat,PRD-913,Snack,23500,0
+Cokelat Batang Pandan,PRD-914,Snack,14500,50
+Cokelat Batang Karamel,PRD-915,Snack,24000,64
+Cokelat Batang Keju,PRD-916,Snack,8500,28
+Cokelat Batang Spesial,PRD-917,Snack,12000,69
+Cokelat Batang Premium,PRD-918,Snack,23000,0
+Cokelat Batang Madu,PRD-919,Snack,12000,67
+Cokelat Batang Kacang,PRD-920,Snack,13500,19
+Cokelat Batang Stroberi,PRD-921,Snack,13000,15
+Cokelat Batang Vanila,PRD-922,Snack,12500,9
+Cokelat Batang Matcha,PRD-923,Snack,22000,58
+Cokelat Batang Taro,PRD-924,Snack,18500,14
+Cokelat Batang Susu,PRD-925,Snack,9500,15
+Cokelat Batang Pedas,PRD-926,Snack,17000,15
+Cokelat Batang Bakar,PRD-927,Snack,16500,73
+Permen Original,PRD-928,Snack,20500,31
+Permen Gula Aren,PRD-929,Snack,12500,9
+Permen Cokelat,PRD-930,Snack,14500,68
+Permen Pandan,PRD-931,Snack,13500,63
+Permen Karamel,PRD-932,Snack,20500,60
+Permen Keju,PRD-933,Snack,11500,30
+Permen Spesial,PRD-934,Snack,24500,54
+Permen Premium,PRD-935,Snack,22000,13
+Permen Madu,PRD-936,Snack,22000,71
+Permen Kacang,PRD-937,Snack,21500,69
+Permen Stroberi,PRD-938,Snack,14000,40
+Permen Vanila,PRD-939,Snack,24000,46
+Permen Matcha,PRD-940,Snack,12000,41
+Permen Taro,PRD-941,Snack,11000,16
+Permen Susu,PRD-942,Snack,20500,27
+Permen Pedas,PRD-943,Snack,6500,80
+Permen Bakar,PRD-944,Snack,5000,21
+Wafer Original,PRD-945,Snack,7500,0
+Wafer Gula Aren,PRD-946,Snack,13500,36
+Wafer Cokelat,PRD-947,Snack,20000,0
+Wafer Pandan,PRD-948,Snack,19000,58
+Wafer Karamel,PRD-949,Snack,15500,10
+Wafer Keju,PRD-950,Snack,11500,48
+Wafer Spesial,PRD-951,Snack,17000,69
+Wafer Premium,PRD-952,Snack,6000,42
+Wafer Madu,PRD-953,Snack,7000,31
+Wafer Kacang,PRD-954,Snack,6500,25
+Wafer Stroberi,PRD-955,Snack,10500,32
+Wafer Vanila,PRD-956,Snack,22000,63
+Wafer Matcha,PRD-957,Snack,11000,38
+Wafer Taro,PRD-958,Snack,19500,15
+Wafer Susu,PRD-959,Snack,16000,0
+Wafer Pedas,PRD-960,Snack,11500,22
+Wafer Bakar,PRD-961,Snack,10000,43
+Biskuit Original,PRD-962,Snack,21000,68
+Biskuit Gula Aren,PRD-963,Snack,19000,4
+Biskuit Cokelat,PRD-964,Snack,23000,71
+Biskuit Pandan,PRD-965,Snack,22000,61
+Biskuit Karamel,PRD-966,Snack,15500,77
+Biskuit Keju,PRD-967,Snack,10500,34
+Biskuit Spesial,PRD-968,Snack,8000,24
+Biskuit Premium,PRD-969,Snack,9000,70
+Biskuit Madu,PRD-970,Snack,22500,66
+Biskuit Kacang,PRD-971,Snack,17500,52
+Biskuit Stroberi,PRD-972,Snack,21000,6
+Biskuit Vanila,PRD-973,Snack,15500,28
+Biskuit Matcha,PRD-974,Snack,24500,48
+Biskuit Taro,PRD-975,Snack,18000,24
+Biskuit Susu,PRD-976,Snack,22000,27
+Biskuit Pedas,PRD-977,Snack,21000,9
+Biskuit Bakar,PRD-978,Snack,7000,37
+Muffin Original,PRD-979,Snack,21500,4
+Muffin Gula Aren,PRD-980,Snack,14500,31
+Muffin Cokelat,PRD-981,Snack,11000,36
+Muffin Pandan,PRD-982,Snack,5000,73
+Muffin Karamel,PRD-983,Snack,24000,26
+Muffin Keju,PRD-984,Snack,12500,34
+Muffin Spesial,PRD-985,Snack,12000,77
+Muffin Premium,PRD-986,Snack,15500,52
+Muffin Madu,PRD-987,Snack,12500,0
+Muffin Kacang,PRD-988,Snack,14500,23
+Muffin Stroberi,PRD-989,Snack,12500,57
+Muffin Vanila,PRD-990,Snack,7500,54
+Muffin Matcha,PRD-991,Snack,21000,0
+Muffin Taro,PRD-992,Snack,25000,16
+Muffin Susu,PRD-993,Snack,19000,45
+Muffin Pedas,PRD-994,Snack,25000,51
+Muffin Bakar,PRD-995,Snack,6500,75
+Cupcake Original,PRD-996,Snack,11500,0
+Cupcake Gula Aren,PRD-997,Snack,17500,24
+Cupcake Cokelat,PRD-998,Snack,11500,56
+Cupcake Pandan,PRD-999,Snack,23500,73

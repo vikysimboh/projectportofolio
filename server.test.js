@@ -280,3 +280,50 @@ test("Cashier role is limited to checkout and state, admin-only APIs return 403"
   const anonymousReport = await world.requestAs("", "/api/report");
   assert.equal(anonymousReport.status, 401);
 });
+
+test("Analytics endpoint returns aggregates for admin and rejects other roles", async (t) => {
+  const world = makeWorld();
+  await world.start();
+  t.after(async () => { await world.stop(); });
+  await world.setupAdmin();
+  const anonymous = await world.requestAs("", "/api/analytics");
+  assert.equal(anonymous.status, 401);
+  const createdCashier = await world.request("/api/users", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username: CASHIER_USERNAME, password: CASHIER_PASSWORD, role: "kasir" }),
+  });
+  assert.equal(createdCashier.status, 201);
+  const cashierLogin = await world.login(CASHIER_USERNAME, CASHIER_PASSWORD);
+  const cashierAnalytics = await world.requestAs(cashierLogin.cookie, "/api/analytics");
+  assert.equal(cashierAnalytics.status, 403);
+  const before = await world.request("/api/state");
+  assert.equal(before.status, 200);
+  const baseTx = before.body.stats.totalTransactions;
+  const baseRevenue = before.body.stats.totalRevenue;
+  const baseProducts = before.body.stats.totalProducts;
+  const created = await world.request("/api/products", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: "Produk Analytics", category: "Snack", emoji: TEST_EMOJI, price: 5000, stock: 10 }),
+  });
+  assert.equal(created.status, 201);
+  const checkout = await world.request("/api/checkout", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ customer: "Pembeli Analytics", payment: "Tunai", items: [{ productId: created.body.product.id, qty: 2 }] }),
+  });
+  assert.equal(checkout.status, 201);
+  assert.equal(checkout.body.transaction.total, 10000);
+  const analytics = await world.request("/api/analytics");
+  assert.equal(analytics.status, 200);
+  assert.equal(analytics.body.totals.transactions, baseTx + 1);
+  assert.ok(analytics.body.totals.done >= 1);
+  assert.equal(analytics.body.totals.revenueDone, baseRevenue + 10000);
+  assert.ok(analytics.body.totals.itemsDone >= 2);
+  assert.equal(analytics.body.stock.products, baseProducts + 1);
+  const myTop = analytics.body.topByQty.find((item) => item.sku === created.body.product.id);
+  assert.ok(myTop);
+  assert.equal(myTop.sold, 2);
+  assert.equal(myTop.revenue, 10000);
+});

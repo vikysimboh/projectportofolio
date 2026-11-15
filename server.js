@@ -5,6 +5,7 @@ const fs = require("node:fs/promises");
 const http = require("node:http");
 const path = require("node:path");
 const { createPool } = require("./db.js");
+const { getCachedAnalytics, warmupAnalytics } = require("./analytics.js");
 
 const MAX_BODY_BYTES = 1024 * 1024;
 const PAYMENT_METHODS = new Set(["Tunai", "QRIS", "Transfer", "Kartu debit"]);
@@ -544,6 +545,13 @@ function createAppServer(options = {}) {
         if (method !== "GET") throw new HttpError(405, "Metode tidak diizinkan.");
         const state = await buildState(pool, session);
         return sendJson(response, 200, state);
+  }
+
+  if (pathname === "/api/analytics") {
+    if (method !== "GET") throw new HttpError(405, "Metode tidak diizinkan.");
+    if (!requireRole(session, response, ["admin"])) return;
+    const data = await getCachedAnalytics(pool);
+    return sendJson(response, 200, data);
       }
 
       if (pathname === "/api/me") {
@@ -725,6 +733,7 @@ function createAppServer(options = {}) {
     });
   };
 
+  server.pool = pool;
   return server;
 }
 
@@ -733,6 +742,7 @@ if (require.main === module) {
   const HOST = process.env.HOST || "127.0.0.1";
   const server = createAppServer();
   server.ready.then(() => {
+    warmupAnalytics(server.pool);
     server.listen(PORT, HOST, () => {
       console.log("Grace Shop berjalan di http://" + HOST + ":" + PORT);
     });
