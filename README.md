@@ -10,7 +10,7 @@ Perlu Node.js 18 atau lebih baru. Jalankan backend dari folder proyek:
 node server.js
 ```
 
-Kemudian buka <http://localhost:3000>. Data disimpan persisten di `data/store.json` (file dibuat otomatis dan tidak dimasukkan ke Git). Atur port dengan variabel `PORT`, misalnya `PORT=8080 node server.js`.
+Kemudian buka <http://localhost:3000>. Data disimpan persisten di `data/store.json` (file dibuat otomatis dan ikut dimasukkan ke Git sebagai cadangan data contoh; .env, data/admin.json, dan node_modules tetap tidak masuk Git). Atur port dengan variabel `PORT`, misalnya `PORT=8080 node server.js`.
 
 ## Fitur
 
