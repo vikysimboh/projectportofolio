@@ -8,7 +8,7 @@ const { createPool } = require("./db.js");
 
 const MAX_BODY_BYTES = 1024 * 1024;
 const PAYMENT_METHODS = new Set(["Tunai", "QRIS", "Transfer", "Kartu debit"]);
-const PUBLIC_FILES = new Set(["index.html", "app.js", "styles.css"]);
+const PUBLIC_FILES = new Set(["index.html", "app.html", "app.js", "styles.css"]);
 const SESSION_COOKIE = "kasirku_session";
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
 const RECENT_TRANSACTIONS_LIMIT = 200;
@@ -466,7 +466,7 @@ function createAppServer(options = {}) {
 
       if (pathname === "/setup") {
         if (method === "GET") {
-          if (session) return redirect(response, "/");
+          if (session) return redirect(response, "/app.html");
           if (await adminExists()) return redirect(response, "/login");
           response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
           response.end(authPage("setup", null));
@@ -487,14 +487,14 @@ function createAppServer(options = {}) {
           await pool.query("INSERT INTO users (username, password_hash, role, created_at) VALUES (?, ?, ?, ?)", [username, passwordHash, "admin", toMysqlDatetime(new Date())]);
           createSession(response, username, "admin");
           if (wantsJson(request)) return sendJson(response, 201, { ok: true, username, role: "admin" });
-          return redirect(response, "/");
+          return redirect(response, "/app.html");
         }
         throw new HttpError(405, "Metode tidak diizinkan.");
       }
 
       if (pathname === "/login") {
         if (method === "GET") {
-          if (session) return redirect(response, "/");
+          if (session) return redirect(response, "/app.html");
           const error = url.searchParams.get("error");
           response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
           response.end(authPage("login", error === "salah" ? "Nama pengguna atau kata sandi salah." : null));
@@ -511,7 +511,7 @@ function createAppServer(options = {}) {
           }
           createSession(response, user.username, user.role);
           if (wantsJson(request)) return sendJson(response, 200, { ok: true, username: user.username, role: user.role });
-          return redirect(response, "/");
+          return redirect(response, "/app.html");
         }
         throw new HttpError(405, "Metode tidak diizinkan.");
       }
@@ -523,14 +523,18 @@ function createAppServer(options = {}) {
         return redirect(response, "/login");
       }
 
+      if (pathname === "/" || pathname === "/index.html") {
+        return serveStatic(response, publicRoot, "index.html");
+      }
+
       if (!session) {
         if (pathname.startsWith("/api/")) return sendJson(response, 401, { error: "Login diperlukan." });
         if (await adminExists()) return redirect(response, "/login");
         return redirect(response, "/setup");
       }
 
-      if (pathname === "/" || pathname === "/index.html") {
-        return serveStatic(response, publicRoot, "index.html");
+      if (pathname === "/app.html") {
+        return serveStatic(response, publicRoot, "app.html");
       }
       if (pathname === "/app.js" || pathname === "/styles.css") {
         return serveStatic(response, publicRoot, pathname.slice(1));

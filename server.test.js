@@ -110,7 +110,7 @@ test("API persists products and protects stock during concurrent checkouts", asy
   const health = await world.request("/api/health");
   assert.equal(health.status, 200);
   assert.equal(health.body.status, "ok");
-  const homeResponse = await fetch(`${world.origin}/`, { headers: { Cookie: world.authCookie } });
+  const homeResponse = await fetch(`${world.origin}/app.html`, { headers: { Cookie: world.authCookie } });
   assert.equal(homeResponse.status, 200);
   assert.match(await homeResponse.text(), /src="app.js"/);
   const serverJs = await fetch(`${world.origin}/server.js`, { headers: { Cookie: world.authCookie } });
@@ -173,18 +173,20 @@ test("Admin login protects pages and APIs, rejects wrong passwords, and logout i
   const world = makeWorld();
   await world.start();
   t.after(async () => { await world.stop(); });
-  const anonymous = await fetch(`${world.origin}/`, { redirect: "manual" });
+  const anonymous = await fetch(`${world.origin}/app.html`, { redirect: "manual" });
   assert.equal(anonymous.status, 302);
   assert.equal(anonymous.headers.get("location"), "/setup");
+  const landingPage = await fetch(`${world.origin}/`, { redirect: "manual" });
+  assert.equal(landingPage.status, 200);
   await world.setupAdmin();
-  const homeResponse = await fetch(`${world.origin}/`, { headers: { Cookie: world.authCookie } });
+  const homeResponse = await fetch(`${world.origin}/app.html`, { headers: { Cookie: world.authCookie } });
   assert.equal(homeResponse.status, 200);
   const state = await world.request("/api/state");
   assert.equal(state.status, 200);
   assert.equal(state.body.products.length, 9);
   const loginPage = await fetch(`${world.origin}/login`, { headers: { Cookie: world.authCookie }, redirect: "manual" });
   assert.equal(loginPage.status, 302);
-  assert.equal(loginPage.headers.get("location"), "/");
+  assert.equal(loginPage.headers.get("location"), "/app.html");
   const wrongPassword = await world.requestAs("", "/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -204,7 +206,7 @@ test("Admin login protects pages and APIs, rejects wrong passwords, and logout i
   assert.equal(logout.status, 200);
   const afterLogout = await world.request("/api/state");
   assert.equal(afterLogout.status, 401);
-  const afterLogoutPage = await fetch(`${world.origin}/`, { redirect: "manual" });
+  const afterLogoutPage = await fetch(`${world.origin}/app.html`, { redirect: "manual" });
   assert.equal(afterLogoutPage.status, 302);
   assert.equal(afterLogoutPage.headers.get("location"), "/login");
 });
