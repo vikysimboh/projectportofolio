@@ -64,6 +64,22 @@ async function apiRequest(path, options = {}) {
   return result;
 }
 
+// Logout lintas situs: form "Keluar" memakai action relatif "/logout" yang
+// tidak ada di GitHub Pages, sehingga sesi tidak pernah terhapus. Kirim
+// logout ke backend lewat API_BASE, lalu buka halaman login backend.
+const logoutForm = document.querySelector(".logout-form");
+if (logoutForm) {
+  logoutForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    try {
+      await fetch(API_BASE + "/logout", { method: "POST", credentials: "include" });
+    } catch (error) {
+      // Tetap arahkan ke halaman login walau panggilan logout gagal.
+    }
+    window.location.assign(API_BASE + "/login");
+  });
+}
+
 async function refreshState() {
   state = await apiRequest("/api/state");
 }
