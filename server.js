@@ -246,22 +246,25 @@ function authPage(mode, errorMessage) {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#f6f7fb" />
 <title>${title}</title>
-<style>body{font-family:system-ui,sans-serif;background:#f6f7fb;margin:0;display:flex;min-height:100vh;align-items:center;justify-content:center}.auth-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:28px;width:min(420px,90vw);box-shadow:0 10px 30px rgba(0,0,0,.08)}h1{margin:0 0 8px;font-size:22px}p{color:#555;margin:0 0 16px}.auth-error{background:#fdecec;color:#b3261e;border:1px solid #f5c6c6;border-radius:8px;padding:10px 12px}label{display:block;margin:12px 0 4px;font-weight:600}input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px}button{margin-top:18px;width:100%;padding:12px;border:0;border-radius:10px;background:#2563eb;color:#fff;font-size:16px;font-weight:700;cursor:pointer}</style>
+<script>try{var t=localStorage.getItem("grace-shop-theme");if(!t||(t!=="light"&&t!=="dark"&&t!=="oled")){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m){m.setAttribute("content",t==="oled"?"#000000":t==="dark"?"#14161f":"#f6f7fb");}}catch(e){}</script>
+<style>:root{--auth-bg:#f5f6fa;--auth-surface:#ffffff;--auth-ink:#202335;--auth-muted:#8d92a5;--auth-purple:#6658e8;--auth-purple-soft:#f0efff;--auth-line:#e7e9f0;--auth-input:#ffffff;--auth-ring:0 0 0 3px rgba(102,88,232,.28);--auth-glow:0}html[data-theme="dark"]{--auth-bg:#14161f;--auth-surface:#1d202c;--auth-ink:#e9eaf2;--auth-muted:#9aa0b6;--auth-purple:#a89df7;--auth-purple-soft:#2b2750;--auth-line:#2c3040;--auth-input:#242836;--auth-ring:0 0 0 3px rgba(168,157,247,.35);--auth-glow:.45}html[data-theme="oled"]{--auth-bg:#000000;--auth-surface:#0a0a0f;--auth-ink:#f5f6fa;--auth-muted:#9a9fb2;--auth-purple:#a89df7;--auth-purple-soft:#1d1938;--auth-line:#1e1e28;--auth-input:#121218;--auth-ring:0 0 0 3px rgba(168,157,247,.35);--auth-glow:1}*{box-sizing:border-box}html{color-scheme:light}html[data-theme="dark"],html[data-theme="oled"]{color-scheme:dark}body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--auth-bg);color:var(--auth-ink);margin:0;display:flex;min-height:100vh;align-items:center;justify-content:center;padding:24px;position:relative}body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(520px 340px at 50% 16%,rgba(102,88,232,.30),transparent 70%),radial-gradient(420px 300px at 50% 96%,rgba(102,88,232,.16),transparent 70%);opacity:var(--auth-glow);transition:opacity .3s ease}.auth-card{position:relative;background:var(--auth-surface);border:1px solid var(--auth-line);border-radius:20px;padding:32px 30px 26px;width:min(420px,94vw);box-shadow:0 18px 50px rgba(0,0,0,.18)}html[data-theme="oled"] .auth-card{box-shadow:0 0 0 1px rgba(168,157,247,.14),0 24px 70px rgba(0,0,0,.8)}.auth-brand{display:flex;align-items:center;gap:10px;margin-bottom:18px}.auth-logo{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#6658e8,#8b7ff5);color:#fff;font-size:22px;font-weight:800;box-shadow:0 6px 18px rgba(102,88,232,.45)}.auth-brand-name{font-size:26px;font-weight:800;letter-spacing:-.02em}h1{margin:0 0 6px;font-size:21px;line-height:1.3}.auth-sub{margin:0 0 4px;color:var(--auth-muted);font-size:14px;line-height:1.5}.auth-error{background:#fdecec;color:#b3261e;border:1px solid #f5c6c6;border-radius:8px;padding:10px 12px;margin:14px 0 0;font-size:14px}html[data-theme="dark"] .auth-error,html[data-theme="oled"] .auth-error{background:#3a2226;color:#ffb4b4;border-color:#5c3436}.auth-field{margin-top:16px}label{display:block;margin:0 0 6px;font-weight:600;font-size:14px}input{width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid var(--auth-line);border-radius:10px;font-size:15px;background:var(--auth-input);color:var(--auth-ink);outline:none}input:focus{border-color:var(--auth-purple);box-shadow:var(--auth-ring)}.auth-password{position:relative}.auth-password input{padding-right:104px}.auth-show{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:var(--auth-purple);font-size:13px;font-weight:700;cursor:pointer;padding:6px 8px;border-radius:8px}.auth-show:hover{background:var(--auth-purple-soft)}.auth-submit{margin-top:20px;width:100%;padding:13px;border:0;border-radius:12px;background:linear-gradient(135deg,#6658e8,#7c6ff0);color:#fff;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(102,88,232,.35)}.auth-submit:hover{filter:brightness(1.06)}.auth-submit:focus-visible{outline:none;box-shadow:var(--auth-ring)}.auth-help{margin:18px 0 0;text-align:center;color:var(--auth-muted);font-size:12.5px;line-height:1.5}</style>
 </head>
 <body>
 <main class="auth-card">
+<div class="auth-brand"><span class="auth-logo" aria-hidden="true">G</span><span class="auth-brand-name">Grace Shop</span></div>
 <h1>${heading}</h1>
-<p>${description}</p>
+<p class="auth-sub">${description}</p>
 ${error}
 <form method="post" action="${action}">
-<label for="username">Nama pengguna</label>
-<input id="username" name="username" autocomplete="username" required maxlength="64" />
-<label for="password">Kata sandi</label>
-<input id="password" type="password" name="password" autocomplete="current-password" required maxlength="256" />
-<button type="submit">${button}</button>
+<div class="auth-field"><label for="username">Nama pengguna</label><input id="username" name="username" autocomplete="username" required maxlength="64" /></div>
+<div class="auth-field"><label for="password">Kata sandi</label><div class="auth-password"><input id="password" type="password" name="password" autocomplete="current-password" required maxlength="256" /><button type="button" class="auth-show" id="togglePassword" aria-label="Tampilkan kata sandi">Lihat</button></div></div>
+<button type="submit" class="auth-submit">${button}</button>
 </form>
+<p class="auth-help">Admin mengelola toko &amp; pengguna &middot; Kasir melayani penjualan di POS</p>
 </main>
+<script>(function(){var b=document.getElementById("togglePassword"),i=document.getElementById("password");if(!b||!i){return;}b.addEventListener("click",function(){var show=i.type==="password";i.type=show?"text":"password";b.textContent=show?"Sembunyikan":"Lihat";b.setAttribute("aria-label",show?"Sembunyikan kata sandi":"Tampilkan kata sandi");i.focus();});})();</script>
 </body>
 </html>`;
 }
@@ -314,14 +317,14 @@ function createAppServer(options = {}) {
   function createSession(response, username, role) {
     const token = crypto.randomBytes(32).toString("hex");
     sessions.set(token, { username, role, createdAt: Date.now() });
-    response.setHeader("Set-Cookie", SESSION_COOKIE + "=" + token + "; HttpOnly; Path=/; SameSite=Lax; Max-Age=86400");
+    response.setHeader("Set-Cookie", SESSION_COOKIE + "=" + token + "; HttpOnly; Path=/; SameSite=None; Secure; Max-Age=86400");
     return token;
   }
 
   function destroySession(request, response) {
     const session = getSession(request);
     if (session) sessions.delete(session.token);
-    response.setHeader("Set-Cookie", SESSION_COOKIE + "=; HttpOnly; Path=/; SameSite=Lax; Max-Age=0");
+    response.setHeader("Set-Cookie", SESSION_COOKIE + "=; HttpOnly; Path=/; SameSite=None; Secure; Max-Age=0");
   }
 
   function wantsJson(request) {
@@ -439,6 +442,18 @@ function createAppServer(options = {}) {
   }
 
   const server = http.createServer(async (request, response) => {
+  const pagesOrigin = "https://vikysimboh.github.io";
+  if (request.headers.origin === pagesOrigin) {
+    response.setHeader("Access-Control-Allow-Origin", pagesOrigin);
+    response.setHeader("Access-Control-Allow-Credentials", "true");
+    response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  }
+  if (request.method === "OPTIONS" && request.headers.origin === pagesOrigin) {
+    response.writeHead(204);
+    response.end();
+    return;
+  }
     try {
       const url = new URL(request.url, "http://127.0.0.1");
       const pathname = url.pathname;

@@ -46,10 +46,12 @@ const dateFormat = (value, options = { day: "2-digit", month: "short", year: "nu
 const shortDate = (value) => new Intl.DateTimeFormat("id-ID", { day: "2-digit", month: "short" }).format(value);
 const escapeHTML = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 
+const API_BASE = window.location.hostname.endsWith("github.io") ? "https://literate-enigma-p7jg4w5xpg57c9rj-3000.app.github.dev" : "";
 async function apiRequest(path, options = {}) {
   let response;
   try {
-    response = await fetch(path, {
+    response = await fetch(API_BASE + path, {
+      credentials: "include",
       ...options,
       headers: { ...(options.body ? { "Content-Type": "application/json" } : {}), ...options.headers }
     });
@@ -57,7 +59,7 @@ async function apiRequest(path, options = {}) {
     throw new Error("Backend tidak dapat dihubungi. Pastikan server Grace Shop sedang berjalan.");
   }
   const result = await response.json().catch(() => ({}));
-  if (response.status === 401) window.location.assign("/login");
+  if (response.status === 401) window.location.assign(API_BASE + "/login");
   if (!response.ok) throw new Error(result.error || `Permintaan gagal (${response.status}).`);
   return result;
 }
@@ -647,19 +649,19 @@ document.addEventListener("keydown", (event) => {
 render();
 initializeApp();
 
-// Tema gelap/terang Grace Shop: pilihan tersimpan di localStorage.
+// Tema Grace Shop (terang/gelap/OLED): pilihan tersimpan di localStorage.
 (function () {
   var STORAGE_KEY = "grace-shop-theme";
   var toggle = document.getElementById("themeToggle");
   var metaTheme = document.querySelector("meta[name=theme-color]");
   function syncMeta(theme) {
     if (metaTheme) {
-      metaTheme.setAttribute("content", theme === "dark" ? "#14161f" : "#f6f7fb");
+      metaTheme.setAttribute("content", theme === "oled" ? "#000000" : theme === "dark" ? "#14161f" : "#f6f7fb");
     }
   }
   function syncToggle(theme) {
     if (toggle) {
-      toggle.setAttribute("aria-label", theme === "dark" ? "Ubah ke tema terang" : "Ubah ke tema gelap");
+      toggle.setAttribute("aria-label", theme === "oled" ? "Ubah ke tema terang" : theme === "dark" ? "Ubah ke tema OLED" : "Ubah ke tema gelap");
     }
   }
   function applyTheme(theme) {
@@ -669,10 +671,10 @@ initializeApp();
     syncToggle(theme);
   }
   var initial = document.documentElement.getAttribute("data-theme");
-  if (initial !== "dark" && initial !== "light") {
+  if (initial !== "dark" && initial !== "light" && initial !== "oled") {
     var saved = null;
     try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) {}
-    if (saved !== "dark" && saved !== "light") {
+    if (saved !== "dark" && saved !== "light" && saved !== "oled") {
       saved = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
     applyTheme(saved);
@@ -683,7 +685,7 @@ initializeApp();
   if (toggle) {
     toggle.addEventListener("click", function () {
       var current = document.documentElement.getAttribute("data-theme");
-      applyTheme(current === "dark" ? "light" : "dark");
+      applyTheme(current === "light" ? "dark" : current === "dark" ? "oled" : "light");
     });
   }
 })();
