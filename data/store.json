@@ -1,0 +1,220 @@
+{
+  "products": [
+    {
+      "id": "PRD-001",
+      "name": "Kopi Susu Gula Aren",
+      "category": "Minuman",
+      "price": 18000,
+      "stock": 32,
+      "emoji": "☕"
+    },
+    {
+      "id": "PRD-002",
+      "name": "Croissant Butter",
+      "category": "Makanan",
+      "price": 22000,
+      "stock": 18,
+      "emoji": "🥐"
+    },
+    {
+      "id": "PRD-003",
+      "name": "Matcha Latte",
+      "category": "Minuman",
+      "price": 24000,
+      "stock": 21,
+      "emoji": "🍵"
+    },
+    {
+      "id": "PRD-004",
+      "name": "Roti Cokelat",
+      "category": "Makanan",
+      "price": 15000,
+      "stock": 27,
+      "emoji": "🥖"
+    },
+    {
+      "id": "PRD-005",
+      "name": "Es Teh Lemon",
+      "category": "Minuman",
+      "price": 12000,
+      "stock": 3,
+      "emoji": "🍋"
+    },
+    {
+      "id": "PRD-006",
+      "name": "Cookies Cokelat",
+      "category": "Snack",
+      "price": 10000,
+      "stock": 14,
+      "emoji": "🍪"
+    },
+    {
+      "id": "PRD-007",
+      "name": "Sandwich Ayam",
+      "category": "Makanan",
+      "price": 28000,
+      "stock": 11,
+      "emoji": "🥪"
+    },
+    {
+      "id": "PRD-008",
+      "name": "Air Mineral",
+      "category": "Minuman",
+      "price": 7000,
+      "stock": 40,
+      "emoji": "💧"
+    },
+    {
+      "id": "PRD-009",
+      "name": "Donat Gula",
+      "category": "Snack",
+      "price": 9000,
+      "stock": 2,
+      "emoji": "🍩"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "TRX-41703477-4216",
+      "customer": "Pelanggan umum",
+      "date": "2026-11-14T07:35:03.477Z",
+      "items": [
+        {
+          "productId": "PRD-008",
+          "name": "Air Mineral",
+          "price": 7000,
+          "qty": 1
+        },
+        {
+          "productId": "PRD-005",
+          "name": "Es Teh Lemon",
+          "price": 12000,
+          "qty": 1
+        },
+        {
+          "productId": "PRD-009",
+          "name": "Donat Gula",
+          "price": 9000,
+          "qty": 1
+        }
+      ],
+      "total": 28000,
+      "payment": "QRIS",
+      "status": "Dibatalkan"
+    },
+    {
+      "id": "TRX-24110801",
+      "customer": "Nadia Putri",
+      "date": "2026-11-14T03:53:29.034Z",
+      "items": [
+        {
+          "productId": "PRD-001",
+          "name": "Kopi Susu Gula Aren",
+          "price": 18000,
+          "qty": 2
+        },
+        {
+          "productId": "PRD-002",
+          "name": "Croissant Butter",
+          "price": 22000,
+          "qty": 1
+        }
+      ],
+      "total": 58000,
+      "payment": "Tunai",
+      "status": "Selesai"
+    },
+    {
+      "id": "TRX-24110802",
+      "customer": "Rizky Ramadhan",
+      "date": "2026-11-14T01:53:29.034Z",
+      "items": [
+        {
+          "productId": "PRD-003",
+          "name": "Matcha Latte",
+          "price": 24000,
+          "qty": 1
+        }
+      ],
+      "total": 24000,
+      "payment": "QRIS",
+      "status": "Selesai"
+    },
+    {
+      "id": "TRX-24110803",
+      "customer": "Siti Rahma",
+      "date": "2026-11-13T08:53:29.034Z",
+      "items": [
+        {
+          "productId": "PRD-007",
+          "name": "Sandwich Ayam",
+          "price": 28000,
+          "qty": 1
+        },
+        {
+          "productId": "PRD-006",
+          "name": "Cookies Cokelat",
+          "price": 10000,
+          "qty": 2
+        }
+      ],
+      "total": 48000,
+      "payment": "Transfer",
+      "status": "Selesai"
+    },
+    {
+      "id": "TRX-24110804",
+      "customer": "Budi Santoso",
+      "date": "2026-11-13T03:53:29.034Z",
+      "items": [
+        {
+          "productId": "PRD-005",
+          "name": "Es Teh Lemon",
+          "price": 12000,
+          "qty": 2
+        }
+      ],
+      "total": 24000,
+      "payment": "Tunai",
+      "status": "Selesai"
+    },
+    {
+      "id": "TRX-24110805",
+      "customer": "Dewi Anggraini",
+      "date": "2026-11-12T05:53:29.034Z",
+      "items": [
+        {
+          "productId": "PRD-004",
+          "name": "Roti Cokelat",
+          "price": 15000,
+          "qty": 2
+        },
+        {
+          "productId": "PRD-008",
+          "name": "Air Mineral",
+          "price": 7000,
+          "qty": 1
+        }
+      ],
+      "total": 37000,
+      "payment": "QRIS",
+      "status": "Selesai"
+    },
+    {
+      "id": "TRX-24110806",
+      "customer": "Andi Wijaya",
+      "date": "2026-11-11T08:53:29.034Z",
+      "items": [
+        {
+          "productId": "PRD-001",
+          "name": "Kopi Susu Gula Aren",
+          "price": 18000,
+          "qty": 1
+        }
+      ],
+      "total": 18000,
+      "payment": "Tunai",
+      "status": "Selesai"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+.env
+node_modules/
+data/admin.json
+server.log
+server.js.bak
+.vscode/

@@ -1,0 +1,17 @@
+{
+  "name": "grace-shop",
+  "version": "1.0.0",
+  "description": "Grace Shop - aplikasi kasir toko (dashboard penjualan)",
+  "private": true,
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test server.test.js",
+    "migrate": "node migrate_store.js",
+    "seed": "node seed_bigdata.js"
+  },
+  "dependencies": {
+    "mysql2": "^3.24.6"
+  }
+}
