@@ -25,6 +25,9 @@ function loadEnvFile() {
 loadEnvFile();
 
 function dbConfig(database) {
+  // DB_SSL=true untuk database cloud yang mewajibkan TLS (mis. TiDB Cloud
+  // Serverless di Render). Tanpa ini koneksi TLS ditolak.
+  const useSsl = process.env.DB_SSL === "true";
   return {
     host: process.env.DB_HOST || "127.0.0.1",
     port: Number(process.env.DB_PORT || 3306),
@@ -36,6 +39,7 @@ function dbConfig(database) {
     queueLimit: 0,
     decimalNumbers: true,
     timezone: "Z",
+    ...(useSsl ? { ssl: { minVersion: "TLSv1.2", rejectUnauthorized: true } } : {}),
   };
 }
 
