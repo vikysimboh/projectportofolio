@@ -186,7 +186,10 @@
         })
       });
       if (!res.ok) throw new Error("login gagal");
-      window.location.assign(API_BASE + "/app.html");
+      // Buka app.html di situs yang sama dengan landing ini (GitHub Pages),
+      // supaya memakai app.js yang sudah diperbaiki — bukan app.html backend
+      // di Codespace yang masih versi lama.
+      window.location.assign("app.html");
     } catch (err) {
       errorEl.textContent = "Tidak dapat masuk — periksa nama pengguna dan kata sandi, atau pastikan server Grace Shop sedang berjalan.";
       errorEl.style.display = "block";
