@@ -46,7 +46,7 @@ const dateFormat = (value, options = { day: "2-digit", month: "short", year: "nu
 const shortDate = (value) => new Intl.DateTimeFormat("id-ID", { day: "2-digit", month: "short" }).format(value);
 const escapeHTML = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 
-const API_BASE = window.location.hostname.endsWith("github.io") ? "https://literate-enigma-p7jg4w5xpg57c9rj-3000.app.github.dev" : "";
+const API_BASE = window.location.hostname.endsWith("github.io") ? "https://projectportofolio-production.up.railway.app" : "";
 async function apiRequest(path, options = {}) {
   let response;
   try {
