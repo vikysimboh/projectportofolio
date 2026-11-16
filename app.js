@@ -113,8 +113,8 @@ async function loadProductsPage(page) {
   const token = ++listToken;
   const data = await apiRequest("/api/products?" + productParams(page).toString());
   if (token !== listToken) return null;
-  productsPage = { page: data.page, limit: data.limit, total: data.total, totalPages: data.totalPages };
-  state = { ...state, products: data.products };
+  const pageProducts = Array.isArray(data.products) ? data.products : []; const pageTotal = Number(data.total) || pageProducts.length; const pageLimit = Number(data.limit) || productsPage.limit || 20; const pageTotalPages = Number(data.totalPages) || Math.max(Math.ceil(pageTotal / pageLimit), 1); productsPage = { page: Math.min(Number(data.page) || 1, pageTotalPages), limit: pageLimit, total: pageTotal, totalPages: pageTotalPages };
+  state = { ...state, products: pageProducts };
   return data;
 }
 
@@ -524,12 +524,12 @@ function drawSalesChart(transactions, days) {
   const padding = { top: 12, right: 8, bottom: 27, left: 43 };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
-  const bucketCount = Math.min(days, 7);
-  const points = Array.from({ length: bucketCount }, (_, index) => {
-    const bucketStartOffset = Math.floor(index * days / bucketCount);
-    const bucketEndOffset = Math.floor((index + 1) * days / bucketCount) - 1;
-    const startDaysAgo = days - 1 - bucketStartOffset;
-    const endDaysAgo = days - 1 - bucketEndOffset;
+  // Plot one point per calendar day, not a multi-day bucket.
+  const points = Array.from({ length: days }, (_, index) => {
+    const startDaysAgo = days - 1 - index;
+    const endDaysAgo = startDaysAgo;
+     
+     
     const start = new Date();
     start.setHours(0, 0, 0, 0);
     start.setDate(start.getDate() - startDaysAgo);
@@ -584,7 +584,7 @@ function drawSalesChart(transactions, days) {
     context.stroke();
     context.fillStyle = "#a3a6b3";
     context.textAlign = "center";
-    context.fillText(shortDate(points[index].date), point.x, height - 11);
+    if (days <= 7 || index % 5 === 0 || index === points.length - 1) context.fillText(shortDate(points[index].date), point.x, height - 11);
   });
 }
 
