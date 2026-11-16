@@ -1,4 +1,4 @@
-# Grace Shop — Aplikasi Penjualan
+# TokoPintar — Aplikasi Penjualan
 
 Aplikasi web penjualan sederhana berbahasa Indonesia dengan dashboard analitik, kasir, katalog produk, transaksi, dan laporan.
 

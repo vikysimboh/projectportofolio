@@ -42,7 +42,7 @@ function applyRoleVisibility() {
   const name = document.querySelector("#profileName");
   const role = document.querySelector("#profileRole");
   const avatar = document.querySelector("#profileAvatar");
-  if (name) name.textContent = state.user ? state.user.username : "Admin Grace Shop";
+  if (name) name.textContent = state.user ? state.user.username : "Admin TokoPintar";
   if (role) role.textContent = state.user ? (state.user.role === "admin" ? "Administrator" : "Kasir") : "Administrator";
   if (avatar) avatar.textContent = state.user ? state.user.username.slice(0, 2).toUpperCase() : "AK";
 }
@@ -64,7 +64,7 @@ async function apiRequest(path, options = {}) {
       headers: { ...(options.body ? { "Content-Type": "application/json" } : {}), ...options.headers }
     });
   } catch (error) {
-    throw new Error("Backend tidak dapat dihubungi. Pastikan server Grace Shop sedang berjalan.");
+    throw new Error("Backend tidak dapat dihubungi. Pastikan server TokoPintar sedang berjalan.");
   }
   const result = await response.json().catch(() => ({}));
   // Sesi habis: kembali ke halaman landing (form login ada di sana).
@@ -161,7 +161,7 @@ function showToast(message, isError = false) {
 }
 
 function heading(title, description, actions = "") {
-  return `<div class="page-heading"><div><div class="eyebrow">Grace Shop / ${escapeHTML(title)}</div><h1>${escapeHTML(title)}</h1><p>${escapeHTML(description)}</p></div><div class="heading-actions">${actions}</div></div>`;
+  return `<div class="page-heading"><div><div class="eyebrow">TokoPintar / ${escapeHTML(title)}</div><h1>${escapeHTML(title)}</h1><p>${escapeHTML(description)}</p></div><div class="heading-actions">${actions}</div></div>`;
 }
 
 function transactionsForDays(days) {
@@ -658,20 +658,20 @@ async function renderReports() {
 async function renderUsers() {
   const token = navToken;
   if (!isAdmin()) {
-    content.innerHTML = `${heading("Pengguna", "Kelola akun pengguna Grace Shop.", "")}<div class="empty-state"><strong>Akses ditolak</strong>Halaman ini hanya untuk admin.</div>`;
+    content.innerHTML = `${heading("Pengguna", "Kelola akun pengguna TokoPintar.", "")}<div class="empty-state"><strong>Akses ditolak</strong>Halaman ini hanya untuk admin.</div>`;
     return;
   }
-  content.innerHTML = `${heading("Pengguna", "Kelola akun pengguna Grace Shop.", "")}<div class="empty-state"><strong>Memuat pengguna...</strong></div>`;
+  content.innerHTML = `${heading("Pengguna", "Kelola akun pengguna TokoPintar.", "")}<div class="empty-state"><strong>Memuat pengguna...</strong></div>`;
   try {
     const result = await apiRequest("/api/users");
     if (token !== navToken) return;
     users = result.users || [];
   } catch (error) {
     if (token !== navToken) return;
-    content.innerHTML = `${heading("Pengguna", "Kelola akun pengguna Grace Shop.", "")}<div class="empty-state"><strong>Daftar pengguna tidak dapat dimuat</strong>${escapeHTML(error.message || "")}</div>`;
+    content.innerHTML = `${heading("Pengguna", "Kelola akun pengguna TokoPintar.", "")}<div class="empty-state"><strong>Daftar pengguna tidak dapat dimuat</strong>${escapeHTML(error.message || "")}</div>`;
     return;
   }
-  content.innerHTML = `${heading("Pengguna", "Kelola akun pengguna Grace Shop.", "")}
+  content.innerHTML = `${heading("Pengguna", "Kelola akun pengguna TokoPintar.", "")}
     <section class="panel" style="max-width:560px">
       <div class="panel-heading"><div><h2>Tambah pengguna</h2><p>Buat akun kasir atau admin baru.</p></div></div>
       <form id="userForm"><div class="form-grid">
@@ -1025,7 +1025,7 @@ document.addEventListener("keydown", (event) => {
 render();
 initializeApp();
 
-// Tema Grace Shop (terang/gelap/OLED): pilihan tersimpan di localStorage.
+// Tema TokoPintar (terang/gelap/OLED): pilihan tersimpan di localStorage.
 (function () {
   var STORAGE_KEY = "grace-shop-theme";
   var toggle = document.getElementById("themeToggle");

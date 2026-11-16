@@ -264,8 +264,8 @@ function escapeHtml(value) {
 
 function authPage(mode, errorMessage) {
   const isSetup = mode === "setup";
-  const title = isSetup ? "Buat akun admin - Grace Shop" : "Masuk - Grace Shop";
-  const heading = isSetup ? "Buat akun admin" : "Masuk ke Grace Shop";
+  const title = isSetup ? "Buat akun admin - TokoPintar" : "Masuk - TokoPintar";
+  const heading = isSetup ? "Buat akun admin" : "Masuk ke TokoPintar";
   const description = isSetup ? "Buat akun admin pertama untuk mengelola toko." : "Masuk dengan akun admin atau kasir Anda.";
   const action = isSetup ? "/setup" : "/login";
   const button = isSetup ? "Buat akun admin" : "Masuk";
@@ -282,7 +282,7 @@ function authPage(mode, errorMessage) {
 </head>
 <body>
 <main class="auth-card">
-<div class="auth-brand"><span class="auth-logo" aria-hidden="true">G</span><span class="auth-brand-name">Grace Shop</span></div>
+<div class="auth-brand"><span class="auth-logo" aria-hidden="true">G</span><span class="auth-brand-name">TokoPintar</span></div>
 <h1>${heading}</h1>
 <p class="auth-sub">${description}</p>
 ${error}
@@ -811,7 +811,7 @@ if (require.main === module) {
   server.ready.then(() => {
     warmupAnalytics(server.pool);
     server.listen(PORT, HOST, () => {
-      console.log("Grace Shop berjalan di http://" + HOST + ":" + PORT);
+      console.log("TokoPintar berjalan di http://" + HOST + ":" + PORT);
     });
   }).catch((error) => {
     console.error("Backend gagal dimulai:", error);

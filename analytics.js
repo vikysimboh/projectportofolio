@@ -1,6 +1,6 @@
 "use strict";
 
-// Modul agregasi analisis Grace Shop — SATU sumber hitungan untuk:
+// Modul agregasi analisis TokoPintar — SATU sumber hitungan untuk:
 //   - endpoint GET /api/analytics (dashboard)
 //   - skrip ekspor CSV (exports/)
 // Semua angka memakai transaksi status "Selesai" sebagai pendapatan.
