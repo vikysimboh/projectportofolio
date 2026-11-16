@@ -327,3 +327,77 @@ test("Analytics endpoint returns aggregates for admin and rejects other roles", 
   assert.equal(myTop.sold, 2);
   assert.equal(myTop.revenue, 10000);
 });
+
+test("Products API paginates server-side and supports search and category filters", async (t) => {
+  const world = makeWorld();
+  await world.start();
+  t.after(async () => { await world.stop(); });
+  await world.setupAdmin();
+  const names = ["PaginasiUnik Alpha", "PaginasiUnik Beta", "PaginasiUnik Gamma"];
+  for (const name of names) {
+    const created = await world.request("/api/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, category: "Snack", emoji: TEST_EMOJI, price: 1000, stock: 5 }),
+    });
+    assert.equal(created.status, 201, JSON.stringify(created.body));
+  }
+  const page1 = await world.request("/api/products?limit=2&page=1");
+  assert.equal(page1.status, 200);
+  assert.equal(page1.body.products.length, 2);
+  assert.equal(page1.body.page, 1);
+  assert.equal(page1.body.limit, 2);
+  assert.ok(page1.body.total >= 3);
+  assert.equal(page1.body.totalPages, Math.ceil(page1.body.total / 2));
+  const page2 = await world.request("/api/products?limit=2&page=2");
+  assert.equal(page2.status, 200);
+  assert.ok(page2.body.products.length >= 1);
+  assert.equal(page2.body.page, 2);
+  const ids1 = new Set(page1.body.products.map((item) => item.id));
+  for (const item of page2.body.products) assert.ok(!ids1.has(item.id));
+  const search = await world.request("/api/products?search=PaginasiUnik&limit=100&page=1");
+  assert.equal(search.status, 200);
+  assert.equal(search.body.total, 3);
+  assert.equal(search.body.products.length, 3);
+  for (const item of search.body.products) assert.ok(item.name.includes("PaginasiUnik"));
+  const byCategory = await world.request("/api/products?category=Snack&limit=100&page=1");
+  assert.equal(byCategory.status, 200);
+  assert.ok(byCategory.body.products.length >= 3);
+  for (const item of byCategory.body.products) assert.equal(item.category, "Snack");
+});
+
+test("State summary returns only stats and user, and stats refresh after checkout", async (t) => {
+  const world = makeWorld();
+  await world.start();
+  t.after(async () => { await world.stop(); });
+  await world.setupAdmin();
+  const summary = await world.request("/api/state?summary=1");
+  assert.equal(summary.status, 200);
+  assert.ok(summary.body.stats);
+  assert.ok(summary.body.user);
+  assert.equal(summary.body.products, undefined);
+  assert.equal(summary.body.transactions, undefined);
+  assert.equal(typeof summary.body.stats.totalProducts, "number");
+  const full = await world.request("/api/state");
+  assert.equal(full.status, 200);
+  assert.ok(Array.isArray(full.body.products));
+  assert.ok(Array.isArray(full.body.transactions));
+  const beforeTx = summary.body.stats.totalTransactions;
+  const beforeRevenue = summary.body.stats.totalRevenue;
+  const created = await world.request("/api/products", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: "Produk Ringkasan", category: "Minuman", emoji: TEST_EMOJI, price: 7000, stock: 10 }),
+  });
+  assert.equal(created.status, 201);
+  const checkout = await world.request("/api/checkout", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ customer: "Pembeli Ringkasan", payment: "Tunai", items: [{ productId: created.body.product.id, qty: 3 }] }),
+  });
+  assert.equal(checkout.status, 201);
+  const after = await world.request("/api/state?summary=1");
+  assert.equal(after.status, 200);
+  assert.equal(after.body.stats.totalTransactions, beforeTx + 1);
+  assert.equal(after.body.stats.totalRevenue, beforeRevenue + 21000);
+});

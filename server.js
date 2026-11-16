@@ -14,6 +14,13 @@ const SESSION_COOKIE = "kasirku_session";
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
 const RECENT_TRANSACTIONS_LIMIT = 200;
 
+const STATS_CACHE_TTL_MS = 5 * 60 * 1000;
+const statsCacheByPool = new WeakMap();
+
+function invalidateStatsCache(pool) {
+  statsCacheByPool.delete(pool);
+}
+
 class HttpError extends Error {
   constructor(status, message) {
     super(message);
@@ -140,12 +147,15 @@ async function listRecentTransactions(pool, limit) {
   return transactions.map((row) => rowToTransaction(row, itemsByTransaction));
 }
 
-async function getStats(pool) {
+async function computeStats(pool) {
   const totalProducts = await pool.query("SELECT COUNT(*) AS total FROM products");
   const totalTransactions = await pool.query("SELECT COUNT(*) AS total FROM transactions");
   const revenue = await pool.query("SELECT COALESCE(SUM(total), 0) AS total FROM transactions WHERE status = ?", ["Selesai"]);
-  const today = await pool.query("SELECT COUNT(*) AS count, COALESCE(SUM(total), 0) AS total FROM transactions WHERE status = ? AND DATE(date) = CURDATE()", ["Selesai"]);
+  const today = await pool.query("SELECT COUNT(*) AS count, COALESCE(SUM(total), 0) AS total FROM transactions WHERE status = ? AND date >= CURDATE() AND date < DATE_ADD(CURDATE(), INTERVAL 1 DAY)", ["Selesai"]);
   const lowStock = await pool.query("SELECT COUNT(*) AS total FROM products WHERE stock <= 5");
+  const healthyStock = await pool.query("SELECT COUNT(*) AS total FROM products WHERE stock >= 5");
+  const inventory = await pool.query("SELECT COALESCE(SUM(price * stock), 0) AS total FROM products");
+  const todayItems = await pool.query("SELECT COALESCE(SUM(ti.qty), 0) AS total FROM transaction_items ti JOIN transactions t ON t.id = ti.transaction_id WHERE t.status = ? AND t.date >= CURDATE() AND t.date < DATE_ADD(CURDATE(), INTERVAL 1 DAY)", ["Selesai"]);
   const salesByDay = await pool.query("SELECT DATE(date) AS day, COUNT(*) AS count, COALESCE(SUM(total), 0) AS total FROM transactions WHERE status = ? AND date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) GROUP BY DATE(date) ORDER BY day", ["Selesai"]);
   return {
     totalProducts: totalProducts[0][0].total,
@@ -154,8 +164,26 @@ async function getStats(pool) {
     transactionsToday: today[0][0].count,
     revenueToday: today[0][0].total,
     lowStockCount: lowStock[0][0].total,
+    healthyStockCount: healthyStock[0][0].total,
+    inventoryValue: inventory[0][0].total,
+    itemsToday: todayItems[0][0].total,
     salesByDay: salesByDay[0].map((row) => ({ date: row.day instanceof Date ? row.day.toISOString().slice(0, 10) : String(row.day).slice(0, 10), count: row.count, total: row.total }))
   };
+}
+
+async function getStats(pool) {
+  const cached = statsCacheByPool.get(pool);
+  if (cached && cached.stats && Date.now() - cached.at < STATS_CACHE_TTL_MS) return cached.stats;
+  if (cached && cached.promise) return cached.promise;
+  const promise = computeStats(pool).then((stats) => {
+    statsCacheByPool.set(pool, { stats, at: Date.now(), promise: null });
+    return stats;
+  }).catch((error) => {
+    statsCacheByPool.delete(pool);
+    throw error;
+  });
+  statsCacheByPool.set(pool, { stats: null, at: 0, promise });
+  return promise;
 }
 
 async function buildState(pool, session) {
@@ -534,6 +562,10 @@ function createAppServer(options = {}) {
         return redirect(response, "/setup");
       }
 
+      if (method !== "GET" && (pathname === "/api/checkout" || pathname.startsWith("/api/products") || pathname.startsWith("/api/transactions/"))) {
+        invalidateStatsCache(pool);
+      }
+
       if (pathname === "/app.html") {
         return serveStatic(response, publicRoot, "app.html");
       }
@@ -543,6 +575,10 @@ function createAppServer(options = {}) {
 
       if (pathname === "/api/state") {
         if (method !== "GET") throw new HttpError(405, "Metode tidak diizinkan.");
+        if (url.searchParams.get("summary") === "1") {
+          const stats = await getStats(pool);
+          return sendJson(response, 200, { stats, user: { username: session.username, role: session.role } });
+        }
         const state = await buildState(pool, session);
         return sendJson(response, 200, state);
   }
@@ -561,8 +597,34 @@ function createAppServer(options = {}) {
 
       if (pathname === "/api/products") {
         if (method === "GET") {
-          const products = await listProducts(pool);
-          return sendJson(response, 200, { products });
+          const page = Math.max(parseInt(url.searchParams.get("page") || "1", 10) || 1, 1);
+          const limit = Math.min(Math.max(parseInt(url.searchParams.get("limit") || "20", 10) || 20, 1), 1000);
+          const search = (url.searchParams.get("search") || "").trim();
+          const category = (url.searchParams.get("category") || "").trim();
+          const maxStockRaw = url.searchParams.get("maxStock");
+          const maxStock = maxStockRaw === null || maxStockRaw === "" ? null : Number(maxStockRaw);
+          const where = [];
+          const params = [];
+          if (search) {
+            where.push("(name LIKE ? OR id LIKE ? OR category LIKE ?)");
+            params.push("%" + search + "%", "%" + search + "%", "%" + search + "%");
+          }
+          if (category && category !== "Semua") {
+            where.push("category = ?");
+            params.push(category);
+          }
+          if (maxStock !== null && !Number.isNaN(maxStock)) {
+            where.push("stock <= ?");
+            params.push(maxStock);
+          }
+          const whereSql = where.length > 0 ? " WHERE " + where.join(" AND ") : "";
+          const totalRows = await pool.query("SELECT COUNT(*) AS total FROM products" + whereSql, params);
+          const total = totalRows[0][0].total;
+          const totalPages = Math.max(Math.ceil(total / limit), 1);
+          const safePage = Math.min(page, totalPages);
+          const offset = (safePage - 1) * limit;
+          const rows = await pool.query("SELECT id, name, category, emoji, price, stock FROM products" + whereSql + " ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?", [...params, limit, offset]);
+          return sendJson(response, 200, { products: rows[0].map(rowToProduct), total, page: safePage, limit, totalPages });
         }
         if (method === "POST") {
           if (!requireRole(session, response, ["admin"])) return;
@@ -639,11 +701,16 @@ function createAppServer(options = {}) {
         const limit = Math.min(Math.max(parseInt(url.searchParams.get("limit") || "100", 10) || 100, 1), 500);
         const offset = Math.max(parseInt(url.searchParams.get("offset") || "0", 10) || 0, 0);
         const search = (url.searchParams.get("search") || "").trim();
+        const status = (url.searchParams.get("status") || "").trim();
         const where = [];
         const params = [];
         if (search) {
           where.push("(id LIKE ? OR customer LIKE ?)");
           params.push("%" + search + "%", "%" + search + "%");
+        }
+        if (status && status !== "Semua status") {
+          where.push("status = ?");
+          params.push(status);
         }
         const whereSql = where.length > 0 ? " WHERE " + where.join(" AND ") : "";
         const totalRows = await pool.query("SELECT COUNT(*) AS total FROM transactions" + whereSql, params);

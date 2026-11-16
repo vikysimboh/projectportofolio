@@ -23,7 +23,9 @@ CREATE TABLE IF NOT EXISTS transactions (
   status ENUM('Selesai','Dibatalkan') NOT NULL DEFAULT 'Selesai',
   PRIMARY KEY (id),
   INDEX idx_transactions_date (date),
-  INDEX idx_transactions_status (status)
+  INDEX idx_transactions_status (status),
+  INDEX idx_transactions_status_date_total (status, date, total),
+  INDEX idx_transactions_status_date_payment_total (status, date, payment, total)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS transaction_items (
