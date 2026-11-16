@@ -59,14 +59,17 @@ async function apiRequest(path, options = {}) {
     throw new Error("Backend tidak dapat dihubungi. Pastikan server Grace Shop sedang berjalan.");
   }
   const result = await response.json().catch(() => ({}));
-  if (response.status === 401) window.location.assign(API_BASE + "/login");
+  // Sesi habis: kembali ke halaman landing (form login ada di sana).
+  if (response.status === 401) window.location.assign(window.location.origin + window.location.pathname.replace(/app\.html$/, ""));
   if (!response.ok) throw new Error(result.error || `Permintaan gagal (${response.status}).`);
   return result;
 }
 
 // Logout lintas situs: form "Keluar" memakai action relatif "/logout" yang
 // tidak ada di GitHub Pages, sehingga sesi tidak pernah terhapus. Kirim
-// logout ke backend lewat API_BASE, lalu buka halaman login backend.
+// logout ke backend lewat API_BASE, lalu kembali ke halaman landing
+// (form login ada di landing, bukan di halaman login terpisah).
+const landingUrl = () => window.location.origin + window.location.pathname.replace(/app\.html$/, "");
 const logoutForm = document.querySelector(".logout-form");
 if (logoutForm) {
   logoutForm.addEventListener("submit", async (event) => {
@@ -74,9 +77,9 @@ if (logoutForm) {
     try {
       await fetch(API_BASE + "/logout", { method: "POST", credentials: "include" });
     } catch (error) {
-      // Tetap arahkan ke halaman login walau panggilan logout gagal.
+      // Tetap arahkan ke halaman landing walau panggilan logout gagal.
     }
-    window.location.assign(API_BASE + "/login");
+    window.location.assign(landingUrl());
   });
 }
 
