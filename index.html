@@ -70,7 +70,7 @@ body::before {
 .login-field label { display: block; font-size: 12px; color: #e2e8f0; margin-bottom: 4px; }
 .login-field input {
   width: 100%;
-  padding: 8px 10px;
+  10px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(0, 0, 0, 0.45);
@@ -134,6 +134,10 @@ body::before {
 .footer { padding: 28px 0 40px; border-top: 1px solid var(--line); color: #94a3b8; font-size: 14px; }
 .footer-inner { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .footer a { color: var(--cyan); text-decoration: none; }
+.wa-footer { margin: 0; }
+.wa-footer a { color: var(--cyan); text-decoration: none; border: 1px solid rgba(139, 92, 246, 0.45); background: rgba(139, 92, 246, 0.12); padding: 6px 12px; border-radius: 999px; box-shadow: 0 0 18px rgba(34, 211, 238, 0.18); }
+.wa-footer a:hover { color: #fff; border-color: var(--cyan); }
+.wa-help:hover { text-decoration: underline; }
 @media (max-width: 760px) {
   .top { position: static; }
   .top-inner { flex-direction: column; align-items: stretch; gap: 14px; padding: 14px 0; }
@@ -165,6 +169,7 @@ body::before {
         <button class="btn login-submit" id="loginButton" type="submit">Masuk</button>
       </form>
 <p class="login-help"><a id="backendLoginLink" href="/login" target="_blank" rel="noopener">Buat baru</a></p>
+      <p class="login-help"><a class="wa-help" href="https://wa.me/621358785835?text=Halo%2C%20saya%20butuh%20bantuan%20dengan%20TokoPintar" target="_blank" rel="noopener">Butuh bantuan?</a></p>
     </div>
   </div>
 </header>
@@ -258,6 +263,7 @@ body::before {
   <div class="wrap footer-inner">
     <div>© 2026 TokoPintar · Aplikasi kasir POS modern untuk toko Anda.</div>
     <div><a href="#">Tentang</a> · <a href="#">Kontak</a> · <a href="#">Bantuan</a></div>
+      <p class="wa-footer"><a href="https://wa.me/621358785835?text=Halo%2C%20saya%20butuh%20bantuan%20dengan%20TokoPintar" target="_blank" rel="noopener">Butuh bantuan? Hubungi kami via WhatsApp</a></p>
   </div>
 </footer>
 <script>
