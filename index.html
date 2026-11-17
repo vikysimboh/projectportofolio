@@ -1,197 +1,294 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>TokoPintar — Toko &amp; Kasir</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TokoPintar — Aplikasi Kasir POS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..900&family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
 <style>
-  /* Gaya biru-putih modern, terinspirasi template Canva:
-     "Blue Modern App Landing Page" + "Blue and White Clean Login" */
-  :root {
-    --bg: #f5f7ff;
-    --surface: #ffffff;
-    --surface-2: #eef2ff;
-    --line: #dbe3f5;
-    --ink: #16213e;
-    --muted: #5b6b8c;
-    --blue: #2563eb;
-    --blue-dark: #1d4ed8;
-    --blue-soft: #dbeafe;
-    --blue-gradient: linear-gradient(135deg, #2563eb, #38bdf8);
-  }
-  * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.6; }
-  a { color: var(--blue); }
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
-  header.top { position: sticky; top: 0; background: rgba(255,255,255,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); z-index: 10; }
-  .top-inner { display: flex; align-items: center; justify-content: space-between; min-height: 60px; }
-  .brand { font-weight: 800; font-size: 20px; }
-  .brand span { color: var(--blue); }
-  .btn { display: inline-block; background: var(--blue-gradient); color: #fff; font-weight: 700; padding: 12px 22px; border-radius: 999px; text-decoration: none; border: 0; cursor: pointer; }
-  .btn:hover { filter: brightness(1.08); }
-  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
-  .hero { padding: 56px 0 48px; background: linear-gradient(180deg, #dbeafe 0%, #f5f7ff 100%); }
-  .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 32px; align-items: center; }
-  .hero h1 { font-size: 52px; line-height: 1.05; margin: 0 0 14px; }
-  .hero h1 span { color: var(--blue); }
-  .hero p { color: var(--muted); font-size: 18px; max-width: 560px; margin: 0 0 24px; }
-  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
-  .hero-points { margin: 24px 0 0; padding: 0; list-style: none; display: flex; gap: 16px; flex-wrap: wrap; color: var(--muted); font-size: 14px; }
-  .hero-points li::before { content: "✓ "; color: var(--blue); font-weight: 800; }
-  /* Kartu login — gaya Canva biru-putih: panel putih, tombol biru */
-  .login-card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 28px 26px 22px; box-shadow: 0 18px 50px rgba(37,99,235,.14); }
-  .login-card h2 { font-size: 22px; margin: 0 0 4px; }
-  .login-card .login-sub { color: var(--muted); font-size: 14px; margin: 0 0 4px; }
-  .login-error { display: none; background: #fdecec; color: #b3261e; border: 1px solid #f5c6c6; border-radius: 8px; padding: 10px 12px; margin-top: 14px; font-size: 14px; }
-  .login-field { margin-top: 16px; }
-  .login-field label { display: block; margin: 0 0 6px; font-weight: 600; font-size: 14px; }
-  .login-field input { width: 100%; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; font-size: 15px; background: #fff; color: var(--ink); outline: none; }
-  .login-field input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.25); }
-  .login-submit { margin-top: 20px; width: 100%; padding: 13px; font-size: 16px; }
-  .login-help { margin: 16px 0 0; text-align: center; color: var(--muted); font-size: 12.5px; }
-  section { padding: 44px 0; }
-  h2 { font-size: 28px; margin: 0 0 8px; }
-  .sub { color: var(--muted); margin: 0 0 24px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
-  .card .emoji { font-size: 34px; }
-  .card h3 { margin: 10px 0 4px; font-size: 18px; }
-  .card p { color: var(--muted); margin: 0; }
-  .tag { display: inline-block; font-size: 12px; color: var(--blue); border: 1px solid var(--line); background: var(--surface-2); padding: 3px 10px; border-radius: 999px; }
-  .price { font-weight: 800; font-size: 18px; margin-top: 12px; }
-  .cta-band { background: var(--blue-gradient); color: #fff; border-radius: 20px; padding: 36px 24px; text-align: center; }
-  .cta-band .sub { color: rgba(255,255,255,.85); }
-  .cta-band .btn { background: #fff; color: var(--blue-dark); }
-  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); background: #fff; }
-  .foot-inner { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
-  @media (max-width: 760px) { .hero-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 38px; } }
+/* Tema OLED TokoPintar — hitam pekat (#000) + glow violet/cyan, kaca (glassmorphism). Hanya untuk landing page ini. */
+:root {
+  --bg: #000;
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-2: rgba(255, 255, 255, 0.09);
+  --line: rgba(255, 255, 255, 0.14);
+  --ink: #f8fafc;
+  --muted: #cbd5e1;
+  --violet: #a78bfa;
+  --cyan: #22d3ee;
+  --gradient: linear-gradient(135deg, #8b5cf6, #22d3ee);
+  --danger-bg: rgba(127, 29, 29, 0.55);
+  --danger-ink: #fecaca;
+  --danger-line: rgba(248, 113, 113, 0.45);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Manrope, "DM Sans", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(640px 420px at 12% -4%, rgba(139, 92, 246, 0.38), transparent 62%),
+    radial-gradient(720px 460px at 88% 6%, rgba(34, 211, 238, 0.30), transparent 62%),
+    radial-gradient(560px 520px at 50% 112%, rgba(139, 92, 246, 0.20), transparent 62%);
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.top-inner { display: flex; align-items: center; gap: 24px; padding: 16px 0; }
+.brand { font-family: "DM Sans", sans-serif; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: #fff; white-space: nowrap; }
+.brand span { background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+/* Kartu login ringkas di sudut kanan atas header — glassmorphism */
+.login-card {
+  margin-left: auto;
+  width: min(380px, 100%);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 18px;
+  padding: 16px 18px 14px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6), 0 0 42px rgba(139, 92, 246, 0.16);
+  backdrop-filter: blur(16px);
+}
+.login-card h2 { margin: 0 0 4px; font-size: 18px; font-family: "DM Sans", sans-serif; }
+.login-sub { margin: 0 0 10px; color: var(--muted); font-size: 13px; }
+#loginForm { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
+.login-field { margin-top: 10px; }
+.login-field label { display: block; font-size: 13px; color: #e2e8f0; margin-bottom: 6px; }
+.login-field input {
+  width: 100%;
+  padding: 10px 11px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--ink);
+  font-size: 14px;
+  outline: none;
+}
+.login-field input::placeholder { color: #64748b; }
+.login-field input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.25); }
+.login-submit { grid-column: 1 / -1; margin-top: 12px; width: 100%; }
+.login-error {
+  display: none;
+  margin: 10px 0 0;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: var(--danger-bg);
+  color: var(--danger-ink);
+  border: 1px solid var(--danger-line);
+  font-size: 13px;
+}
+.login-help { margin: 10px 0 0; font-size: 12px; color: #94a3b8; }
+.login-help a { color: var(--cyan); }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  background: var(--gradient);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(139, 92, 246, 0.45);
+}
+.btn:disabled { opacity: 0.6; cursor: wait; }
+.btn-ghost { background: rgba(255, 255, 255, 0.07); color: var(--ink); border: 1px solid var(--line); box-shadow: none; }
+.hero { padding: 64px 0 52px; }
+.hero-grid { max-width: 760px; margin: 0 auto; text-align: center; }
+.hero h1 { font-size: 52px; line-height: 1.05; margin: 0 0 18px; font-family: "DM Sans", sans-serif; letter-spacing: -0.03em; }
+.hero h1 span { background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero p { color: var(--muted); font-size: 18px; line-height: 1.7; margin: 0 auto 26px; max-width: 640px; }
+.hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.hero-points { margin: 28px 0 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; list-style: none; padding: 0; }
+.hero-points li { border: 1px solid var(--line); background: var(--surface); color: #e2e8f0; padding: 9px 13px; border-radius: 999px; font-size: 13px; }
+.section { padding: 28px 0 64px; }
+.section h2 { font-family: "DM Sans", sans-serif; font-size: 30px; margin: 0 0 8px; }
+.section .sub { color: var(--muted); margin: 0 0 24px; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.card { border: 1px solid rgba(255, 255, 255, 0.10); background: var(--surface); border-radius: 16px; padding: 20px; }
+.card h3 { margin: 0 0 8px; font-size: 18px; }
+.card p { margin: 0; color: var(--muted); line-height: 1.6; }
+.tag { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: #67e8f9; background: rgba(34, 211, 238, 0.12); border: 1px solid rgba(34, 211, 238, 0.30); padding: 5px 9px; border-radius: 999px; margin-bottom: 12px; }
+.cta-band { border-radius: 20px; padding: 32px; background: linear-gradient(135deg, #7c3aed, #0891b2); color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-shadow: 0 18px 48px rgba(124, 58, 237, 0.35); }
+.cta-band h2 { margin: 0 0 6px; font-size: 26px; font-family: "DM Sans", sans-serif; }
+.cta-band p { margin: 0; opacity: 0.92; }
+.cta-band .btn { background: #fff; color: #4c1d95; box-shadow: none; }
+.footer { padding: 28px 0 40px; border-top: 1px solid var(--line); color: #94a3b8; font-size: 14px; }
+.footer-inner { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.footer a { color: var(--cyan); text-decoration: none; }
+@media (max-width: 760px) {
+  .top { position: static; }
+  .top-inner { flex-direction: column; align-items: stretch; gap: 14px; padding: 14px 0; }
+  .login-card { width: 100%; }
+  #loginForm { grid-template-columns: 1fr; }
+  .hero { padding: 40px 0 36px; }
+  .hero h1 { font-size: 38px; }
+  .grid { grid-template-columns: 1fr; }
+  .cta-band { flex-direction: column; align-items: flex-start; }
+}
 </style>
 </head>
 <body>
 <header class="top">
   <div class="wrap top-inner">
     <div class="brand">Toko<span>Pintar</span></div>
-    <a class="btn" href="#masuk">Masuk</a>
+    <div class="login-card" id="masuk">
+      <h2>Masuk ke Aplikasi Kasir</h2>
+      <p class="login-sub">Login untuk membuka dashboard kasir dan kelola toko.</p>
+      <p class="login-error" id="loginError" role="alert"></p>
+      <form id="loginForm">
+        <div class="login-field">
+          <label for="username">Nama pengguna</label>
+          <input id="username" name="username" type="text" placeholder="contoh: Admin" autocomplete="username" required />
+        </div>
+        <div class="login-field">
+          <label for="password">Kata sandi</label>
+          <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
+        </div>
+        <button class="btn login-submit" id="loginButton" type="submit">Masuk</button>
+      </form>
+      <p class="login-help">Akun baru? <a id="backendLoginLink" href="/login" target="_blank" rel="noopener">Buka halaman login backend</a></p>
+    </div>
   </div>
 </header>
-<main>
-  <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <h1>Toko<span>Pintar</span></h1>
-        <p>Toko kelontong dan kasir dalam satu tempat. Belanja kebutuhan harian, kelola stok, dan pantau penjualan dengan mudah.</p>
-        <div class="hero-cta">
-          <a class="btn btn-ghost" href="#produk">Lihat Produk Unggulan</a>
-        </div>
-        <ul class="hero-points">
-          <li>Kasir POS cepat</li>
-          <li>Stok terpantau</li>
-          <li>Laporan penjualan</li>
-        </ul>
-      </div>
-      <div class="login-card" id="masuk">
-        <h2>Masuk ke TokoPintar</h2>
-        <p class="login-sub">Masuk dengan akun admin atau kasir Anda.</p>
-        <p class="login-error" id="loginError">Nama pengguna atau kata sandi salah.</p>
-        <form id="loginForm">
-          <div class="login-field">
-            <label for="username">Nama pengguna</label>
-            <input id="username" name="username" autocomplete="username" required maxlength="64" />
-          </div>
-          <div class="login-field">
-            <label for="password">Kata sandi</label>
-            <input id="password" type="password" name="password" autocomplete="current-password" required maxlength="256" />
-          </div>
-          <button type="submit" class="btn login-submit" id="loginButton">Masuk</button>
-        </form>
-        <p class="login-help">Admin mengelola toko &amp; pengguna &middot; Kasir melayani penjualan di POS<br /><a href="#" id="backendLoginLink">Buka halaman login lama</a> bila form ini tidak merespons.</p>
-      </div>
-    </div>
-  </section>
-  <section id="produk">
-    <div class="wrap">
-      <h2>Produk Unggulan</h2>
-      <p class="sub">Pilihan favorit pelanggan TokoPintar — harga sesuai katalog toko.</p>
-      <div class="grid">
-        <article class="card"><div class="emoji">&#129473;</div><span class="tag">Snack</span><h3>Cupcake Pandan</h3><p>Cupcake lembut aroma pandan.</p><div class="price">Rp23.500</div></article>
-        <article class="card"><div class="emoji">&#129473;</div><span class="tag">Snack</span><h3>Cupcake Cokelat</h3><p>Cupcake cokelat manis dan lembut.</p><div class="price">Rp11.500</div></article>
-        <article class="card"><div class="emoji">&#9749;</div><span class="tag">Minuman</span><h3>Kopi Susu Gula Aren</h3><p>Kopi susu manis gula aren.</p><div class="price">Rp18.000</div></article>
-        <article class="card"><div class="emoji">&#129360;</div><span class="tag">Makanan</span><h3>Croissant Butter</h3><p>Croissant renyah berlapis mentega.</p><div class="price">Rp22.000</div></article>
-        <article class="card"><div class="emoji">&#127861;</div><span class="tag">Minuman</span><h3>Matcha Latte</h3><p>Latte matcha yang lembut.</p><div class="price">Rp24.000</div></article>
-        <article class="card"><div class="emoji">&#129386;</div><span class="tag">Makanan</span><h3>Sandwich Ayam</h3><p>Sandwich ayam yang mengenyangkan.</p><div class="price">Rp28.000</div></article>
-      </div>
-    </div>
-  </section>
-  <section id="kategori">
-    <div class="wrap">
-      <h2>Kategori</h2>
-      <p class="sub">Semua kebutuhan harian, dikelompokkan supaya mudah dicari.</p>
-      <div class="grid">
-        <article class="card"><div class="emoji">&#127850;</div><h3>Snack</h3><p>Camilan manis dan gurih untuk teman santai.</p></article>
-        <article class="card"><div class="emoji">&#127860;</div><h3>Makanan</h3><p>Roti, sandwich, dan hidangan yang mengenyangkan.</p></article>
-        <article class="card"><div class="emoji">&#129380;</div><h3>Minuman</h3><p>Kopi, teh, dan minuman segar setiap hari.</p></article>
-      </div>
-    </div>
-  </section>
-  <section id="fitur">
-    <div class="wrap">
-      <h2>Fitur Aplikasi</h2>
-      <p class="sub">Aplikasi kasir TokoPintar membantu toko berjalan rapi.</p>
-      <div class="grid">
-        <article class="card"><div class="emoji">&#129534;</div><h3>Kasir POS</h3><p>Catat penjualan dengan cepat di kasir.</p></article>
-        <article class="card"><div class="emoji">&#128230;</div><h3>Manajemen Stok</h3><p>Pantau dan atur stok produk agar tidak kehabisan.</p></article>
-        <article class="card"><div class="emoji">&#128200;</div><h3>Laporan</h3><p>Lihat ringkasan penjualan dan transaksi toko.</p></article>
-        <article class="card"><div class="emoji">&#128100;</div><h3>Login Ber-Role</h3><p>Akses Admin dan Kasir sesuai peran masing-masing.</p></article>
-      </div>
-    </div>
-  </section>
-  <section>
-    <div class="wrap">
-      <div class="cta-band">
-        <h2>Siap mengelola toko Anda?</h2>
-        <p class="sub">Masuk di atas untuk mulai mencatat penjualan.</p>
+<section class="wrap hero">
+  <div class="hero-grid">
+    <div>
+      <h1>Kasir Toko Pintar untuk Usaha yang <span>Tumbuh Cepat</span></h1>
+      <p>TokoPintar adalah aplikasi kasir POS modern: kelola produk, transaksi, pelanggan, dan laporan dalam satu dashboard yang cepat dan mudah digunakan.</p>
+      <div class="hero-cta">
         <a class="btn" href="#masuk">Masuk Sekarang</a>
+        <a class="btn btn-ghost" href="#fitur">Lihat Fitur</a>
       </div>
+      <ul class="hero-points">
+        <li>✓ Transaksi cepat</li>
+        <li>✓ Stok terpantau</li>
+        <li>✓ Laporan otomatis</li>
+      </ul>
     </div>
-  </section>
-</main>
-<footer>
-  <div class="wrap foot-inner">
-    <div><strong>TokoPintar</strong><br />Toko kelontong &amp; kasir.</div>
-    <div><a href="#masuk">Masuk</a></div>
+  </div>
+</section>
+<section class="wrap section" id="produk">
+  <h2>Kelola Produk Lebih Rapi</h2>
+  <p class="sub">Atur katalog, harga, dan kategori dalam satu tempat.</p>
+  <div class="grid">
+    <div class="card">
+      <div class="tag">Produk</div>
+      <h3>Stok Selalu Akurat</h3>
+      <p>Stok berkurang otomatis setiap transaksi, jadi Anda tahu kapan harus restock.</p>
+    </div>
+    <div class="card">
+      <div class="tag">Produk</div>
+      <h3>Kategori &amp; Harga Fleksibel</h3>
+      <p>Kelompokkan produk berdasarkan kategori dan atur harga dengan mudah.</p>
+    </div>
+    <div class="card">
+      <div class="tag">Produk</div>
+      <h3>Produk Terlaris</h3>
+      <p>Lihat produk yang paling laku dan fokuskan promosi pada produk tersebut.</p>
+    </div>
+  </div>
+</section>
+<section class="wrap section" id="kategori">
+  <h2>Kategori Populer</h2>
+  <p class="sub">Produk yang paling sering dicari pelanggan.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Kopi &amp; Minuman</h3>
+      <p>Berbagai pilihan kopi dan minuman segar untuk pelanggan setia Anda.</p>
+    </div>
+    <div class="card">
+      <h3>Roti &amp; Kue</h3>
+      <p>Roti dan kue yang dibuat segar setiap hari dengan bahan berkualitas.</p>
+    </div>
+    <div class="card">
+      <h3>Camilan</h3>
+      <p>Aneka camilan favorit pelanggan untuk menemani waktu santai mereka.</p>
+    </div>
+  </div>
+</section>
+<section class="wrap section" id="fitur">
+  <h2>Fitur untuk Pemilik Toko</h2>
+  <p class="sub">Semua yang dibutuhkan toko Anda, tanpa kerumitan.</p>
+  <div class="grid">
+    <div class="card">
+      <div class="tag">Fitur</div>
+      <h3>Transaksi Kilat</h3>
+      <p>Proses penjualan dalam hitungan detik, tanpa antre dan tanpa ribet.</p>
+    </div>
+    <div class="card">
+      <div class="tag">Fitur</div>
+      <h3>Laporan Harian</h3>
+      <p>Pantau penjualan, keuntungan, dan produk terlaris setiap hari.</p>
+    </div>
+    <div class="card">
+      <div class="tag">Fitur</div>
+      <h3>Pelanggan &amp; Diskon</h3>
+      <p>Simpan data pelanggan dan berikan diskon untuk pelanggan setia.</p>
+    </div>
+  </div>
+</section>
+<section class="wrap section">
+  <div class="cta-band">
+    <div>
+      <h2>Siap Mengelola Toko Lebih Pintar?</h2>
+      <p>Masuk sekarang dan mulai kelola toko Anda hari ini.</p>
+    </div>
+    <a class="btn" href="#masuk">Masuk Sekarang</a>
+  </div>
+</section>
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div>© 2026 TokoPintar · Aplikasi kasir POS modern untuk toko Anda.</div>
+    <div><a href="#">Tentang</a> · <a href="#">Kontak</a> · <a href="#">Bantuan</a></div>
   </div>
 </footer>
 <script>
-  // Alamat backend sama seperti app.js: di GitHub Pages pakai Codespace,
-  // di server lokal pakai alamat relatif.
-  var API_BASE = window.location.hostname.endsWith("github.io")
-    ? "https://projectportofolio-production.up.railway.app"
-    : "";
+  const API_BASE = window.location.hostname.endsWith("github.io") ? "https://projectportofolio-production.up.railway.app" : "";
   document.getElementById("backendLoginLink").href = API_BASE + "/login";
-  document.getElementById("loginForm").addEventListener("submit", async function (e) {
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    var errorEl = document.getElementById("loginError");
-    var button = document.getElementById("loginButton");
+    const errorEl = document.getElementById("loginError");
+    const button = document.getElementById("loginButton");
     errorEl.style.display = "none";
     button.disabled = true;
-    button.textContent = "Memeriksa...";
+    button.textContent = "Memproses...";
     try {
-      var res = await fetch(API_BASE + "/login", {
+      const res = await fetch(API_BASE + "/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
           username: document.getElementById("username").value.trim(),
-          password: document.getElementById("password").value
-        })
+          password: document.getElementById("password").value,
+        }),
       });
-      if (!res.ok) throw new Error("login gagal");
-      // Buka app.html di situs yang sama dengan landing ini (GitHub Pages),
-      // supaya memakai app.js yang sudah diperbaiki — bukan app.html backend
-      // di Codespace yang masih versi lama.
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Login gagal");
       window.location.assign("app.html");
     } catch (err) {
-      errorEl.textContent = "Tidak dapat masuk — periksa nama pengguna dan kata sandi, atau pastikan server TokoPintar sedang berjalan.";
+      errorEl.textContent = err.message || "Login gagal";
       errorEl.style.display = "block";
       button.disabled = false;
       button.textContent = "Masuk";
