@@ -45,50 +45,47 @@ body::before {
 }
 .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
 .top {
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  position: static;
   background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--line);
 }
-.top-inner { display: flex; align-items: center; gap: 24px; padding: 16px 0; }
+.top-inner { display: flex; align-items: center; gap: 24px; padding: 10px 0; }
 .brand { font-family: "DM Sans", sans-serif; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: #fff; white-space: nowrap; }
 .brand span { background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
 /* Kartu login ringkas di sudut kanan atas header — glassmorphism */
 .login-card {
   margin-left: auto;
-  width: min(380px, 100%);
+  width: min(320px, 100%);
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.04));
   border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 18px;
-  padding: 16px 18px 14px;
+  border-radius: 14px;
+  padding: 12px 14px 10px;
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6), 0 0 42px rgba(139, 92, 246, 0.16);
   backdrop-filter: blur(16px);
 }
-.login-card h2 { margin: 0 0 4px; font-size: 18px; font-family: "DM Sans", sans-serif; }
-.login-sub { margin: 0 0 10px; color: var(--muted); font-size: 13px; }
-#loginForm { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
-.login-field { margin-top: 10px; }
-.login-field label { display: block; font-size: 13px; color: #e2e8f0; margin-bottom: 6px; }
+.login-card h2 { margin: 0 0 2px; font-size: 16px; font-family: "DM Sans", sans-serif; }
+#loginForm { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8px; }
+.login-field { margin-top: 8px; }
+.login-field label { display: block; font-size: 12px; color: #e2e8f0; margin-bottom: 4px; }
 .login-field input {
   width: 100%;
-  padding: 10px 11px;
-  border-radius: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(0, 0, 0, 0.45);
   color: var(--ink);
-  font-size: 14px;
+  font-size: 13px;
   outline: none;
 }
 .login-field input::placeholder { color: #64748b; }
 .login-field input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.25); }
-.login-submit { grid-column: 1 / -1; margin-top: 12px; width: 100%; }
+.login-submit { grid-column: 1 / -1; margin-top: 10px; width: 100%; padding: 8px 10px; font-size: 13px; }
 .login-error {
   display: none;
   margin: 10px 0 0;
   padding: 9px 12px;
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--danger-bg);
   color: var(--danger-ink);
   border: 1px solid var(--danger-line);
@@ -154,8 +151,7 @@ body::before {
   <div class="wrap top-inner">
     <div class="brand">Toko<span>Pintar</span></div>
     <div class="login-card" id="masuk">
-      <h2>Masuk ke Aplikasi Kasir</h2>
-      <p class="login-sub">Login untuk membuka dashboard kasir dan kelola toko.</p>
+      <h2>Masuk</h2>
       <p class="login-error" id="loginError" role="alert"></p>
       <form id="loginForm">
         <div class="login-field">
