@@ -91,11 +91,29 @@ function parsePasswordHash(stored) {
   return { salt, hash };
 }
 
-function verifyPassword(password, storedHash) {
+// Helper Promise untuk menjalankan scrypt di threadpool tanpa memblokir event loop
+function scryptAsync(password, saltBuffer, keylen, options) {
+  return new Promise((resolve, reject) => {
+    crypto.scrypt(password, saltBuffer, keylen, options, (err, derivedKey) => {
+      if (err) reject(err);
+      else resolve(derivedKey);
+    });
+  });
+}
+
+async function verifyPassword(password, storedHash) {
+  if (typeof password !== "string") return false;
   const record = parsePasswordHash(storedHash);
   if (!record) return false;
+
   const expected = Buffer.from(record.hash, "hex");
-  const actual = crypto.scryptSync(password, Buffer.from(record.salt, "hex"), 64, { N: 16384, r: 8, p: 1 });
+  const actual = await scryptAsync(
+    password,
+    Buffer.from(record.salt, "hex"),
+    64,
+    { N: 16384, r: 8, p: 1 }
+  );
+
   return expected.length === actual.length && crypto.timingSafeEqual(expected, actual);
 }
 
@@ -107,12 +125,15 @@ const loginAttempts = new Map();
 const MAX_LOGIN_ATTEMPTS = 5;
 const LOGIN_WINDOW_MS = 5 * 60 * 1000; // 5 menit
 
-// Hash dummy format scrypt (salt:hash) agar verifyPassword() selalu
-// menjalankan scrypt dengan biaya penuh walau user tidak ditemukan —
-// ini yang menutup celah timing attack. Dibuat sekali saat server start
-// dari kata sandi yang tidak pernah dipakai; tidak akan cocok dengan
-// password akun mana pun.
-const DUMMY_PASSWORD_HASH = formatPasswordHash(hashPassword("kata-sandi-dummy-yang-tidak-pernah-cocok"));
+// Dummy hash valid (32 char hex salt + ":" + 128 char hex hash) agar
+// parsePasswordHash() lolos & scrypt tetap dijalankan saat user tidak
+// ditemukan. Nilai tetap (hardcode) karena tidak lagi dibuat via
+// hashPassword() saat start; nilai ini bukan hash dari password apa pun,
+// jadi tidak akan cocok dengan password akun mana pun.
+const DUMMY_PASSWORD_HASH =
+  "0123456789abcdef0123456789abcdef:" +
+  "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" +
+  "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
 
 function checkLoginRateLimit(key) {
   const now = Date.now();
@@ -604,13 +625,13 @@ function createAppServer(options = {}) {
           checkLoginRateLimit(rateKey);
 
           // 3. Query user & jalankan verifikasi waktu-konstan (cegah timing attack).
-          // verifyPassword() bersifat sinkron (scryptSync), jadi dipanggil
-          // langsung; saat user tidak ada, hash dummy dipakai agar biaya
-          // scrypt tetap dikeluarkan dan waktu respons tidak membocorkan
-          // keberadaan username.
+          // verifyPassword() kini async (crypto.scrypt di threadpool) sehingga
+          // tidak memblokir event loop; saat user tidak ada, hash dummy dipakai
+          // agar biaya scrypt tetap dikeluarkan dan waktu respons tidak
+          // membocorkan keberadaan username.
           const user = await getUserByUsername(username);
           const targetHash = user ? user.password_hash : DUMMY_PASSWORD_HASH;
-          const isPasswordValid = verifyPassword(password, targetHash);
+          const isPasswordValid = await verifyPassword(password, targetHash);
 
           if (!user || !isPasswordValid) {
             if (wantsJson(request)) throw new HttpError(401, "Nama pengguna atau kata sandi salah.");
