@@ -3,7 +3,11 @@ let users = [];
 let reportData = null;
 let activePage = "dashboard";
 let cart = [];
+let cartCustomer = "";
+let cartPayment = "Tunai";
+let isCheckingOut = false;
 let posCategory = "Semua";
+let posCategories = ["Semua", "Makanan", "Minuman", "Snack"];
 let productFilter = "";
 let transactionFilter = "";
 let selectedPeriod = "7";
@@ -118,15 +122,26 @@ async function loadProductsPage(page) {
 
 async function loadTransactionsPage(page) {
   const token = ++listToken;
-  const params = new URLSearchParams({ limit: String(transactionsPage.limit), offset: String((page - 1) * transactionsPage.limit) });
+  const limit = Math.max(Number(transactionsPage.limit) || 20, 1);
+  const safePage = Math.max(Number(page) || 1, 1);
+  const params = new URLSearchParams({
+    limit: String(limit),
+    offset: String((safePage - 1) * limit),
+  });
   if (transactionFilter) params.set("search", transactionFilter);
-  if (transactionStatusFilter && transactionStatusFilter !== "Semua status") params.set("status", transactionStatusFilter);
+  if (transactionStatusFilter && transactionStatusFilter !== "Semua status") {
+    params.set("status", transactionStatusFilter);
+  }
   const data = await apiRequest("/api/transactions?" + params.toString());
   if (token !== listToken) return null;
-  const totalPages = Math.max(Math.ceil(data.total / data.limit), 1);
-  if (page > totalPages) return loadTransactionsPage(totalPages);
-  transactionsPage = { page, limit: data.limit, total: data.total, totalPages };
-  state = { ...state, transactions: data.transactions };
+
+  const actualLimit = Math.max(Number(data.limit) || limit, 1);
+  const total = Math.max(Number(data.total) || 0, 0);
+  const totalPages = Math.max(Math.ceil(total / actualLimit), 1);
+  if (safePage > totalPages) return loadTransactionsPage(totalPages);
+
+  transactionsPage = { page: safePage, limit: actualLimit, total, totalPages };
+  state = { ...state, transactions: Array.isArray(data.transactions) ? data.transactions : [] };
   return data;
 }
 
@@ -137,7 +152,13 @@ async function loadPosProducts() {
   if (productFilter) params.set("search", productFilter);
   const data = await apiRequest("/api/products?" + params.toString());
   if (token !== listToken) return null;
-  state = { ...state, products: data.products };
+
+  const loadedProducts = Array.isArray(data.products) ? data.products : [];
+  // Akumulasi kategori agar tab tidak hilang saat filter kategori aktif
+  posCategories = [
+    ...new Set([...posCategories, ...loadedProducts.map((item) => item.category).filter(Boolean)]),
+  ];
+  state = { ...state, products: loadedProducts };
   return data;
 }
 
@@ -609,21 +630,112 @@ function renderTransactions() {
     <div class="table-footer"><span>Menampilkan ${state.transactions.length} dari ${transactionsPage.total} transaksi</span><div class="pagination"><button class="button small" data-action="transactions-prev" ${transactionsPage.page <= 1 ? "disabled" : ""}>Sebelumnya</button><button class="page-number active">${transactionsPage.page}</button><span>Halaman ${transactionsPage.page} dari ${transactionsPage.totalPages}</span><button class="button small" data-action="transactions-next" ${transactionsPage.page >= transactionsPage.totalPages ? "disabled" : ""}>Berikutnya</button></div></div></section>`;
 }
 
+function syncCartDraftFromDom() {
+  const customerInput = document.querySelector("#customerName");
+  const paymentSelect = document.querySelector("#paymentMethod");
+  if (customerInput) cartCustomer = customerInput.value;
+  if (paymentSelect) cartPayment = paymentSelect.value;
+}
+
 function renderPos() {
-  const categories = ["Semua", "Makanan", "Minuman", "Snack", ...new Set(state.products.map((item) => item.category))].filter((value, index, list) => list.indexOf(value) === index);
-  const products = state.products.filter((item) => (posCategory === "Semua" || item.category === posCategory) && `${item.name} ${item.id} ${item.category}`.toLowerCase().includes(productFilter.toLowerCase()));
+  syncCartDraftFromDom();
+  const categories = [
+    ...new Set([...posCategories, ...state.products.map((item) => item.category).filter(Boolean)]),
+  ];
+  const products = state.products.filter(
+    (item) =>
+      (posCategory === "Semua" || item.category === posCategory) &&
+      `${item.name} ${item.id} ${item.category}`.toLowerCase().includes(productFilter.toLowerCase())
+  );
   const subtotal = cart.reduce((sum, line) => sum + line.price * line.qty, 0);
   const cartCount = cart.reduce((sum, line) => sum + line.qty, 0);
-  content.innerHTML = `${heading("Kasir", "Pilih produk untuk memulai transaksi.", `<button class="button" data-action="clear-cart">Kosongkan keranjang</button>`)}
-    <div class="pos-layout"><section><div class="pos-toolbar"><label class="toolbar-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg><input id="posSearch" value="${escapeHTML(productFilter)}" placeholder="Cari produk..." /></label></div>
-      <div class="category-tabs">${categories.map((category) => `<button class="category-tab ${posCategory === category ? "active" : ""}" data-action="pos-category" data-category="${escapeHTML(category)}">${escapeHTML(category)}</button>`).join("")}</div>
-      <div class="product-grid">${products.map((item, index) => `<button class="product-card" data-action="add-cart" data-id="${escapeHTML(item.id)}" ${item.stock <= 0 ? "disabled" : ""}><span class="product-art art-${index % 6}">${escapeHTML(item.emoji)}</span><strong>${escapeHTML(item.name)}</strong><small>Stok ${item.stock} · ${escapeHTML(item.category)}</small><span class="product-price">${money(item.price)}</span></button>`).join("") || `<div class="empty-state">Produk tidak ditemukan.</div>`}</div>
-    </section><aside class="panel cart-panel"><div class="panel-heading"><div><h2>Keranjang</h2><p>${cartCount} item dipilih</p></div><span class="count-pill">${cart.length} produk</span></div>
-      <div class="cart-customer"><label class="field-label" for="customerName">Nama pelanggan <span style="font-weight:400">(opsional)</span></label><input class="field-control" id="customerName" placeholder="Pelanggan umum" /></div>
-      <div class="cart-items">${cart.length ? cart.map((line) => `<div class="cart-item"><div><div class="cart-item-name">${escapeHTML(line.name)}</div><div class="cart-item-price">${money(line.price)} · ${money(line.price * line.qty)}</div></div><div class="qty-control"><button data-action="cart-qty" data-id="${escapeHTML(line.productId)}" data-change="-1" aria-label="Kurangi">−</button><span>${line.qty}</span><button data-action="cart-qty" data-id="${escapeHTML(line.productId)}" data-change="1" aria-label="Tambah">+</button></div></div>`).join("") : `<div class="cart-empty"><div><span>🛍️</span>Keranjang masih kosong.<br>Pilih produk untuk memulai.</div></div>`}</div>
-      <div class="cart-summary"><div class="cart-summary-row"><span>Subtotal (${cartCount} item)</span><strong>${money(subtotal)}</strong></div><div class="cart-summary-row"><span>Pajak</span><strong>Rp0</strong></div><div class="cart-summary-row total"><span>Total pembayaran</span><strong>${money(subtotal)}</strong></div></div>
-      <div class="cart-customer"><label class="field-label" for="paymentMethod">Metode pembayaran</label><select class="field-control" id="paymentMethod"><option>Tunai</option><option>QRIS</option><option>Transfer</option><option>Kartu debit</option></select></div>
-      <button class="button primary cart-checkout" data-action="checkout" ${cart.length ? "" : "disabled"}>Selesaikan transaksi &nbsp; →</button></aside></div>`;
+  const paymentOptions = ["Tunai", "QRIS", "Transfer", "Kartu debit"];
+
+  content.innerHTML = `${heading("Kasir", "Pilih produk untuk memulai transaksi.", `<button type="button" class="button" data-action="clear-cart">Kosongkan keranjang</button>`)}
+    <div class="pos-layout">
+      <section>
+        <div class="pos-toolbar">
+          <label class="toolbar-search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+            <input id="posSearch" value="${escapeHTML(productFilter)}" placeholder="Cari produk..." aria-label="Cari produk kasir" />
+          </label>
+        </div>
+        <div class="category-tabs">
+          ${categories
+            .map(
+              (category) =>
+                `<button type="button" class="category-tab ${posCategory === category ? "active" : ""}" data-action="pos-category" data-category="${escapeHTML(category)}">${escapeHTML(category)}</button>`
+            )
+            .join("")}
+        </div>
+        <div class="product-grid">
+          ${
+            products
+              .map(
+                (item, index) =>
+                  `<button type="button" class="product-card" data-action="add-cart" data-id="${escapeHTML(String(item.id))}" ${item.stock <= 0 ? "disabled" : ""}>
+                    <span class="product-art art-${index % 6}">${escapeHTML(item.emoji || "📦")}</span>
+                    <strong>${escapeHTML(item.name)}</strong>
+                    <small>Stok ${Number(item.stock) || 0} · ${escapeHTML(item.category)}</small>
+                    <span class="product-price">${money(item.price)}</span>
+                  </button>`
+              )
+              .join("") || `<div class="empty-state">Produk tidak ditemukan.</div>`
+          }
+        </div>
+      </section>
+      <aside class="panel cart-panel">
+        <div class="panel-heading">
+          <div><h2>Keranjang</h2><p>${cartCount} item dipilih</p></div>
+          <span class="count-pill">${cart.length} produk</span>
+        </div>
+        <div class="cart-customer">
+          <label class="field-label" for="customerName">Nama pelanggan <span style="font-weight:400">(opsional)</span></label>
+          <input class="field-control" id="customerName" value="${escapeHTML(cartCustomer)}" placeholder="Pelanggan umum" maxlength="100" />
+        </div>
+        <div class="cart-items">
+          ${
+            cart.length
+              ? cart
+                  .map(
+                    (line) =>
+                      `<div class="cart-item">
+                        <div>
+                          <div class="cart-item-name">${escapeHTML(line.name)}</div>
+                          <div class="cart-item-price">${money(line.price)} · ${money(line.price * line.qty)}</div>
+                        </div>
+                        <div class="qty-control">
+                          <button type="button" data-action="cart-qty" data-id="${escapeHTML(String(line.productId))}" data-change="-1" aria-label="Kurangi jumlah ${escapeHTML(line.name)}">−</button>
+                          <span>${line.qty}</span>
+                          <button type="button" data-action="cart-qty" data-id="${escapeHTML(String(line.productId))}" data-change="1" aria-label="Tambah jumlah ${escapeHTML(line.name)}">+</button>
+                        </div>
+                      </div>`
+                  )
+                  .join("")
+              : `<div class="cart-empty"><div><span>🛍️</span>Keranjang masih kosong.<br>Pilih produk untuk memulai.</div></div>`
+          }
+        </div>
+        <div class="cart-summary">
+          <div class="cart-summary-row"><span>Subtotal (${cartCount} item)</span><strong>${money(subtotal)}</strong></div>
+          <div class="cart-summary-row"><span>Pajak</span><strong>Rp0</strong></div>
+          <div class="cart-summary-row total"><span>Total pembayaran</span><strong>${money(subtotal)}</strong></div>
+        </div>
+        <div class="cart-customer">
+          <label class="field-label" for="paymentMethod">Metode pembayaran</label>
+          <select class="field-control" id="paymentMethod">
+            ${paymentOptions
+              .map(
+                (opt) =>
+                  `<option value="${escapeHTML(opt)}" ${cartPayment === opt ? "selected" : ""}>${escapeHTML(opt)}</option>`
+              )
+              .join("")}
+          </select>
+        </div>
+        <button type="button" class="button primary cart-checkout" data-action="checkout" ${!cart.length || isCheckingOut ? "disabled" : ""}>
+          ${isCheckingOut ? "Memproses transaksi..." : "Selesaikan transaksi &nbsp; →"}
+        </button>
+      </aside>
+    </div>`;
 }
 
 async function renderReports() {
@@ -809,9 +921,10 @@ function transactionDetail(id) {
 }
 
 function addToCart(id) {
-  const product = state.products.find((item) => item.id === id);
+  const targetId = String(id);
+  const product = state.products.find((item) => String(item.id) === targetId);
   if (!product || product.stock <= 0) return showToast("Stok produk habis.", true);
-  const existing = cart.find((line) => line.productId === id);
+  const existing = cart.find((line) => String(line.productId) === targetId);
   if (existing) {
     if (existing.qty >= product.stock) return showToast("Jumlah melebihi stok yang tersedia.", true);
     existing.qty += 1;
@@ -820,35 +933,70 @@ function addToCart(id) {
 }
 
 function updateCart(id, change) {
-  const line = cart.find((item) => item.productId === id);
+  const targetId = String(id);
+  const line = cart.find((item) => String(item.productId) === targetId);
   if (!line) return;
-  const product = state.products.find((item) => item.id === id);
-  if (change > 0 && line.qty >= (product?.stock || 0)) return showToast("Jumlah melebihi stok yang tersedia.", true);
+
+  const product = state.products.find((item) => String(item.id) === targetId);
+  if (change > 0 && line.qty >= (product?.stock || 0)) {
+    return showToast("Jumlah melebihi stok yang tersedia.", true);
+  }
   line.qty += change;
-  if (line.qty <= 0) cart = cart.filter((item) => item.productId !== id);
+  if (line.qty <= 0) {
+    cart = cart.filter((item) => String(item.productId) !== targetId);
+  }
   renderPos();
 }
 
 async function checkout() {
+  if (isCheckingOut) return;
   if (!cart.length) return showToast("Keranjang masih kosong.", true);
+
   for (const line of cart) {
-    const product = state.products.find((item) => item.id === line.productId);
-    if (!product || product.stock < line.qty) return showToast(`Stok ${line.name} tidak mencukupi.`, true);
+    const product = state.products.find((item) => String(item.id) === String(line.productId));
+    if (!product || product.stock < line.qty) {
+      return showToast(`Stok ${line.name} tidak mencukupi.`, true);
+    }
   }
-  const customer = document.querySelector("#customerName")?.value.trim() || "Pelanggan umum";
-  const payment = document.querySelector("#paymentMethod")?.value || "Tunai";
+
+  syncCartDraftFromDom();
+  const customer = cartCustomer.trim() || "Pelanggan umum";
+  const payment = cartPayment || "Tunai";
+
+  isCheckingOut = true;
+  const checkoutBtn = document.querySelector('[data-action="checkout"]');
+  if (checkoutBtn) {
+    checkoutBtn.disabled = true;
+    checkoutBtn.textContent = "Memproses transaksi...";
+  }
+
   try {
     const result = await apiRequest("/api/checkout", {
       method: "POST",
-      body: JSON.stringify({ customer, payment, items: cart.map(({ productId, qty }) => ({ productId, qty })) })
+      body: JSON.stringify({
+        customer,
+        payment,
+        items: cart.map(({ productId, qty }) => ({ productId, qty })),
+      }),
     });
-    state = result.state;
+    if (result.state) {
+      state = { ...state, ...result.state };
+    }
     cart = [];
+    cartCustomer = "";
+    cartPayment = "Tunai";
     navigate("transaksi");
     showToast(`Transaksi ${result.transaction.id} berhasil disimpan.`);
     transactionDetail(result.transaction.id);
   } catch (error) {
     showToast(error.message || "Transaksi gagal disimpan.", true);
+  } finally {
+    isCheckingOut = false;
+    const btnAfter = document.querySelector('[data-action="checkout"]');
+    if (btnAfter) {
+      btnAfter.disabled = !cart.length;
+      btnAfter.innerHTML = "Selesaikan transaksi &nbsp; →";
+    }
   }
 }
 
@@ -907,7 +1055,16 @@ document.addEventListener("click", async (event) => {
   if (action === "cart-qty") updateCart(id, Number(actionElement.dataset.change));
   if (action === "clear-cart") {
     cart = [];
+    cartCustomer = "";
+    cartPayment = "Tunai";
     productFilter = "";
+    // Kosongkan dulu input di DOM: renderPos() memanggil
+    // syncCartDraftFromDom() yang membaca nilai DOM lama — tanpa ini
+    // reset di atas akan tertimpa kembali oleh nilai lama.
+    const customerInput = document.querySelector("#customerName");
+    if (customerInput) customerInput.value = "";
+    const paymentSelect = document.querySelector("#paymentMethod");
+    if (paymentSelect) paymentSelect.value = "Tunai";
     await loadPosProducts();
     renderPos();
     showToast("Keranjang dikosongkan.");
