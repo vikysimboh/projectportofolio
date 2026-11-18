@@ -73,15 +73,13 @@ async function apiRequest(path, options = {}) {
   return result;
 }
 
-// Logout lintas situs: form "Keluar" memakai action relatif "/logout" yang
-// tidak ada di GitHub Pages, sehingga sesi tidak pernah terhapus. Kirim
-// logout ke backend lewat API_BASE, lalu kembali ke halaman landing
-// (form login ada di landing, bukan di halaman login terpisah).
+// Logout lintas situs: tombol "Keluar" (#logoutButton) memanggil logout ke
+// backend lewat API_BASE, lalu kembali ke halaman landing (form login ada
+// di landing, bukan di halaman login terpisah).
 const landingUrl = () => window.location.origin + window.location.pathname.replace(/app\.html$/, "");
-const logoutForm = document.querySelector(".logout-form");
-if (logoutForm) {
-  logoutForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
+const logoutButton = document.querySelector("#logoutButton");
+if (logoutButton) {
+  logoutButton.addEventListener("click", async () => {
     try {
       await fetch(API_BASE + "/logout", { method: "POST", credentials: "include" });
     } catch (error) {
@@ -704,7 +702,12 @@ async function renderUsers() {
 }
 
 function render() {
-  document.querySelectorAll(".nav-link").forEach((link) => link.classList.toggle("active", link.dataset.page === activePage));
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    const isActive = link.dataset.page === activePage;
+    link.classList.toggle("active", isActive);
+    if (isActive) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
+  });
   const pageNames = { dashboard: "Dashboard", kasir: "Kasir", transaksi: "Transaksi", produk: "Produk", laporan: "Laporan", pengguna: "Pengguna" };
   document.querySelector("#breadcrumbCurrent").textContent = pageNames[activePage];
   if (activePage === "dashboard") renderDashboard();
@@ -742,6 +745,8 @@ function navigate(page) {
   if (page === activePage) return;
   activePage = page;
   document.querySelector("#sidebar").classList.remove("open");
+  const mobileMenuButton = document.querySelector("#mobileMenu");
+  if (mobileMenuButton) mobileMenuButton.setAttribute("aria-expanded", "false");
   initializeApp();
 }
 
@@ -992,7 +997,11 @@ document.addEventListener("input", (event) => {
   }
 });
 
-document.querySelector("#mobileMenu").addEventListener("click", () => document.querySelector("#sidebar").classList.toggle("open"));
+document.querySelector("#mobileMenu").addEventListener("click", (event) => {
+  const sidebar = document.querySelector("#sidebar");
+  const isOpen = sidebar.classList.toggle("open");
+  event.currentTarget.setAttribute("aria-expanded", String(isOpen));
+});
 document.querySelector("#globalSearch").addEventListener("input", (event) => {
   const query = event.target.value.trim();
   if (!query) return;
@@ -1027,12 +1036,12 @@ initializeApp();
 
 // Tema TokoPintar (terang/gelap/OLED): pilihan tersimpan di localStorage.
 (function () {
-  var STORAGE_KEY = "grace-shop-theme";
+  var STORAGE_KEY = "tokopintar-theme";
   var toggle = document.getElementById("themeToggle");
   var metaTheme = document.querySelector("meta[name=theme-color]");
   function syncMeta(theme) {
     if (metaTheme) {
-      metaTheme.setAttribute("content", theme === "oled" ? "#000000" : theme === "dark" ? "#14161f" : "#f6f7fb");
+      metaTheme.setAttribute("content", theme === "oled" ? "#000000" : theme === "dark" ? "#0f172a" : "#f6f7fb");
     }
   }
   function syncToggle(theme) {
