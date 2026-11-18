@@ -14,7 +14,8 @@ const ALLOWED_ORIGINS = new Set(["https://vikysimboh.github.io", "https://vikysi
 const PAYMENT_METHODS = new Set(["Tunai", "QRIS", "Transfer", "Kartu debit"]);
 const PUBLIC_FILES = new Set(["index.html", "app.html", "app.js", "styles.css"]);
 const SESSION_COOKIE = "kasirku_session";
-const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
+const SESSION_TTL_SECONDS = 86400; // 24 jam
+const SESSION_TTL_MS = SESSION_TTL_SECONDS * 1000;
 const RECENT_TRANSACTIONS_LIMIT = 200;
 
 const STATS_CACHE_TTL_MS = 5 * 60 * 1000;
@@ -365,6 +366,19 @@ function createAppServer(options = {}) {
   const shouldSeed = options.seed !== false;
   const sessions = new Map();
 
+  // Pembersih otomatis sesi kedaluwarsa setiap 15 menit (unref agar tidak menahan exit proses Node)
+  const sessionCleanupTimer = setInterval(() => {
+    const now = Date.now();
+    for (const [token, data] of sessions.entries()) {
+      if (now - data.createdAt > SESSION_TTL_MS) {
+        sessions.delete(token);
+      }
+    }
+  }, 15 * 60 * 1000);
+  if (typeof sessionCleanupTimer.unref === "function") {
+    sessionCleanupTimer.unref();
+  }
+
   async function init() {
     await ensureSchema(pool);
     if (!shouldSeed) return;
@@ -404,17 +418,55 @@ function createAppServer(options = {}) {
     return { token: match[1], username: session.username, role: session.role };
   }
 
-  function createSession(response, username, role) {
+  function isSecureRequest(request) {
+    if (!request) return process.env.NODE_ENV === "production";
+    const proto = String(request.headers["x-forwarded-proto"] || "").toLowerCase();
+    return Boolean(request.socket?.encrypted) || proto === "https";
+  }
+
+  function appendSetCookie(response, cookieValue) {
+    const existing = response.getHeader("Set-Cookie");
+    if (!existing) {
+      response.setHeader("Set-Cookie", cookieValue);
+    } else if (Array.isArray(existing)) {
+      response.setHeader("Set-Cookie", existing.concat(cookieValue));
+    } else {
+      response.setHeader("Set-Cookie", [String(existing), cookieValue]);
+    }
+  }
+
+  function buildSessionCookie(request, value, maxAgeSeconds) {
+    const secure = isSecureRequest(request);
+    const parts = [
+      `${SESSION_COOKIE}=${value}`,
+      "HttpOnly",
+      "Path=/",
+      `Max-Age=${maxAgeSeconds}`,
+      secure ? "SameSite=None" : "SameSite=Lax",
+    ];
+    if (secure) parts.push("Secure");
+    return parts.join("; ");
+  }
+
+  function createSession(request, response, username, role) {
+    // Hapus sesi lama jika ada untuk mencegah session fixation
+    const existing = getSession(request);
+    if (existing?.token) {
+      sessions.delete(existing.token);
+    }
+
     const token = crypto.randomBytes(32).toString("hex");
     sessions.set(token, { username, role, createdAt: Date.now() });
-    response.setHeader("Set-Cookie", SESSION_COOKIE + "=" + token + "; HttpOnly; Path=/; SameSite=None; Secure; Max-Age=86400");
+    appendSetCookie(response, buildSessionCookie(request, token, SESSION_TTL_SECONDS));
     return token;
   }
 
   function destroySession(request, response) {
     const session = getSession(request);
-    if (session) sessions.delete(session.token);
-    response.setHeader("Set-Cookie", SESSION_COOKIE + "=; HttpOnly; Path=/; SameSite=None; Secure; Max-Age=0");
+    if (session?.token) {
+      sessions.delete(session.token);
+    }
+    appendSetCookie(response, buildSessionCookie(request, "", 0));
   }
 
   function wantsJson(request) {
@@ -588,7 +640,7 @@ function createAppServer(options = {}) {
           if (existing) throw new HttpError(409, "Nama pengguna sudah dipakai.");
           const passwordHash = formatPasswordHash(hashPassword(password));
           await pool.query("INSERT INTO users (username, password_hash, role, created_at) VALUES (?, ?, ?, ?)", [username, passwordHash, "admin", toMysqlDatetime(new Date())]);
-          createSession(response, username, "admin");
+          createSession(request, response, username, "admin");
           if (wantsJson(request)) return sendJson(response, 201, { ok: true, username, role: "admin" });
           return redirect(response, "/app.html");
         }
@@ -640,7 +692,7 @@ function createAppServer(options = {}) {
 
           // 4. Reset hitungan gagal & buat sesi aman
           resetLoginRateLimit(rateKey);
-          createSession(response, user.username, user.role);
+          createSession(request, response, user.username, user.role);
 
           if (wantsJson(request)) {
             return sendJson(response, 200, { ok: true, username: user.username, role: user.role });
