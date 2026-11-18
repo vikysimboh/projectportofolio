@@ -6,8 +6,11 @@ const http = require("node:http");
 const path = require("node:path");
 const { createPool } = require("./db.js");
 const { getCachedAnalytics, warmupAnalytics } = require("./analytics.js");
+const { answerChat } = require("./chatbot.js");
 
 const MAX_BODY_BYTES = 1024 * 1024;
+const MAX_CHAT_MESSAGE_CHARS = 500;
+const ALLOWED_ORIGINS = new Set(["https://vikysimboh.github.io", "https://vikysimbohportofolio.my.id"]);
 const PAYMENT_METHODS = new Set(["Tunai", "QRIS", "Transfer", "Kartu debit"]);
 const PUBLIC_FILES = new Set(["index.html", "app.html", "app.js", "styles.css"]);
 const SESSION_COOKIE = "kasirku_session";
@@ -471,14 +474,13 @@ function createAppServer(options = {}) {
   }
 
   const server = http.createServer(async (request, response) => {
-  const pagesOrigin = "https://vikysimboh.github.io";
-  if (request.headers.origin === pagesOrigin) {
-    response.setHeader("Access-Control-Allow-Origin", pagesOrigin);
+  if (ALLOWED_ORIGINS.has(request.headers.origin)) {
+    response.setHeader("Access-Control-Allow-Origin", request.headers.origin);
     response.setHeader("Access-Control-Allow-Credentials", "true");
     response.setHeader("Access-Control-Allow-Headers", "Content-Type");
     response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   }
-  if (request.method === "OPTIONS" && request.headers.origin === pagesOrigin) {
+  if (request.method === "OPTIONS" && ALLOWED_ORIGINS.has(request.headers.origin)) {
     response.writeHead(204);
     response.end();
     return;
@@ -491,6 +493,20 @@ function createAppServer(options = {}) {
 
       if (pathname === "/api/health") {
         return sendJson(response, 200, { status: "ok" });
+      }
+
+      // Chatbot Asisten TokoPintar — endpoint publik (tanpa login) untuk
+      // widget chat di landing page. Kunci LLM dibaca dari env var
+      // SAMUDRA_API_KEY oleh chatbot.js; tanpa kunci, chatbot menjawab
+      // dari knowledge base database.
+      if (pathname === "/api/chat") {
+        if (method !== "POST") throw new HttpError(405, "Metode tidak diizinkan.");
+        const body = await readBody(request);
+        const message = typeof body.message === "string" ? body.message.trim() : "";
+        if (!message) throw new HttpError(400, "Pesan tidak boleh kosong.");
+        if (message.length > MAX_CHAT_MESSAGE_CHARS) throw new HttpError(400, "Pesan maksimal 500 karakter.");
+        const result = await answerChat(pool, message);
+        return sendJson(response, 200, result);
       }
 
       if (pathname === "/setup") {

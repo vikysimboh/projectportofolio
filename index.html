@@ -138,7 +138,33 @@ body::before {
 .wa-footer a { color: var(--cyan); text-decoration: none; border: 1px solid rgba(139, 92, 246, 0.45); background: rgba(139, 92, 246, 0.12); padding: 6px 12px; border-radius: 999px; box-shadow: 0 0 18px rgba(34, 211, 238, 0.18); }
 .wa-footer a:hover { color: #fff; border-color: var(--cyan); }
 .wa-help:hover { text-decoration: underline; }
+/* Widget chat Asisten TokoPintar — bubble mengambang pojok kanan bawah */
+.chat-fab { position: fixed; right: 20px; bottom: 20px; z-index: 1000; width: 56px; height: 56px; border-radius: 50%; border: none; cursor: pointer; background: var(--gradient); color: #fff; font-size: 26px; box-shadow: 0 10px 26px rgba(139, 92, 246, 0.55), 0 0 24px rgba(34, 211, 238, 0.25); display: flex; align-items: center; justify-content: center; }
+.chat-fab:hover { filter: brightness(1.08); }
+.chat-panel { position: fixed; right: 20px; bottom: 88px; z-index: 1000; width: min(360px, calc(100vw - 32px)); height: min(520px, calc(100dvh - 120px)); display: flex; flex-direction: column; background: rgba(10, 10, 15, 0.92); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7), 0 0 42px rgba(139, 92, 246, 0.18); backdrop-filter: blur(16px); overflow: hidden; }
+.chat-panel[hidden] { display: none; }
+.chat-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(34, 211, 238, 0.22)); border-bottom: 1px solid var(--line); }
+.chat-header strong { display: block; font-size: 15px; font-family: "DM Sans", sans-serif; }
+.chat-header span { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+.chat-close { background: transparent; border: none; color: var(--muted); font-size: 18px; cursor: pointer; padding: 4px 8px; border-radius: 8px; }
+.chat-close:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
+.chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.chat-msg { max-width: 85%; padding: 10px 12px; border-radius: 14px; font-size: 14px; line-height: 1.55; white-space: pre-line; word-break: break-word; }
+.chat-msg a { color: var(--cyan); }
+.chat-msg.bot { align-self: flex-start; background: var(--surface-2); border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+.chat-msg.user { align-self: flex-end; background: linear-gradient(135deg, #7c3aed, #0891b2); color: #fff; border-bottom-right-radius: 4px; }
+.chat-msg.typing { color: var(--muted); font-style: italic; }
+.chat-chips { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 14px 10px; }
+.chat-chips button { border: 1px solid rgba(139, 92, 246, 0.45); background: rgba(139, 92, 246, 0.12); color: #ddd6fe; font-size: 12px; font-weight: 700; padding: 7px 11px; border-radius: 999px; cursor: pointer; }
+.chat-chips button:hover { border-color: var(--cyan); color: #fff; }
+.chat-input-row { display: flex; gap: 8px; padding: 10px 12px 12px; border-top: 1px solid var(--line); }
+.chat-input-row input { flex: 1; min-width: 0; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(0, 0, 0, 0.45); color: var(--ink); font-size: 14px; outline: none; }
+.chat-input-row input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.25); }
+.chat-input-row button { width: 42px; border: none; border-radius: 10px; background: var(--gradient); color: #fff; font-size: 16px; cursor: pointer; }
+.chat-input-row button:disabled { opacity: 0.6; cursor: wait; }
 @media (max-width: 760px) {
+  .chat-panel { right: 16px; bottom: 84px; }
+  .chat-fab { right: 16px; bottom: 16px; }
   .top { position: static; }
   .top-inner { flex-direction: column; align-items: stretch; gap: 14px; padding: 14px 0; }
   .login-card { width: 100%; }
@@ -267,7 +293,7 @@ body::before {
   </div>
 </footer>
 <script>
-  const API_BASE = window.location.hostname.endsWith("github.io") ? "https://projectportofolio-production.up.railway.app" : "";
+  const API_BASE = (window.location.hostname.endsWith("github.io") || window.location.hostname === "vikysimbohportofolio.my.id") ? "https://projectportofolio-production.up.railway.app" : "";
   document.getElementById("backendLoginLink").href = API_BASE + "/login";
   document.getElementById("loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -296,6 +322,99 @@ body::before {
       button.textContent = "Masuk";
     }
   });
+</script>
+<!-- Widget chat Asisten TokoPintar (melengkapi tombol WhatsApp, bukan menggantinya) -->
+<button class="chat-fab" id="chatFab" aria-label="Buka chat bantuan">💬</button>
+<section class="chat-panel" id="chatPanel" aria-label="Chat Asisten TokoPintar" hidden>
+  <header class="chat-header">
+    <div><strong>Asisten TokoPintar</strong><span>Online — balas otomatis</span></div>
+    <button class="chat-close" id="chatClose" aria-label="Tutup chat">✕</button>
+  </header>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-chips" id="chatChips">
+    <button type="button" data-msg="Apa produk terlaris?">Produk terlaris</button>
+    <button type="button" data-msg="Cek harga produk">Cek harga produk</button>
+    <button type="button" data-msg="Bagaimana cara pembayaran?">Cara pembayaran</button>
+    <button type="button" data-wa="1">Hubungi WhatsApp</button>
+  </div>
+  <form class="chat-input-row" id="chatForm">
+    <input id="chatInput" type="text" placeholder="Tulis pertanyaan..." maxlength="500" autocomplete="off" />
+    <button type="submit" id="chatSend" aria-label="Kirim pesan">➤</button>
+  </form>
+</section>
+<script>
+(function () {
+  var WA_URL = "https://wa.me/621358785835?text=Halo%2C%20saya%20butuh%20bantuan%20dengan%20TokoPintar";
+  var fab = document.getElementById("chatFab");
+  var panel = document.getElementById("chatPanel");
+  var messagesEl = document.getElementById("chatMessages");
+  var form = document.getElementById("chatForm");
+  var input = document.getElementById("chatInput");
+  var sendBtn = document.getElementById("chatSend");
+  var greeted = false;
+
+  function renderText(text) {
+    var escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return escaped.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+  }
+  function addMessage(role, text) {
+    var div = document.createElement("div");
+    div.className = "chat-msg " + role;
+    div.innerHTML = renderText(text);
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return div;
+  }
+  function openChat() {
+    panel.hidden = false;
+    if (!greeted) {
+      greeted = true;
+      addMessage("bot", "Halo! Saya Asisten TokoPintar. Tanyakan soal produk terlaris, harga dan stok, atau cara pembayaran — atau pilih salah satu tombol di bawah.");
+    }
+    input.focus();
+  }
+  fab.addEventListener("click", function () {
+    if (panel.hidden) openChat();
+    else panel.hidden = true;
+  });
+  document.getElementById("chatClose").addEventListener("click", function () { panel.hidden = true; });
+  document.getElementById("chatChips").addEventListener("click", function (e) {
+    var btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.getAttribute("data-wa")) { window.open(WA_URL, "_blank", "noopener"); return; }
+    sendMessage(btn.getAttribute("data-msg"));
+  });
+  async function sendMessage(text) {
+    var message = (text || "").trim();
+    if (!message) return;
+    addMessage("user", message);
+    input.value = "";
+    input.disabled = true;
+    sendBtn.disabled = true;
+    var typing = addMessage("bot typing", "Mengetik...");
+    try {
+      var res = await fetch(API_BASE + "/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: message }),
+      });
+      var data = await res.json().catch(function () { return {}; });
+      typing.remove();
+      if (!res.ok) throw new Error(data.error || "Server tidak merespons.");
+      addMessage("bot", data.reply || "Maaf, saya tidak bisa menjawab saat ini.");
+    } catch (err) {
+      typing.remove();
+      addMessage("bot", "Maaf, saya tidak bisa terhubung ke server saat ini. Silakan hubungi kami via WhatsApp: https://wa.me/621358785835");
+    }
+    input.disabled = false;
+    sendBtn.disabled = false;
+    input.focus();
+  }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    sendMessage(input.value);
+  });
+})();
 </script>
 </body>
 </html>
