@@ -10,7 +10,15 @@ const { answerChat } = require("./chatbot.js");
 
 const MAX_BODY_BYTES = 1024 * 1024;
 const MAX_CHAT_MESSAGE_CHARS = 500;
-const ALLOWED_ORIGINS = new Set(["https://vikysimboh.github.io", "https://vikysimbohportofolio.my.id"]);
+const ALLOWED_ORIGINS = new Set([
+  "https://vikysimboh.github.io",
+  "https://vikysimbohportofolio.my.id",
+  ...(process.env.NODE_ENV !== "production"
+    ? ["http://localhost:3000", "http://localhost:5500", "http://127.0.0.1:5500"]
+    : []),
+]);
+
+const MUTATING_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 const PAYMENT_METHODS = new Set(["Tunai", "QRIS", "Transfer", "Kartu debit"]);
 const PUBLIC_FILES = new Set(["index.html", "app.html", "app.js", "styles.css"]);
 const SESSION_COOKIE = "kasirku_session";
@@ -584,17 +592,37 @@ function createAppServer(options = {}) {
   }
 
   const server = http.createServer(async (request, response) => {
-  if (ALLOWED_ORIGINS.has(request.headers.origin)) {
-    response.setHeader("Access-Control-Allow-Origin", request.headers.origin);
-    response.setHeader("Access-Control-Allow-Credentials", "true");
-    response.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  }
-  if (request.method === "OPTIONS" && ALLOWED_ORIGINS.has(request.headers.origin)) {
-    response.writeHead(204);
-    response.end();
-    return;
-  }
+    // 1. Header keamanan global
+    response.setHeader("X-Content-Type-Options", "nosniff");
+    response.setHeader("X-Frame-Options", "DENY");
+    response.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+    response.setHeader("Vary", "Origin");
+
+    const origin = request.headers.origin;
+    const isAllowedOrigin = Boolean(origin && ALLOWED_ORIGINS.has(origin));
+
+    // 2. Terapkan header CORS jika Origin termasuk dalam allowlist
+    if (isAllowedOrigin) {
+      response.setHeader("Access-Control-Allow-Origin", origin);
+      response.setHeader("Access-Control-Allow-Credentials", "true");
+      response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+      response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+      response.setHeader("Access-Control-Max-Age", "86400");
+    }
+
+    // 3. Hentikan semua preflight OPTIONS di sini (jangan teruskan ke router/auth)
+    if (request.method === "OPTIONS") {
+      response.writeHead(isAllowedOrigin ? 204 : 403);
+      response.end();
+      return;
+    }
+
+    // 4. Lapisan anti-CSRF untuk SameSite=None: tolak mutasi jika Origin ada tapi tidak diizinkan
+    if (origin && !isAllowedOrigin && MUTATING_METHODS.has(request.method)) {
+      response.writeHead(403, { "Content-Type": "application/json; charset=utf-8" });
+      response.end(JSON.stringify({ error: "Origin tidak diizinkan." }));
+      return;
+    }
     try {
       const url = new URL(request.url, "http://127.0.0.1");
       const pathname = url.pathname;
