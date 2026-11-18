@@ -3,7 +3,16 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>TokoPintar — Aplikasi Kasir POS</title>
+<title>TokoPintar — Aplikasi Kasir POS Modern</title>
+<meta name="description" content="TokoPintar adalah aplikasi kasir POS modern untuk mengelola produk, transaksi cepat, stok otomatis, dan laporan harian dalam satu dashboard." />
+<link rel="canonical" href="https://vikysimbohportofolio.my.id/" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://vikysimbohportofolio.my.id/" />
+<meta property="og:title" content="TokoPintar — Aplikasi Kasir POS Modern" />
+<meta property="og:description" content="Kelola produk, transaksi, pelanggan, dan laporan usaha dalam satu dashboard cepat dan mudah digunakan." />
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..900&family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
@@ -70,7 +79,8 @@ body::before {
 .login-field label { display: block; font-size: 12px; color: #e2e8f0; margin-bottom: 4px; }
 .login-field input {
   width: 100%;
-  10px;
+  /* Perbaikan bug sintaks: menambahkan properti padding yang hilang */
+  padding: 8px 10px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(0, 0, 0, 0.45);
@@ -182,7 +192,7 @@ body::before {
     <div class="brand">Toko<span>Pintar</span></div>
     <div class="login-card" id="masuk">
       <h2>Masuk</h2>
-      <p class="login-error" id="loginError" role="alert"></p>
+      <p class="login-error" id="loginError" role="alert" aria-live="polite"></p>
       <form id="loginForm">
         <div class="login-field">
           <label for="username">Nama pengguna</label>
@@ -194,11 +204,13 @@ body::before {
         </div>
         <button class="btn login-submit" id="loginButton" type="submit">Masuk</button>
       </form>
-<p class="login-help"><a id="backendLoginLink" href="/login" target="_blank" rel="noopener">Buat baru</a></p>
-      <p class="login-help"><a class="wa-help" href="https://wa.me/621358785835?text=Halo%2C%20saya%20butuh%20bantuan%20dengan%20TokoPintar" target="_blank" rel="noopener">Butuh bantuan?</a></p>
+      <p class="login-help"><a id="backendLoginLink" href="/login" target="_blank" rel="noopener noreferrer">Buat baru</a></p>
+      <p class="login-help"><a class="wa-help" data-wa-link href="https://wa.me/6281358785835?text=Halo%2C%20saya%20butuh%20bantuan%20dengan%20TokoPintar" target="_blank" rel="noopener noreferrer">Butuh bantuan?</a></p>
     </div>
   </div>
 </header>
+
+<main>
 <section class="wrap hero">
   <div class="hero-grid">
     <div>
@@ -285,11 +297,17 @@ body::before {
     <a class="btn" href="#masuk">Masuk Sekarang</a>
   </div>
 </section>
+</main>
+
 <footer class="footer">
   <div class="wrap footer-inner">
     <div>© 2026 TokoPintar · Aplikasi kasir POS modern untuk toko Anda.</div>
-    <div><a href="#">Tentang</a> · <a href="#">Kontak</a> · <a href="#">Bantuan</a></div>
-      <p class="wa-footer"><a href="https://wa.me/621358785835?text=Halo%2C%20saya%20butuh%20bantuan%20dengan%20TokoPintar" target="_blank" rel="noopener">Butuh bantuan? Hubungi kami via WhatsApp</a></p>
+    <nav aria-label="Navigasi Footer">
+      <a href="#produk">Produk</a> <span aria-hidden="true">·</span>
+      <a href="#fitur">Fitur</a> <span aria-hidden="true">·</span>
+      <a data-wa-link href="https://wa.me/6281358785835?text=Halo%2C%20saya%20butuh%20bantuan%20dengan%20TokoPintar" target="_blank" rel="noopener noreferrer">Bantuan</a>
+    </nav>
+    <p class="wa-footer"><a data-wa-link href="https://wa.me/6281358785835?text=Halo%2C%20saya%20butuh%20bantuan%20dengan%20TokoPintar" target="_blank" rel="noopener noreferrer">Butuh bantuan? Hubungi kami via WhatsApp</a></p>
   </div>
 </footer>
 <script>
@@ -316,7 +334,10 @@ body::before {
       if (!res.ok) throw new Error(data.error || "Login gagal");
       window.location.assign("app.html");
     } catch (err) {
-      errorEl.textContent = err.message || "Login gagal";
+      const msg = (err.name === "TypeError")
+        ? "Tidak dapat terhubung ke server. Periksa koneksi internet Anda."
+        : (err.message || "Login gagal. Silakan coba lagi.");
+      errorEl.textContent = msg;
       errorEl.style.display = "block";
       button.disabled = false;
       button.textContent = "Masuk";
@@ -324,13 +345,13 @@ body::before {
   });
 </script>
 <!-- Widget chat Asisten TokoPintar (melengkapi tombol WhatsApp, bukan menggantinya) -->
-<button class="chat-fab" id="chatFab" aria-label="Buka chat bantuan">💬</button>
+<button class="chat-fab" id="chatFab" type="button" aria-label="Buka chat bantuan" aria-expanded="false" aria-controls="chatPanel">💬</button>
 <section class="chat-panel" id="chatPanel" aria-label="Chat Asisten TokoPintar" hidden>
   <header class="chat-header">
     <div><strong>Asisten TokoPintar</strong><span>Online — balas otomatis</span></div>
     <button class="chat-close" id="chatClose" aria-label="Tutup chat">✕</button>
   </header>
-  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-messages" id="chatMessages" aria-live="polite"></div>
   <div class="chat-chips" id="chatChips">
     <button type="button" data-msg="Apa produk terlaris?">Produk terlaris</button>
     <button type="button" data-msg="Cek harga produk">Cek harga produk</button>
@@ -338,13 +359,21 @@ body::before {
     <button type="button" data-wa="1">Hubungi WhatsApp</button>
   </div>
   <form class="chat-input-row" id="chatForm">
-    <input id="chatInput" type="text" placeholder="Tulis pertanyaan..." maxlength="500" autocomplete="off" />
+    <input id="chatInput" type="text" placeholder="Tulis pertanyaan..." aria-label="Tulis pertanyaan untuk asisten" maxlength="500" autocomplete="off" />
     <button type="submit" id="chatSend" aria-label="Kirim pesan">➤</button>
   </form>
 </section>
 <script>
 (function () {
-  var WA_URL = "https://wa.me/621358785835?text=Halo%2C%20saya%20butuh%20bantuan%20dengan%20TokoPintar";
+  // Konfigurasi terpusat (ubah WA_NUMBER di satu tempat saja jika perlu)
+  const WA_NUMBER = "6281358785835";
+  const WA_URL = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent("Halo, saya butuh bantuan dengan TokoPintar");
+
+  // Sinkronisasi seluruh tautan WhatsApp
+  document.querySelectorAll("[data-wa-link]").forEach(function (el) {
+    el.href = WA_URL;
+  });
+
   var fab = document.getElementById("chatFab");
   var panel = document.getElementById("chatPanel");
   var messagesEl = document.getElementById("chatMessages");
@@ -355,7 +384,7 @@ body::before {
 
   function renderText(text) {
     var escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    return escaped.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+    return escaped.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
   }
   function addMessage(role, text) {
     var div = document.createElement("div");
@@ -365,23 +394,25 @@ body::before {
     messagesEl.scrollTop = messagesEl.scrollHeight;
     return div;
   }
-  function openChat() {
-    panel.hidden = false;
-    if (!greeted) {
-      greeted = true;
-      addMessage("bot", "Halo! Saya Asisten TokoPintar. Tanyakan soal produk terlaris, harga dan stok, atau cara pembayaran — atau pilih salah satu tombol di bawah.");
+  function toggleChat(forceOpen) {
+    const shouldOpen = (typeof forceOpen === "boolean") ? forceOpen : panel.hidden;
+    panel.hidden = !shouldOpen;
+    fab.setAttribute("aria-expanded", String(shouldOpen));
+    if (shouldOpen) {
+      if (!greeted) {
+        greeted = true;
+        addMessage("bot", "Halo! Saya Asisten TokoPintar. Tanyakan soal produk terlaris, harga dan stok, atau cara pembayaran — atau pilih salah satu tombol di bawah.");
+      }
+      input.focus();
     }
-    input.focus();
   }
-  fab.addEventListener("click", function () {
-    if (panel.hidden) openChat();
-    else panel.hidden = true;
-  });
-  document.getElementById("chatClose").addEventListener("click", function () { panel.hidden = true; });
+
+  fab.addEventListener("click", function () { toggleChat(); });
+  document.getElementById("chatClose").addEventListener("click", function () { toggleChat(false); });
   document.getElementById("chatChips").addEventListener("click", function (e) {
     var btn = e.target.closest("button");
     if (!btn) return;
-    if (btn.getAttribute("data-wa")) { window.open(WA_URL, "_blank", "noopener"); return; }
+    if (btn.getAttribute("data-wa")) { window.open(WA_URL, "_blank", "noopener,noreferrer"); return; }
     sendMessage(btn.getAttribute("data-msg"));
   });
   async function sendMessage(text) {
@@ -404,7 +435,7 @@ body::before {
       addMessage("bot", data.reply || "Maaf, saya tidak bisa menjawab saat ini.");
     } catch (err) {
       typing.remove();
-      addMessage("bot", "Maaf, saya tidak bisa terhubung ke server saat ini. Silakan hubungi kami via WhatsApp: https://wa.me/621358785835");
+      addMessage("bot", "Maaf, saya tidak bisa terhubung ke server saat ini. Silakan hubungi kami via WhatsApp: https://wa.me/" + WA_NUMBER);
     }
     input.disabled = false;
     sendBtn.disabled = false;

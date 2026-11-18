@@ -15,8 +15,8 @@
 // menulis API key di file ini atau di repo.
 
 const WHATSAPP_URL =
-  "https://wa.me/621358785835?text=Halo%2C%20saya%20butuh%20bantuan%20dengan%20TokoPintar";
-const WHATSAPP_SHORT = "https://wa.me/621358785835";
+  "https://wa.me/6281358785835?text=Halo%2C%20saya%20butuh%20bantuan%20dengan%20TokoPintar";
+const WHATSAPP_SHORT = "https://wa.me/6281358785835";
 const SAMUDRA_BASE_URL = "https://inference.samudracorp.web.id/v1";
 const SAMUDRA_MODEL = "deepseek-v4.1-flash:free";
 const CHAT_TIMEOUT_MS = 20000;
