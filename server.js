@@ -99,6 +99,43 @@ function verifyPassword(password, storedHash) {
   return expected.length === actual.length && crypto.timingSafeEqual(expected, actual);
 }
 
+// Rate limiter login (in-memory): maks 5 percobaan gagal per IP + username
+// dalam 5 menit, lalu HTTP 429. Hitungan reset saat login berhasil.
+// Catatan: hitungan hilang saat server restart/redeploy — bisa diterima
+// untuk aplikasi ini.
+const loginAttempts = new Map();
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOGIN_WINDOW_MS = 5 * 60 * 1000; // 5 menit
+
+// Hash dummy format scrypt (salt:hash) agar verifyPassword() selalu
+// menjalankan scrypt dengan biaya penuh walau user tidak ditemukan —
+// ini yang menutup celah timing attack. Dibuat sekali saat server start
+// dari kata sandi yang tidak pernah dipakai; tidak akan cocok dengan
+// password akun mana pun.
+const DUMMY_PASSWORD_HASH = formatPasswordHash(hashPassword("kata-sandi-dummy-yang-tidak-pernah-cocok"));
+
+function checkLoginRateLimit(key) {
+  const now = Date.now();
+  if (loginAttempts.size > 1000) {
+    for (const [entryKey, record] of loginAttempts) {
+      if (now > record.resetAt) loginAttempts.delete(entryKey);
+    }
+  }
+  const record = loginAttempts.get(key);
+  if (!record || now > record.resetAt) {
+    loginAttempts.set(key, { count: 1, resetAt: now + LOGIN_WINDOW_MS });
+    return;
+  }
+  record.count += 1;
+  if (record.count > MAX_LOGIN_ATTEMPTS) {
+    throw new HttpError(429, "Terlalu banyak percobaan masuk. Coba lagi dalam 5 menit.");
+  }
+}
+
+function resetLoginRateLimit(key) {
+  loginAttempts.delete(key);
+}
+
 function toMysqlDatetime(value) {
   const date = value instanceof Date ? value : new Date(value);
   return date.toISOString().slice(0, 19).replace("T", " ");
@@ -538,6 +575,8 @@ function createAppServer(options = {}) {
       }
 
       if (pathname === "/login") {
+        response.setHeader("Cache-Control", "no-store");
+
         if (method === "GET") {
           if (session) return redirect(response, "/app.html");
           const error = url.searchParams.get("error");
@@ -545,19 +584,50 @@ function createAppServer(options = {}) {
           response.end(authPage("login", error === "salah" ? "Nama pengguna atau kata sandi salah." : null));
           return;
         }
+
         if (method === "POST") {
+          const clientIp = (request.headers["x-forwarded-for"] || request.socket.remoteAddress || "unknown")
+            .split(",")[0]
+            .trim();
           const body = await readBody(request);
           const username = typeof body.username === "string" ? body.username.trim() : "";
           const password = typeof body.password === "string" ? body.password : "";
-          const user = username ? await getUserByUsername(username) : null;
-          if (!user || !verifyPassword(password, user.password_hash)) {
+
+          // 1. Validasi dasar & batas panjang untuk mencegah DoS pada fungsi hashing
+          if (!username || !password || username.length > 64 || password.length > 128) {
+            if (wantsJson(request)) throw new HttpError(400, "Nama pengguna dan kata sandi wajib diisi dengan benar.");
+            return redirect(response, "/login?error=salah");
+          }
+
+          // 2. Cek rate limit berdasarkan IP dan username
+          const rateKey = `${clientIp}:${username.toLowerCase()}`;
+          checkLoginRateLimit(rateKey);
+
+          // 3. Query user & jalankan verifikasi waktu-konstan (cegah timing attack).
+          // verifyPassword() bersifat sinkron (scryptSync), jadi dipanggil
+          // langsung; saat user tidak ada, hash dummy dipakai agar biaya
+          // scrypt tetap dikeluarkan dan waktu respons tidak membocorkan
+          // keberadaan username.
+          const user = await getUserByUsername(username);
+          const targetHash = user ? user.password_hash : DUMMY_PASSWORD_HASH;
+          const isPasswordValid = verifyPassword(password, targetHash);
+
+          if (!user || !isPasswordValid) {
             if (wantsJson(request)) throw new HttpError(401, "Nama pengguna atau kata sandi salah.");
             return redirect(response, "/login?error=salah");
           }
+
+          // 4. Reset hitungan gagal & buat sesi aman
+          resetLoginRateLimit(rateKey);
           createSession(response, user.username, user.role);
-          if (wantsJson(request)) return sendJson(response, 200, { ok: true, username: user.username, role: user.role });
+
+          if (wantsJson(request)) {
+            return sendJson(response, 200, { ok: true, username: user.username, role: user.role });
+          }
           return redirect(response, "/app.html");
         }
+
+        response.setHeader("Allow", "GET, POST");
         throw new HttpError(405, "Metode tidak diizinkan.");
       }
 
